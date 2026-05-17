@@ -182,7 +182,26 @@ async function callPollinationsText(question, history, mode) {
   return { provider: 'gpt-oss-text', text };
 }
 
-// === PROVIDER 4: Pollinations simple GET (last resort, very basic) ===
+// === PROVIDER 4: Hack Club AI (free for students, no key, no rate limit usually) ===
+async function callHackClub(question, history, mode) {
+  const m = getMode(mode);
+  const messages = [{ role: 'system', content: m.prompt }];
+  for (const turn of history.slice(-6)) messages.push({ role: turn.role, content: turn.content });
+  messages.push({ role: 'user', content: question });
+
+  const r = await fetch('https://ai.hackclub.com/chat/completions', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ messages }),
+  });
+  if (!r.ok) throw new Error(`hackclub-${r.status}`);
+  const json = await r.json();
+  const content = json?.choices?.[0]?.message?.content;
+  if (!content || content.length < 2) throw new Error('hackclub-empty');
+  return { provider: 'hackclub-ai', text: content };
+}
+
+// === PROVIDER 5: Pollinations simple GET (last resort, very basic) ===
 async function callPollinationsGet(question, history, mode) {
   const m = getMode(mode);
   let prompt = m.prompt + '\n\n';
@@ -224,6 +243,7 @@ module.exports = async (req, res) => {
     }
     providers.push(['gpt-oss', () => withTimeout(callPollinationsOpenAI(question, history, mode), 18000, 'gpt-oss')]);
     providers.push(['text', () => withTimeout(callPollinationsText(question, history, mode), 22000, 'text')]);
+    providers.push(['hackclub', () => withTimeout(callHackClub(question, history, mode), 20000, 'hackclub')]);
     providers.push(['get', () => withTimeout(callPollinationsGet(question, history, mode), 24000, 'get')]);
 
     const errors = [];
