@@ -1296,6 +1296,58 @@ img, svg { display: block; max-width: 100%; }
 }
 .builder-output.resume-rendered p { margin-bottom: var(--s2); }
 
+/* === Real Office app icons (Microsoft brand-style) === */
+.skill-icon.ms-icon-excel,
+.skill-icon.ms-icon-word,
+.skill-icon.ms-icon-ppt {
+  position: relative;
+  border-radius: 8px;
+  font-family: 'Segoe UI', -apple-system, sans-serif;
+  font-weight: 700;
+  overflow: hidden;
+}
+.skill-icon.ms-icon-excel {
+  background: linear-gradient(135deg, #185C37, #21A366);
+  color: white;
+}
+.skill-icon.ms-icon-excel::before {
+  content: '';
+  position: absolute; inset: 0;
+  background:
+    linear-gradient(180deg, transparent 33%, rgba(255,255,255,0.2) 33%, rgba(255,255,255,0.2) 66%, transparent 66%),
+    linear-gradient(90deg, transparent 33%, rgba(255,255,255,0.2) 33%, rgba(255,255,255,0.2) 66%, transparent 66%);
+  opacity: 0.3;
+}
+.skill-icon.ms-icon-word {
+  background: linear-gradient(135deg, #2B579A, #185ABD);
+  color: white;
+}
+.skill-icon.ms-icon-word::before {
+  content: '';
+  position: absolute; left: 8px; right: 8px; top: 12px; height: 2px;
+  background: rgba(255,255,255,0.5);
+  box-shadow: 0 6px 0 rgba(255,255,255,0.4), 0 12px 0 rgba(255,255,255,0.3), 0 18px 0 rgba(255,255,255,0.25);
+}
+.skill-icon.ms-icon-ppt {
+  background: linear-gradient(135deg, #B7472A, #D24726);
+  color: white;
+}
+.skill-icon.ms-icon-ppt::before {
+  content: '';
+  position: absolute; left: 10px; top: 10px; width: 16px; height: 16px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.3);
+  box-shadow: inset -2px -2px 0 rgba(255,255,255,0.3);
+}
+.skill-icon span {
+  position: relative;
+  z-index: 2;
+  font-size: 28px;
+  display: flex; align-items: center; justify-content: center;
+  width: 100%; height: 100%;
+  text-shadow: 0 1px 2px rgba(0,0,0,0.2);
+}
+
 /* === Template picker === */
 .builder-card-wide { grid-column: 1 / -1; }
 @media (max-width: 767px) { .builder-card-wide { grid-column: auto; } }
