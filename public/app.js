@@ -950,6 +950,220 @@ ${d.email ? `<section class="contact"><h2>Contact</h2><p>📧 <a href="mailto:${
     .catch(() => { grid.innerHTML = '<p style="color: var(--fg-muted); text-align: center;">Failed to load.</p>'; });
 })();
 
+// ===================== Universal Search =====================
+(function setupSearch() {
+  const trigger = $('#search-trigger');
+  const modal = $('#search-modal');
+  const backdrop = $('#search-backdrop');
+  const close = $('#search-close');
+  const input = $('#search-input');
+  const results = $('#search-results');
+  if (!trigger || !modal) return;
+
+  let index = null;
+
+  function buildIndex() {
+    if (index) return index;
+    index = [];
+    // Index all api-cards and lang-cards
+    $$('.api-card').forEach(card => {
+      const section = card.closest('section');
+      const sectionTitle = section?.querySelector('.section-title')?.textContent.trim() || '';
+      index.push({
+        title: card.querySelector('.api-card-name')?.textContent || '',
+        desc: card.querySelector('.api-card-desc')?.textContent || '',
+        tag: card.querySelector('.api-card-tag')?.textContent || '',
+        section: sectionTitle,
+        url: card.href || '#' + (section?.id || ''),
+        kind: 'resource',
+      });
+    });
+    $$('.lang-card').forEach(card => {
+      const section = card.closest('section');
+      const sectionTitle = section?.querySelector('.section-title')?.textContent.trim() || '';
+      const links = [...card.querySelectorAll('.lang-links a')].map(a => a.textContent).join(', ');
+      index.push({
+        title: card.querySelector('h3')?.textContent || '',
+        desc: (card.querySelector('p')?.textContent || '') + ' · ' + links,
+        section: sectionTitle,
+        url: '#' + (section?.id || ''),
+        kind: 'course',
+      });
+    });
+    $$('.endpoint-card').forEach(card => {
+      index.push({
+        title: card.querySelector('.path')?.textContent || '',
+        desc: card.querySelector('.endpoint-desc')?.textContent || '',
+        section: 'API Endpoints',
+        url: '#endpoints',
+        kind: 'api',
+      });
+    });
+    // Sections themselves
+    $$('section[id]').forEach(s => {
+      const title = s.querySelector('.section-title')?.textContent.trim();
+      const desc = s.querySelector('.section-subtitle')?.textContent.trim();
+      if (title) index.push({ title, desc: desc || '', section: 'Section', url: '#' + s.id, kind: 'section' });
+    });
+    return index;
+  }
+
+  function highlight(text, q) {
+    const safe = text.replace(/[&<>]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[c]));
+    if (!q) return safe;
+    const re = new RegExp('(' + q.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + ')', 'gi');
+    return safe.replace(re, '<mark>$1</mark>');
+  }
+
+  function search(q) {
+    buildIndex();
+    if (!q.trim()) {
+      results.innerHTML = '<p class="search-hint">Type to search across all 250+ resources on this site. Try: <em>"python"</em>, <em>"scholarship"</em>, <em>"thesis"</em>, <em>"figma"</em>.</p>';
+      return;
+    }
+    const query = q.toLowerCase();
+    const matches = index.filter(item => {
+      const blob = (item.title + ' ' + item.desc + ' ' + (item.tag || '') + ' ' + item.section).toLowerCase();
+      return blob.includes(query);
+    }).slice(0, 30);
+
+    if (!matches.length) {
+      results.innerHTML = `<div class="search-empty">No matches for "<strong>${q}</strong>". Try different keywords.</div>`;
+      return;
+    }
+    const grouped = {};
+    matches.forEach(m => {
+      const key = m.section || 'Other';
+      (grouped[key] = grouped[key] || []).push(m);
+    });
+    results.innerHTML = Object.entries(grouped).map(([section, items]) => `
+      <div class="search-group">
+        <div class="search-group-head">${section}</div>
+        ${items.map(item => `
+          <a class="search-result" href="${item.url}" target="${item.url.startsWith('http') ? '_blank' : '_self'}" rel="noopener">
+            <div class="search-result-title">${highlight(item.title, q)}</div>
+            ${item.desc ? `<div class="search-result-desc">${highlight(item.desc.slice(0, 140), q)}</div>` : ''}
+          </a>
+        `).join('')}
+      </div>
+    `).join('');
+  }
+
+  function open() {
+    modal.hidden = false;
+    document.body.style.overflow = 'hidden';
+    setTimeout(() => input?.focus(), 50);
+  }
+  function closeFn() {
+    modal.hidden = true;
+    document.body.style.overflow = '';
+    input.value = '';
+    search('');
+  }
+
+  trigger.addEventListener('click', open);
+  close.addEventListener('click', closeFn);
+  backdrop.addEventListener('click', closeFn);
+  input.addEventListener('input', () => search(input.value));
+  document.addEventListener('keydown', (e) => {
+    if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+      e.preventDefault();
+      modal.hidden ? open() : closeFn();
+    }
+    if (e.key === 'Escape' && !modal.hidden) closeFn();
+  });
+
+  // Click result → close modal if same-page
+  results.addEventListener('click', (e) => {
+    const link = e.target.closest('.search-result');
+    if (link && !link.href.startsWith('http')) {
+      setTimeout(closeFn, 100);
+    }
+  });
+})();
+
+// ===================== AI Letter Generator =====================
+(function setupLetter() {
+  const btn = $('#lett-go');
+  const out = $('#lett-output');
+  const actions = $('#lett-actions');
+  if (!btn || !out) return;
+
+  btn.addEventListener('click', async () => {
+    const type = $('#lett-type').value;
+    const from = $('#lett-from').value.trim() || 'Your Name';
+    const to = $('#lett-to').value.trim() || 'Recipient';
+    const position = $('#lett-position').value.trim();
+    const context = $('#lett-context').value.trim();
+    const tone = $('#lett-tone').value;
+
+    if (!context) { toast('Add context/reason'); return; }
+
+    btn.disabled = true;
+    btn.textContent = 'Drafting... (10-15s)';
+    out.hidden = false;
+    out.textContent = 'AI is drafting your letter...';
+
+    const typeMap = {
+      cover: 'cover letter for a job application',
+      application: 'application letter for an OJT/internship position',
+      scholarship: 'scholarship application letter to the scholarship committee',
+      recommendation: 'polite request letter asking a professor for a letter of recommendation',
+      extension: 'deadline extension request letter to a professor',
+      leave: 'leave of absence letter to an employer or school administrator',
+      thank: 'thank you letter after a job interview',
+      excuse: 'excuse letter for absence to a professor or employer',
+      resignation: 'resignation letter to an employer',
+    };
+
+    const prompt = `Draft a ${tone} ${typeMap[type]} in proper formal English business format.
+
+Details:
+- From: ${from}
+- To: ${to}
+${position ? '- Position/Subject: ' + position : ''}
+- Context: ${context}
+
+Format requirements:
+1. Include current date placeholder [Date]
+2. Recipient address placeholder if appropriate
+3. Proper salutation (Dear ${to})
+4. 3-4 short paragraphs in the body
+5. Professional closing (Sincerely, Respectfully, etc.)
+6. Signature line with name
+
+Output ONLY the letter content. No preamble or explanation. Use line breaks between paragraphs.`;
+
+    const json = await callAI({ question: prompt, mode: 'writing' });
+    if (json.ok && json.text) {
+      // Format with line breaks for readability
+      out.innerHTML = json.text.split('\n').map(line =>
+        line.trim() ? `<p style="margin-bottom: 8px;">${line.replace(/[&<>]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[c]))}</p>` : '<br>'
+      ).join('');
+      actions.hidden = false;
+      actions.style.display = 'grid';
+      toast('Letter ready! Editable above.');
+    } else {
+      out.textContent = json.error || 'AI busy. Try again.';
+    }
+    btn.disabled = false;
+    btn.textContent = 'Draft letter ✨';
+  });
+
+  $('#lett-copy')?.addEventListener('click', async () => {
+    try { await navigator.clipboard.writeText(out.innerText); toast('Copied!'); } catch {}
+  });
+  $('#lett-word')?.addEventListener('click', () => {
+    const html = `<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns="http://www.w3.org/TR/REC-html40"><head><meta charset="utf-8"><title>Letter</title><style>body{font-family:'Times New Roman',serif;line-height:1.6;max-width:800px;margin:40px auto;padding:40px;font-size:12pt;}p{margin-bottom:8pt;}</style></head><body>${out.innerHTML}</body></html>`;
+    const blob = new Blob([html], { type: 'application/msword' });
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = 'letter.doc';
+    a.click();
+    URL.revokeObjectURL(a.href);
+  });
+})();
+
 // ===================== Code Playground =====================
 (function setupPlayground() {
   const tabs = $$('.pg-tab');
