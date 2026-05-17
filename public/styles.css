@@ -2352,6 +2352,82 @@ section { overflow-x: clip; }
 .fab-ai:hover { transform: scale(1.05); }
 .fab-ai:active { transform: scale(0.95); }
 
+/* === Star nudge banner === */
+.star-nudge {
+  position: fixed;
+  bottom: var(--s4);
+  left: var(--s4);
+  max-width: 360px;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+  padding: var(--s4);
+  z-index: 70;
+  display: flex;
+  gap: var(--s3);
+  animation: starSlideUp 400ms cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.star-nudge[hidden] { display: none; }
+@keyframes starSlideUp {
+  from { transform: translateY(20px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+.star-nudge::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0; height: 3px;
+  background: linear-gradient(90deg, var(--ph-blue), var(--ph-red), var(--ph-yellow));
+  border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+}
+.star-close {
+  position: absolute; top: 8px; right: 10px;
+  font-size: 16px;
+  color: var(--fg-muted);
+  width: 24px; height: 24px;
+  display: flex; align-items: center; justify-content: center;
+  border-radius: 50%;
+}
+.star-close:hover { background: var(--bg-subtle); color: var(--fg); }
+.star-icon {
+  font-size: 32px;
+  flex-shrink: 0;
+  filter: drop-shadow(0 2px 4px rgba(252, 209, 22, 0.5));
+}
+.star-content { flex: 1; min-width: 0; padding-right: 16px; }
+.star-content strong {
+  display: block;
+  font-size: 14px;
+  margin-bottom: 4px;
+  color: var(--fg);
+}
+.star-content p {
+  font-size: 12px;
+  color: var(--fg-muted);
+  margin-bottom: var(--s3);
+  line-height: 1.5;
+}
+.star-actions {
+  display: flex; gap: var(--s2);
+  margin-bottom: 6px;
+}
+.star-actions .btn {
+  font-size: 12px;
+  padding: 6px 12px;
+  min-height: 32px;
+}
+.star-stargazers {
+  font-size: 11px;
+  color: var(--fg-subtle);
+}
+@media (max-width: 640px) {
+  .star-nudge {
+    left: var(--s3);
+    right: var(--s3);
+    bottom: 80px;
+    max-width: none;
+  }
+}
+
 /* === Toast === */
 .toast {
   position: fixed;

@@ -66,6 +66,7 @@ async function callAI({ question, mode = 'general', history = [] }) {
       if (j.ok && j.text) {
         const ms = Math.round(performance.now() - t0);
         out.innerHTML = `${j.text.replace(/[&<>]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[c])).replace(/\n/g, '<br>')}<span class="provider-tag">✨ via ${j.provider || 'AI'} · ${ms}ms · <a href="#ai" style="color:var(--ph-blue);text-decoration:underline;">Continue in full chat →</a></span>`;
+        if (window.__triggerStarNudge) window.__triggerStarNudge();
       } else {
         out.innerHTML = `<span style="color:var(--danger);">${j.error || 'AI is busy right now. Try again in 30 seconds.'}</span>`;
       }
@@ -384,6 +385,7 @@ function applyLang(lang) {
       if (json.ok && json.text) {
         loadingBubble.textContent = json.text;
         history.push({ role: 'assistant', content: json.text });
+        if (history.length >= 2 && window.__triggerStarNudge) window.__triggerStarNudge();
       } else {
         loadingBubble.textContent = json.error || 'Sorry, may error. Try again.';
         loadingBubble.style.color = 'var(--danger)';
@@ -2174,6 +2176,83 @@ Output in markdown. Use clear academic English. Don't fabricate data or specific
   });
 
   render();
+})();
+
+// ===================== Star nudge (appears after AI engagement) =====================
+(function setupStarNudge() {
+  const nudge = $('#star-nudge');
+  const close = $('#star-close');
+  const later = $('#star-later');
+  const starBtn = $('#star-btn');
+  const count = $('#star-count');
+  if (!nudge) return;
+
+  const STORAGE_KEY = 'star-nudge-v1';
+  const DISMISS_DAYS = 7; // re-show after 7 days
+
+  function shouldShow() {
+    try {
+      const data = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
+      if (data.starred) return false;
+      if (data.dismissedAt) {
+        const days = (Date.now() - data.dismissedAt) / (1000 * 60 * 60 * 24);
+        if (days < DISMISS_DAYS) return false;
+      }
+    } catch {}
+    return true;
+  }
+
+  function dismiss(starred = false) {
+    nudge.hidden = true;
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify({
+        starred,
+        dismissedAt: Date.now(),
+      }));
+    } catch {}
+  }
+
+  function show() {
+    if (!shouldShow()) return;
+    nudge.hidden = false;
+    // Fetch current star count from GitHub
+    fetch('https://api.github.com/repos/CharlieJamesGwapo/ph-public-api')
+      .then(r => r.json())
+      .then(j => {
+        if (j && typeof j.stargazers_count === 'number') {
+          const n = j.stargazers_count;
+          const target = 16;
+          const remaining = Math.max(0, target - n);
+          if (n === 0) {
+            count.textContent = `🎯 Be the first star!`;
+          } else if (remaining > 0) {
+            count.textContent = `⭐ ${n} stars · ${remaining} more to unlock Starstruck badge!`;
+          } else {
+            count.textContent = `⭐ ${n} stars · salamat sa lahat!`;
+          }
+        }
+      })
+      .catch(() => {});
+  }
+
+  close.addEventListener('click', () => dismiss(false));
+  later.addEventListener('click', () => dismiss(false));
+  starBtn.addEventListener('click', () => dismiss(true));
+
+  // Trigger: show after user gets first successful AI response
+  // We expose a function the AI section can call
+  window.__triggerStarNudge = () => {
+    setTimeout(show, 3000); // 3-second delay so they enjoy the response first
+  };
+
+  // Also trigger after 90 seconds on the page if engaged
+  let triggered = false;
+  setTimeout(() => {
+    if (!triggered && document.visibilityState === 'visible') {
+      triggered = true;
+      show();
+    }
+  }, 90000);
 })();
 
 // ===================== Year + footer share + dynamic touches =====================

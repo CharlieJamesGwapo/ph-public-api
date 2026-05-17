@@ -4008,6 +4008,21 @@ print(r.json())</code></pre>
   </div>
 
   <button class="fab-ai" id="fab-ai" aria-label="Open Kuya AI" title="Ask Kuya AI">✨</button>
+  <!-- Star nudge banner (appears after engagement) -->
+  <div id="star-nudge" class="star-nudge" hidden>
+    <button class="star-close" id="star-close" aria-label="Close">✕</button>
+    <div class="star-icon">⭐</div>
+    <div class="star-content">
+      <strong>Naka-help ba si Kuya AI?</strong>
+      <p>Pa-star naman po sa GitHub! Free, 1 click lang, tinutulungan mo akong ma-maintain ang free version forever.</p>
+      <div class="star-actions">
+        <a href="https://github.com/CharlieJamesGwapo/ph-public-api" target="_blank" rel="noopener" class="btn btn-primary" id="star-btn">⭐ Star on GitHub</a>
+        <button class="btn btn-secondary" id="star-later">Maybe later</button>
+      </div>
+      <span class="star-stargazers" id="star-count"></span>
+    </div>
+  </div>
+
   <button id="fab-share" aria-label="Share this site" title="Share with classmates" style="position:fixed;bottom:88px;right:16px;width:48px;height:48px;border-radius:50%;background:var(--bg-elevated);border:1px solid var(--border);color:var(--fg);display:flex;align-items:center;justify-content:center;box-shadow:var(--shadow-lg);z-index:60;font-size:18px;">
     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
   </button>
