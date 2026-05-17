@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>🇵🇭 Philippines Public Data API — Free REST API for PH data</title>
-<meta name="description" content="Free, open-source REST API serving useful Philippines public data: regions, provinces, cities, holidays, schools. No API key required." />
+<title>🇵🇭 PH Public API + Kuya AI — Free APIs and AI tutor for Filipino students</title>
+<meta name="description" content="Free public data API for the Philippines + free AI study tutor (Kuya AI). Built for Filipino students, capstone projects, and developers. No API key required." />
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
@@ -24,7 +24,9 @@
       <nav class="nav-links">
         <a href="#endpoints">Endpoints</a>
         <a href="#try">Try it</a>
-        <a href="#examples">Examples</a>
+        <a href="#ai">Kuya AI</a>
+        <a href="#students">For students</a>
+        <a href="#free-apis">Free APIs</a>
         <a class="nav-cta" href="https://github.com/CharlieJamesGwapo/ph-public-api" target="_blank" rel="noopener">
           <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor" aria-hidden="true"><path d="M12 .5C5.65.5.5 5.65.5 12c0 5.08 3.29 9.39 7.86 10.91.58.11.79-.25.79-.55 0-.27-.01-1.16-.02-2.1-3.2.7-3.87-1.36-3.87-1.36-.52-1.34-1.27-1.69-1.27-1.69-1.04-.71.08-.7.08-.7 1.15.08 1.76 1.18 1.76 1.18 1.02 1.75 2.69 1.25 3.34.96.1-.74.4-1.25.72-1.54-2.55-.29-5.23-1.27-5.23-5.66 0-1.25.45-2.27 1.18-3.07-.12-.29-.51-1.46.11-3.05 0 0 .96-.31 3.15 1.17.91-.25 1.89-.38 2.86-.39.97.01 1.95.13 2.86.39 2.19-1.48 3.15-1.17 3.15-1.17.62 1.59.23 2.76.11 3.05.73.8 1.18 1.82 1.18 3.07 0 4.4-2.69 5.37-5.25 5.65.41.35.78 1.05.78 2.12 0 1.53-.01 2.77-.01 3.15 0 .31.21.67.8.55 4.57-1.52 7.85-5.83 7.85-10.91C23.5 5.65 18.35.5 12 .5z"/></svg>
           GitHub
@@ -39,19 +41,19 @@
       <div class="container">
         <div class="hero-pill">
           <span class="hero-pill-dot"></span>
-          Live · v0.2.0 · 100% free, no API key
+          Live · v0.3.0 · 100% free, no API key
         </div>
         <h1 class="hero-title">
-          The free public data API
-          <span class="hero-title-accent">para sa Pilipinas.</span>
+          Free APIs, free AI tutor,
+          <span class="hero-title-accent">para sa mga estudyanteng Pilipino.</span>
         </h1>
         <p class="hero-subtitle">
-          A clean REST API serving Philippines public data — regions, provinces, cities, holidays, schools, jeepney routes. Built for developers, students, and capstone projects.
+          One free, open platform with Philippines public data (regions, holidays, schools, scholarships, weather, currency) plus <strong>Kuya AI</strong> — a study tutor that explains in Taglish. Built for capstone projects, thesis research, and learning to code.
         </p>
 
         <div class="hero-search">
           <span class="hero-search-method">GET</span>
-          <input id="hero-url" type="text" value="https://ph-public-api.vercel.app/regions?island_group=Mindanao" readonly aria-label="Example API URL">
+          <input id="hero-url" type="text" value="https://ph-public-api.vercel.app/scholarships" readonly aria-label="Example API URL">
           <button id="hero-copy" class="hero-copy-btn" aria-label="Copy URL">
             <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"></rect><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"></path></svg>
             <span>Copy</span>
@@ -60,14 +62,15 @@
 
         <div class="hero-actions">
           <a href="#try" class="btn btn-primary">Try the API</a>
-          <a href="https://github.com/CharlieJamesGwapo/ph-public-api" target="_blank" rel="noopener" class="btn btn-secondary">View on GitHub →</a>
+          <a href="#ai" class="btn btn-accent">Ask Kuya AI ✨</a>
+          <a href="https://github.com/CharlieJamesGwapo/ph-public-api" target="_blank" rel="noopener" class="btn btn-secondary">GitHub →</a>
         </div>
 
         <div class="hero-stats" id="hero-stats">
           <div class="stat"><div class="stat-num" data-stat="regions">17</div><div class="stat-label">Regions</div></div>
           <div class="stat"><div class="stat-num" data-stat="holidays">33</div><div class="stat-label">Holidays</div></div>
           <div class="stat"><div class="stat-num" data-stat="schools">—</div><div class="stat-label">Schools</div></div>
-          <div class="stat"><div class="stat-num" data-stat="cities">—</div><div class="stat-label">Cities</div></div>
+          <div class="stat"><div class="stat-num" data-stat="scholarships">10</div><div class="stat-label">Scholarships</div></div>
         </div>
       </div>
     </section>
@@ -76,26 +79,20 @@
     <section id="endpoints" class="section">
       <div class="container">
         <div class="section-head">
-          <h2 class="section-title">Endpoints</h2>
-          <p class="section-subtitle">All endpoints return JSON. CORS enabled. No authentication required.</p>
+          <h2 class="section-title">All endpoints</h2>
+          <p class="section-subtitle">Return JSON. CORS enabled. No authentication required. Click any card to try it.</p>
         </div>
 
         <div class="endpoint-grid">
           <article class="endpoint-card" data-endpoint="/regions">
             <div class="endpoint-head"><span class="method">GET</span><code class="path">/regions</code></div>
-            <p class="endpoint-desc">All 17 regions with codes, island group, and regional center.</p>
+            <p class="endpoint-desc">All 17 PH regions with codes and regional centers.</p>
             <div class="endpoint-meta"><span>?island_group=Luzon|Visayas|Mindanao</span></div>
-          </article>
-
-          <article class="endpoint-card" data-endpoint="/regions/R10">
-            <div class="endpoint-head"><span class="method">GET</span><code class="path">/regions/:code</code></div>
-            <p class="endpoint-desc">Single region by code: NCR, CAR, R1–R13, BARMM.</p>
-            <div class="endpoint-meta"><span>example: /regions/R10</span></div>
           </article>
 
           <article class="endpoint-card" data-endpoint="/holidays?year=2026">
             <div class="endpoint-head"><span class="method">GET</span><code class="path">/holidays</code></div>
-            <p class="endpoint-desc">PH holidays — regular and special non-working.</p>
+            <p class="endpoint-desc">PH holidays — regular and special non-working days.</p>
             <div class="endpoint-meta"><span>?year=2026 &nbsp;·&nbsp; ?type=regular</span></div>
           </article>
 
@@ -105,16 +102,34 @@
             <div class="endpoint-meta"><span>?region=R10 &nbsp;·&nbsp; ?province=Cebu</span></div>
           </article>
 
-          <article class="endpoint-card" data-endpoint="/schools">
+          <article class="endpoint-card" data-endpoint="/schools?region=R10">
             <div class="endpoint-head"><span class="method">GET</span><code class="path">/schools</code></div>
             <p class="endpoint-desc">State and private universities, colleges, technical schools.</p>
             <div class="endpoint-meta"><span>?region=R10 &nbsp;·&nbsp; ?type=State</span></div>
           </article>
 
-          <article class="endpoint-card" data-endpoint="/schools/MOSCAT">
-            <div class="endpoint-head"><span class="method">GET</span><code class="path">/schools/:code</code></div>
-            <p class="endpoint-desc">A specific school by code (UP, MOSCAT, USTP, etc).</p>
-            <div class="endpoint-meta"><span>example: /schools/MOSCAT</span></div>
+          <article class="endpoint-card highlight-new" data-endpoint="/scholarships">
+            <div class="endpoint-head"><span class="method">GET</span><code class="path">/scholarships</code><span class="badge-new">NEW</span></div>
+            <p class="endpoint-desc">CHED, DOST-SEI, SM Foundation, Iskolar ng Bayan, and more.</p>
+            <div class="endpoint-meta"><span>?level=Undergraduate &nbsp;·&nbsp; ?agency=DOST</span></div>
+          </article>
+
+          <article class="endpoint-card highlight-new" data-endpoint="/currency/convert?from=USD&to=PHP&amount=100">
+            <div class="endpoint-head"><span class="method">GET</span><code class="path">/currency</code><span class="badge-new">NEW</span></div>
+            <p class="endpoint-desc">Live PHP exchange rates + convert any amount.</p>
+            <div class="endpoint-meta"><span>/currency/convert?from=USD&to=PHP&amount=100</span></div>
+          </article>
+
+          <article class="endpoint-card highlight-new" data-endpoint="/weather/cagayan-de-oro">
+            <div class="endpoint-head"><span class="method">GET</span><code class="path">/weather/:city</code><span class="badge-new">NEW</span></div>
+            <p class="endpoint-desc">Live weather for 20 PH cities (open-meteo).</p>
+            <div class="endpoint-meta"><span>/weather/manila &nbsp;·&nbsp; /weather/cebu-city</span></div>
+          </article>
+
+          <article class="endpoint-card highlight-ai" data-section="ai">
+            <div class="endpoint-head"><span class="method method-post">POST</span><code class="path">/ai</code><span class="badge-ai">✨ AI</span></div>
+            <p class="endpoint-desc">Kuya AI — Filipino study tutor. Ask in Tagalog, English, or Taglish.</p>
+            <div class="endpoint-meta"><span>body: { question, history }</span></div>
           </article>
         </div>
       </div>
@@ -125,22 +140,27 @@
       <div class="container">
         <div class="section-head">
           <h2 class="section-title">Try it live</h2>
-          <p class="section-subtitle">Pick an endpoint, hit Send, see the actual JSON response.</p>
+          <p class="section-subtitle">Pick an endpoint, hit Send, see real JSON response.</p>
         </div>
 
         <div class="try-box">
           <div class="try-row">
             <select id="try-endpoint" aria-label="Endpoint">
-              <option value="/regions">/regions</option>
-              <option value="/regions?island_group=Mindanao">/regions?island_group=Mindanao</option>
-              <option value="/regions/R10">/regions/R10</option>
-              <option value="/holidays?year=2026">/holidays?year=2026</option>
-              <option value="/holidays?year=2026&type=regular">/holidays?year=2026&type=regular</option>
-              <option value="/cities">/cities</option>
-              <option value="/cities?region=R10">/cities?region=R10</option>
-              <option value="/schools">/schools</option>
-              <option value="/schools?region=R10">/schools?region=R10</option>
-              <option value="/schools/MOSCAT">/schools/MOSCAT</option>
+              <optgroup label="PH Data">
+                <option value="/regions">/regions</option>
+                <option value="/regions/R10">/regions/R10</option>
+                <option value="/holidays?year=2026">/holidays?year=2026</option>
+                <option value="/cities?region=R10">/cities?region=R10</option>
+                <option value="/schools?region=R10">/schools?region=R10</option>
+                <option value="/scholarships">/scholarships</option>
+              </optgroup>
+              <optgroup label="Live Data">
+                <option value="/currency">/currency (live PHP rates)</option>
+                <option value="/currency/convert?from=USD&amp;to=PHP&amp;amount=100">/currency/convert?from=USD&amp;to=PHP&amp;amount=100</option>
+                <option value="/weather/cagayan-de-oro">/weather/cagayan-de-oro</option>
+                <option value="/weather/manila">/weather/manila</option>
+                <option value="/weather/cities">/weather/cities (list)</option>
+              </optgroup>
             </select>
             <button id="try-send" class="btn btn-primary">Send →</button>
           </div>
@@ -149,34 +169,196 @@
       </div>
     </section>
 
-    <!-- EXAMPLES -->
-    <section id="examples" class="section">
+    <!-- AI TUTOR -->
+    <section id="ai" class="section">
       <div class="container">
         <div class="section-head">
-          <h2 class="section-title">Examples</h2>
+          <h2 class="section-title">✨ Meet <span class="text-gradient">Kuya AI</span></h2>
+          <p class="section-subtitle">Your free Filipino AI study tutor. Ask about your homework, capstone, coding, Tagalog grammar, exam prep — anything. Sumasagot sa Taglish kasi natural sa mga estudyante.</p>
+        </div>
+
+        <div class="ai-box">
+          <div id="ai-chat" class="ai-chat">
+            <div class="ai-msg ai-msg-bot">
+              <div class="ai-avatar">K</div>
+              <div class="ai-bubble">
+                <strong>Hi! I'm Kuya AI 👋</strong><br>
+                Ask me anything — homework, capstone ideas, coding bugs, paano mag-Excel, kahit chika lang. Try one of the example questions below or type your own.
+              </div>
+            </div>
+          </div>
+
+          <div class="ai-suggestions">
+            <button class="ai-chip" data-q="Bigyan mo ako ng 5 capstone project ideas using web development for Tourism management.">5 capstone ideas para sa tourism</button>
+            <button class="ai-chip" data-q="Explain Big O notation in simple Taglish with examples.">Explain Big O sa Taglish</button>
+            <button class="ai-chip" data-q="Paano gumawa ng research paper introduction? Step by step please.">Paano mag-write ng intro?</button>
+            <button class="ai-chip" data-q="What is the difference between thesis and capstone project? Explain in simple terms.">Thesis vs capstone?</button>
+          </div>
+
+          <form id="ai-form" class="ai-form">
+            <input id="ai-input" type="text" placeholder="Ask anything... pwede in Tagalog, English, or Taglish" autocomplete="off" maxlength="500" required />
+            <button type="submit" id="ai-send" class="btn btn-primary">Send</button>
+          </form>
+          <p class="ai-disclaimer">Free tier · Powered by Google Gemini · Always double-check facts</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- FOR STUDENTS -->
+    <section id="students" class="section section-muted">
+      <div class="container">
+        <div class="section-head">
+          <h2 class="section-title">For students 🎓</h2>
+          <p class="section-subtitle">How you can use this API in your school work.</p>
+        </div>
+
+        <div class="student-grid">
+          <div class="student-card">
+            <div class="student-icon">📊</div>
+            <h3>Capstone projects</h3>
+            <p>Build a thesis/capstone app using real PH data. Tourism app? Use /regions + /weather. Enrollment system? Use /schools. Scholarship finder? Use /scholarships.</p>
+          </div>
+          <div class="student-card">
+            <div class="student-icon">📝</div>
+            <h3>Research papers</h3>
+            <p>Cite live data in your thesis. PH demographics, holidays, university lists — all in JSON, easy to import to Excel/SPSS/Python.</p>
+          </div>
+          <div class="student-card">
+            <div class="student-icon">🤖</div>
+            <h3>Learn to code</h3>
+            <p>Practice with a real API. Build a fetch() exercise, learn JSON parsing, try in HTML/JS, Python requests, or React.</p>
+          </div>
+          <div class="student-card">
+            <div class="student-icon">📚</div>
+            <h3>Homework help</h3>
+            <p>Kuya AI explains coding, math, Filipino, and study skills in language you'll actually understand.</p>
+          </div>
+          <div class="student-card">
+            <div class="student-icon">💰</div>
+            <h3>Scholarship search</h3>
+            <p>Find financial aid you might qualify for — CHED, DOST-SEI, SM Foundation, Iskolar ng Bayan, and more.</p>
+          </div>
+          <div class="student-card">
+            <div class="student-icon">🌦️</div>
+            <h3>School cancellations</h3>
+            <p>Use /weather/:city + /holidays to build an "is there class today?" widget. Or a typhoon-aware calendar.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FREE APIs DIRECTORY -->
+    <section id="free-apis" class="section">
+      <div class="container">
+        <div class="section-head">
+          <h2 class="section-title">Other 100% free APIs students can use</h2>
+          <p class="section-subtitle">Hand-picked free APIs — no credit card, no API key (or generous free tiers).</p>
+        </div>
+
+        <div class="api-grid">
+          <a class="api-card" href="https://open-meteo.com/" target="_blank" rel="noopener">
+            <div class="api-card-name">Open-Meteo</div>
+            <div class="api-card-desc">Free weather forecast API. No key, no rate limit for non-commercial use.</div>
+            <div class="api-card-tag">Weather</div>
+          </a>
+          <a class="api-card" href="https://www.exchangerate-api.com/" target="_blank" rel="noopener">
+            <div class="api-card-name">ExchangeRate-API</div>
+            <div class="api-card-desc">Live currency exchange rates. Free open endpoint, 161 currencies.</div>
+            <div class="api-card-tag">Finance</div>
+          </a>
+          <a class="api-card" href="https://restcountries.com/" target="_blank" rel="noopener">
+            <div class="api-card-name">REST Countries</div>
+            <div class="api-card-desc">Info about every country — population, capitals, flags, currencies.</div>
+            <div class="api-card-tag">Geography</div>
+          </a>
+          <a class="api-card" href="https://dictionaryapi.dev/" target="_blank" rel="noopener">
+            <div class="api-card-name">Free Dictionary API</div>
+            <div class="api-card-desc">English word definitions, phonetics, synonyms. No key needed.</div>
+            <div class="api-card-tag">Education</div>
+          </a>
+          <a class="api-card" href="https://openlibrary.org/developers/api" target="_blank" rel="noopener">
+            <div class="api-card-name">Open Library</div>
+            <div class="api-card-desc">Book metadata, ISBN lookups, cover images. Free, no key.</div>
+            <div class="api-card-tag">Books</div>
+          </a>
+          <a class="api-card" href="https://numbersapi.com/" target="_blank" rel="noopener">
+            <div class="api-card-name">Numbers API</div>
+            <div class="api-card-desc">Trivia, math facts, year facts about any number. Fun for fill-in widgets.</div>
+            <div class="api-card-tag">Trivia</div>
+          </a>
+          <a class="api-card" href="https://nominatim.org/release-docs/develop/api/Overview/" target="_blank" rel="noopener">
+            <div class="api-card-name">Nominatim (OpenStreetMap)</div>
+            <div class="api-card-desc">Free geocoding — addresses to lat/lng and back. Good for maps.</div>
+            <div class="api-card-tag">Maps</div>
+          </a>
+          <a class="api-card" href="https://www.themealdb.com/api.php" target="_blank" rel="noopener">
+            <div class="api-card-name">TheMealDB</div>
+            <div class="api-card-desc">Recipe API including Filipino dishes. Free, no key for test endpoints.</div>
+            <div class="api-card-tag">Food</div>
+          </a>
+          <a class="api-card" href="https://api.nasa.gov/" target="_blank" rel="noopener">
+            <div class="api-card-name">NASA APIs</div>
+            <div class="api-card-desc">Astronomy Picture of the Day, Mars rover photos, space data. Free key.</div>
+            <div class="api-card-tag">Science</div>
+          </a>
+          <a class="api-card" href="https://jsonplaceholder.typicode.com/" target="_blank" rel="noopener">
+            <div class="api-card-name">JSONPlaceholder</div>
+            <div class="api-card-desc">Fake REST API for testing/practice. No setup needed.</div>
+            <div class="api-card-tag">Testing</div>
+          </a>
+          <a class="api-card" href="https://ai.hackclub.com/" target="_blank" rel="noopener">
+            <div class="api-card-name">Hack Club AI</div>
+            <div class="api-card-desc">Free LLM API made for students. OpenAI-compatible, no key.</div>
+            <div class="api-card-tag">AI</div>
+          </a>
+          <a class="api-card" href="https://aistudio.google.com/app/apikey" target="_blank" rel="noopener">
+            <div class="api-card-name">Google Gemini</div>
+            <div class="api-card-desc">Generous free tier (1500 RPM Flash). Get a key for free.</div>
+            <div class="api-card-tag">AI</div>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- EXAMPLES -->
+    <section id="examples" class="section section-muted">
+      <div class="container">
+        <div class="section-head">
+          <h2 class="section-title">Code examples</h2>
           <p class="section-subtitle">Copy a snippet, paste it into your project.</p>
         </div>
 
         <div class="examples-grid">
           <div class="example-card">
             <div class="example-head"><span class="example-lang">cURL</span></div>
-            <pre><code>curl https://ph-public-api.vercel.app/regions?island_group=Mindanao</code></pre>
+            <pre><code>curl https://ph-public-api.vercel.app/scholarships</code></pre>
           </div>
           <div class="example-card">
             <div class="example-head"><span class="example-lang">JavaScript (fetch)</span></div>
             <pre><code>const res = await fetch(
-  'https://ph-public-api.vercel.app/holidays?year=2026'
+  'https://ph-public-api.vercel.app/weather/cebu-city'
 );
-const { data } = await res.json();</code></pre>
+const data = await res.json();
+console.log(data.current.temperature_2m);</code></pre>
           </div>
           <div class="example-card">
             <div class="example-head"><span class="example-lang">Python (requests)</span></div>
             <pre><code>import requests
 r = requests.get(
-  "https://ph-public-api.vercel.app/schools",
-  params={"region": "R10"}
+  "https://ph-public-api.vercel.app/currency/convert",
+  params={"from":"USD","to":"PHP","amount":100}
 )
-data = r.json()["data"]</code></pre>
+print(r.json())</code></pre>
+          </div>
+          <div class="example-card">
+            <div class="example-head"><span class="example-lang">Ask Kuya AI (POST)</span></div>
+            <pre><code>fetch('https://ph-public-api.vercel.app/ai', {
+  method: 'POST',
+  headers: {'Content-Type':'application/json'},
+  body: JSON.stringify({
+    question: 'Paano mag-fetch ng API sa JavaScript?'
+  })
+}).then(r =&gt; r.json()).then(console.log);</code></pre>
           </div>
         </div>
       </div>
@@ -186,12 +368,14 @@ data = r.json()["data"]</code></pre>
   <footer class="site-footer">
     <div class="container footer-row">
       <div>
-        <strong>PH Public API</strong> · MIT License · Made with ❤ in Misamis Oriental
+        <strong>PH Public API + Kuya AI</strong> · MIT License · Made with ❤ in Misamis Oriental
       </div>
       <div>
         <a href="https://github.com/CharlieJamesGwapo/ph-public-api" target="_blank" rel="noopener">GitHub</a>
         ·
         <a href="https://github.com/CharlieJamesGwapo/ph-public-api/issues" target="_blank" rel="noopener">Report bug</a>
+        ·
+        <a href="https://github.com/CharlieJamesGwapo/ph-public-api#contributing" target="_blank" rel="noopener">Contribute</a>
       </div>
     </div>
   </footer>
