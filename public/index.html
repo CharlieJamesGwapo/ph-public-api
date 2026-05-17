@@ -1183,6 +1183,298 @@ document.body.style.background = '#FCD116';
       </div>
     </section>
 
+    <!-- EXCEL MASTERY -->
+    <section id="excel" class="section">
+      <div class="container">
+        <div class="section-head">
+          <h2 class="section-title">📊 Excel Mastery — Complete Guide</h2>
+          <p class="section-subtitle">Everything you need to master Microsoft Excel. Formulas, shortcuts, common tasks, video tutorials, practice exercises. Para sa thesis data, capstone analysis, or your future job.</p>
+        </div>
+
+        <!-- TABS -->
+        <div class="excel-tabs" role="tablist">
+          <button class="excel-tab active" data-extab="basics">📘 Basics</button>
+          <button class="excel-tab" data-extab="formulas">🧮 Formulas (30+)</button>
+          <button class="excel-tab" data-extab="shortcuts">⌨️ Shortcuts</button>
+          <button class="excel-tab" data-extab="tasks">✅ Common Tasks</button>
+          <button class="excel-tab" data-extab="practice">💪 Practice</button>
+          <button class="excel-tab" data-extab="videos">📺 Videos</button>
+        </div>
+
+        <!-- BASICS -->
+        <div class="excel-panel active" data-expanel="basics">
+          <div class="excel-cards">
+            <div class="excel-card">
+              <h3>🟦 What is a Cell?</h3>
+              <p>A cell is the basic unit of Excel. Identified by column letter + row number: <strong>A1, B5, F23</strong>. Each cell holds: text, number, date, or a formula.</p>
+              <div class="excel-example">
+                <table class="mini-sheet"><tr><th></th><th>A</th><th>B</th><th>C</th></tr>
+                <tr><th>1</th><td>Subject</td><td>Grade</td><td>Units</td></tr>
+                <tr><th>2</th><td>Calculus</td><td>1.50</td><td>3</td></tr>
+                <tr><th>3</th><td>Programming</td><td>1.25</td><td>4</td></tr></table>
+              </div>
+            </div>
+
+            <div class="excel-card">
+              <h3>📐 Formula Basics</h3>
+              <p>Every formula starts with <code>=</code>. Then you can reference cells, do math, or call a function.</p>
+              <pre class="excel-code">=A1+B1          ← add two cells
+=A1*0.12        ← 12% of A1 (use for VAT)
+=SUM(A1:A10)    ← sum a range
+=AVERAGE(B2:B5) ← average</pre>
+            </div>
+
+            <div class="excel-card">
+              <h3>🔒 Absolute vs Relative References</h3>
+              <p>Drag a formula → references shift automatically. Use <code>$</code> to lock.</p>
+              <pre class="excel-code">A1     ← relative (changes when dragged)
+$A$1   ← absolute (never changes)
+$A1    ← lock column only
+A$1    ← lock row only</pre>
+              <p style="font-size:13px;color:var(--fg-muted);margin-top:8px;">💡 Press <kbd>F4</kbd> while editing to cycle through.</p>
+            </div>
+
+            <div class="excel-card">
+              <h3>📋 Data Types</h3>
+              <ul style="padding-left:20px;line-height:1.8;font-size:14px;">
+                <li><strong>Text:</strong> Names, labels — left-aligned by default</li>
+                <li><strong>Number:</strong> Counts, money, scores — right-aligned</li>
+                <li><strong>Date:</strong> stored as serial number (1 = Jan 1, 1900)</li>
+                <li><strong>Boolean:</strong> TRUE / FALSE</li>
+                <li><strong>Error:</strong> #DIV/0!, #N/A, #VALUE!, #REF!</li>
+              </ul>
+            </div>
+
+            <div class="excel-card">
+              <h3>🎨 Quick Formatting</h3>
+              <ul style="padding-left:20px;line-height:1.8;font-size:14px;">
+                <li><strong>Currency:</strong> <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>$</kbd></li>
+                <li><strong>Percent:</strong> <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>%</kbd></li>
+                <li><strong>Date:</strong> <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>#</kbd></li>
+                <li><strong>Bold:</strong> <kbd>Ctrl</kbd>+<kbd>B</kbd></li>
+                <li><strong>Wrap text:</strong> <kbd>Alt</kbd>+<kbd>Enter</kbd> (within a cell)</li>
+              </ul>
+            </div>
+
+            <div class="excel-card">
+              <h3>🎯 Pinaka-Common Mistakes</h3>
+              <ul style="padding-left:20px;line-height:1.8;font-size:14px;">
+                <li><strong>Forgetting <code>=</code></strong> — formula will show as text</li>
+                <li><strong>Mixing data types</strong> — numbers stored as text (left-aligned numbers!)</li>
+                <li><strong>Hardcoding values</strong> — use cell references so updates flow through</li>
+                <li><strong>Manual sums</strong> — always use SUM, never type =5+10+15+20</li>
+                <li><strong>Not using $</strong> — formulas break when dragged</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <!-- FORMULAS -->
+        <div class="excel-panel" data-expanel="formulas">
+          <div class="excel-search-wrap">
+            <input id="excel-formula-search" placeholder="🔍 Search formulas (e.g. SUMIF, lookup, average)..." />
+          </div>
+          <div class="excel-formulas" id="excel-formulas">
+            <!-- populated by JS -->
+          </div>
+        </div>
+
+        <!-- SHORTCUTS -->
+        <div class="excel-panel" data-expanel="shortcuts">
+          <div class="excel-tabs-sub">
+            <button class="excel-sub-tab active" data-os="win">🪟 Windows</button>
+            <button class="excel-sub-tab" data-os="mac">🍎 Mac</button>
+          </div>
+          <div class="excel-shortcuts" id="excel-shortcuts">
+            <!-- populated by JS -->
+          </div>
+        </div>
+
+        <!-- COMMON TASKS -->
+        <div class="excel-panel" data-expanel="tasks">
+          <div class="excel-cards">
+            <div class="excel-card">
+              <h3>🔢 Sort Data</h3>
+              <ol style="padding-left:24px;line-height:1.8;font-size:14px;">
+                <li>Select your data range (or click any cell inside)</li>
+                <li>Data tab → Sort</li>
+                <li>Choose column + Ascending/Descending</li>
+                <li>Check "My data has headers" if first row is title</li>
+              </ol>
+              <p style="font-size:13px;color:var(--fg-muted);margin-top:8px;">⚡ Quick: <kbd>Alt</kbd>+<kbd>A</kbd>+<kbd>S</kbd>+<kbd>S</kbd></p>
+            </div>
+
+            <div class="excel-card">
+              <h3>🔎 Filter Data</h3>
+              <ol style="padding-left:24px;line-height:1.8;font-size:14px;">
+                <li>Click any cell in your table</li>
+                <li><kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>L</kbd> to turn on filters</li>
+                <li>Click dropdown arrow on a column header</li>
+                <li>Pick values to show / hide</li>
+              </ol>
+              <p style="font-size:13px;color:var(--fg-muted);margin-top:8px;">💡 To remove duplicates: Data → Remove Duplicates</p>
+            </div>
+
+            <div class="excel-card">
+              <h3>📊 Create a Pivot Table</h3>
+              <ol style="padding-left:24px;line-height:1.8;font-size:14px;">
+                <li>Click inside your data</li>
+                <li>Insert tab → PivotTable</li>
+                <li>Drag fields: <strong>Rows</strong> (categories), <strong>Values</strong> (numbers to sum/count)</li>
+                <li>Right-click numbers → Summarize Values By → choose Sum/Count/Average</li>
+              </ol>
+              <p style="font-size:13px;color:var(--fg-muted);margin-top:8px;">⭐ Pivot tables are the #1 most powerful Excel feature.</p>
+            </div>
+
+            <div class="excel-card">
+              <h3>📈 Make a Chart</h3>
+              <ol style="padding-left:24px;line-height:1.8;font-size:14px;">
+                <li>Select data including headers</li>
+                <li><kbd>Alt</kbd>+<kbd>F1</kbd> for default chart, or Insert → Charts</li>
+                <li>Right-click chart → Chart Type to change</li>
+                <li>Bar = comparison · Line = trends · Pie = proportions (≤5 categories)</li>
+              </ol>
+            </div>
+
+            <div class="excel-card">
+              <h3>🎨 Conditional Formatting</h3>
+              <ol style="padding-left:24px;line-height:1.8;font-size:14px;">
+                <li>Select cells</li>
+                <li>Home tab → Conditional Formatting</li>
+                <li>Pick: Color Scales, Data Bars, Highlight Cells, etc.</li>
+              </ol>
+              <p style="font-size:13px;color:var(--fg-muted);margin-top:8px;">💡 Use to flag failing grades (red), high values (green), etc.</p>
+            </div>
+
+            <div class="excel-card">
+              <h3>🔗 Freeze Panes</h3>
+              <ol style="padding-left:24px;line-height:1.8;font-size:14px;">
+                <li>Click cell BELOW + RIGHT of what you want frozen</li>
+                <li>View tab → Freeze Panes → Freeze Panes</li>
+                <li>Now headers stay visible while you scroll</li>
+              </ol>
+              <p style="font-size:13px;color:var(--fg-muted);margin-top:8px;">⚡ For just row 1: View → Freeze Top Row</p>
+            </div>
+
+            <div class="excel-card">
+              <h3>🛡️ Data Validation</h3>
+              <ol style="padding-left:24px;line-height:1.8;font-size:14px;">
+                <li>Select cells</li>
+                <li>Data tab → Data Validation</li>
+                <li>Allow: List → enter values (e.g. "Excellent,Good,Fair,Poor") → creates dropdown</li>
+              </ol>
+              <p style="font-size:13px;color:var(--fg-muted);margin-top:8px;">💡 Use for survey-style sheets, grading rubrics.</p>
+            </div>
+
+            <div class="excel-card">
+              <h3>📤 Export to PDF / CSV</h3>
+              <ol style="padding-left:24px;line-height:1.8;font-size:14px;">
+                <li>File → Save As → PDF (for printing/sharing)</li>
+                <li>File → Save As → CSV (for importing to other systems)</li>
+                <li>Before PDF: Page Layout → Print Area → set the range</li>
+              </ol>
+            </div>
+          </div>
+        </div>
+
+        <!-- PRACTICE -->
+        <div class="excel-panel" data-expanel="practice">
+          <div class="excel-cards">
+            <div class="excel-card excel-card-feature">
+              <h3>📥 Beginner: Grade Tracker</h3>
+              <p>Build a personal GPA calculator from scratch.</p>
+              <ol style="padding-left:24px;line-height:1.8;font-size:13px;">
+                <li>Make columns: <strong>Subject, Units, Grade</strong></li>
+                <li>Add 5 sample subjects</li>
+                <li>Total Units: <code>=SUM(B2:B6)</code></li>
+                <li>Weighted Grade: <code>=SUMPRODUCT(B2:B6,C2:C6)/SUM(B2:B6)</code></li>
+                <li>Conditional formatting on Grade column: red if &gt;3.0</li>
+              </ol>
+              <a class="btn btn-primary" id="excel-template-gpa" style="margin-top:12px;width:100%;">📥 Download starter template</a>
+            </div>
+
+            <div class="excel-card excel-card-feature">
+              <h3>💰 Intermediate: Budget Tracker</h3>
+              <p>Monthly income vs expenses with categories.</p>
+              <ol style="padding-left:24px;line-height:1.8;font-size:13px;">
+                <li>Sheet 1: Transactions (Date, Category, Amount, Notes)</li>
+                <li>Sheet 2: Summary using SUMIF per category</li>
+                <li>Chart: Pie of expenses by category</li>
+                <li>Data Validation on Category column → dropdown</li>
+              </ol>
+              <a class="btn btn-primary" id="excel-template-budget" style="margin-top:12px;width:100%;">📥 Download starter template</a>
+            </div>
+
+            <div class="excel-card excel-card-feature">
+              <h3>📊 Advanced: Survey Analysis</h3>
+              <p>Capstone-grade Likert scale survey analysis.</p>
+              <ol style="padding-left:24px;line-height:1.8;font-size:13px;">
+                <li>Columns: Respondent #, Q1, Q2, Q3 ... Q10 (1-5 scale)</li>
+                <li>Per-question Mean: <code>=AVERAGE(B2:B100)</code></li>
+                <li>Weighted Mean interpretation (1.00-1.80 = strongly disagree, etc.)</li>
+                <li>PivotTable: count of responses per Likert value</li>
+                <li>Chart: clustered bar chart of means</li>
+              </ol>
+              <a class="btn btn-primary" id="excel-template-survey" style="margin-top:12px;width:100%;">📥 Download starter template</a>
+            </div>
+
+            <div class="excel-card">
+              <h3>🎯 Exercises (free practice files)</h3>
+              <ul class="lang-links" style="margin-top:12px;">
+                <li><a href="https://exceljet.net/exercises" target="_blank" rel="noopener">ExcelJet Exercises (50+ free)</a></li>
+                <li><a href="https://www.excel-easy.com/" target="_blank" rel="noopener">Excel Easy (with practice files)</a></li>
+                <li><a href="https://chandoo.org/wp/excel-school/" target="_blank" rel="noopener">Chandoo Excel School (free lessons)</a></li>
+                <li><a href="https://edu.gcfglobal.org/en/excelformulas/" target="_blank" rel="noopener">GCFGlobal Excel Formulas tutorial</a></li>
+                <li><a href="https://www.kaggle.com/code/learn/excel" target="_blank" rel="noopener">Kaggle Excel (data analysis)</a></li>
+              </ul>
+            </div>
+
+            <div class="excel-card">
+              <h3>📜 Certifications (Free / Cheap)</h3>
+              <ul class="lang-links" style="margin-top:12px;">
+                <li><a href="https://learn.microsoft.com/en-us/training/courses/mo-200" target="_blank" rel="noopener">Microsoft Office Specialist (MOS) — Excel</a></li>
+                <li><a href="https://www.coursera.org/specializations/excel" target="_blank" rel="noopener">Macquarie Excel Specialization (audit free)</a></li>
+                <li><a href="https://www.linkedin.com/learning/topics/microsoft-excel" target="_blank" rel="noopener">LinkedIn Learning (1-month trial)</a></li>
+                <li><a href="https://www.udemy.com/topic/microsoft-excel/" target="_blank" rel="noopener">Udemy Excel (often $9 sale)</a></li>
+              </ul>
+            </div>
+
+            <div class="excel-card">
+              <h3>🇵🇭 Practice Datasets (PH context)</h3>
+              <ul class="lang-links" style="margin-top:12px;">
+                <li><a href="https://psa.gov.ph/statistics/poverty" target="_blank" rel="noopener">PSA Poverty Statistics</a></li>
+                <li><a href="https://psa.gov.ph/statistics/labor-and-employment/labor-force-survey" target="_blank" rel="noopener">PSA Labor Force Survey</a></li>
+                <li><a href="https://data.gov.ph/" target="_blank" rel="noopener">Data.gov.ph (open PH datasets)</a></li>
+                <li><a href="https://www.bsp.gov.ph/SitePages/Statistics" target="_blank" rel="noopener">BSP Economic Statistics</a></li>
+                <li><a href="https://ph-public-api.vercel.app/cities" target="_blank" rel="noopener">PH StudentKit API (cities, schools)</a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <!-- VIDEOS -->
+        <div class="excel-panel" data-expanel="videos">
+          <div class="api-grid">
+            <a class="api-card" href="https://www.youtube.com/@LeilaGharani" target="_blank" rel="noopener"><div class="api-card-name">Leila Gharani</div><div class="api-card-desc">⭐ Best Excel YouTuber. Clear, deep, practical. Start here.</div><div class="api-card-tag">⭐ Best</div></a>
+            <a class="api-card" href="https://www.youtube.com/@ExcelCampus" target="_blank" rel="noopener"><div class="api-card-name">Excel Campus (Jon Acampora)</div><div class="api-card-desc">Pivot tables, dashboards, macros. Pro-level tips.</div><div class="api-card-tag">Pro</div></a>
+            <a class="api-card" href="https://www.youtube.com/@ExcelisFun" target="_blank" rel="noopener"><div class="api-card-name">ExcelIsFun (Mike Girvin)</div><div class="api-card-desc">2000+ free videos. Most comprehensive Excel channel.</div><div class="api-card-tag">Massive lib</div></a>
+            <a class="api-card" href="https://www.youtube.com/@KevinStratvert" target="_blank" rel="noopener"><div class="api-card-name">Kevin Stratvert</div><div class="api-card-desc">Beginner-friendly Microsoft tutorials. Ex-Microsoft PM.</div><div class="api-card-tag">Beginner</div></a>
+            <a class="api-card" href="https://www.youtube.com/@MyOnlineTrainingHub" target="_blank" rel="noopener"><div class="api-card-name">My Online Training Hub</div><div class="api-card-desc">Mynda Treacy. Advanced Excel + Power Query, Power Pivot.</div><div class="api-card-tag">Advanced</div></a>
+            <a class="api-card" href="https://www.youtube.com/@officeskillstv" target="_blank" rel="noopener"><div class="api-card-name">Office Skills TV</div><div class="api-card-desc">Practical office Excel tutorials. Short, focused videos.</div><div class="api-card-tag">Quick tips</div></a>
+            <a class="api-card" href="https://www.youtube.com/playlist?list=PLD7HFcN7LXReJTksFV5G3SMyyBzzCe-C_" target="_blank" rel="noopener"><div class="api-card-name">Excel from Beginner to Pro</div><div class="api-card-desc">Free full course on YouTube. 30+ hours of structured learning.</div><div class="api-card-tag">⭐ Course</div></a>
+            <a class="api-card" href="https://learn.microsoft.com/en-us/training/paths/excel-fundamentals/" target="_blank" rel="noopener"><div class="api-card-name">Microsoft Learn Excel</div><div class="api-card-desc">Official Microsoft training, free, with certificates.</div><div class="api-card-tag">Official</div></a>
+          </div>
+        </div>
+
+        <!-- DOWNLOADABLE CHEATSHEET -->
+        <div style="margin-top:var(--s6);text-align:center;padding:var(--s5);background:linear-gradient(135deg,#185C37,#21A366);border-radius:var(--radius-lg);color:white;">
+          <h3 style="font-size:22px;font-weight:800;margin-bottom:var(--s2);">📥 Get the Free Excel Cheatsheet</h3>
+          <p style="font-size:14px;opacity:0.95;margin-bottom:var(--s4);max-width:600px;margin-left:auto;margin-right:auto;">One-page printable PDF with the 30 most-used Excel formulas + 40 keyboard shortcuts. Print, paste on your wall, study.</p>
+          <button class="btn" id="excel-cheatsheet-dl" style="background:white;color:#185C37;font-weight:700;padding:14px 28px;">📄 Download Excel Cheatsheet</button>
+        </div>
+      </div>
+    </section>
+
     <!-- OFFICE SKILLS -->
     <section id="office-skills" class="section">
       <div class="container">
