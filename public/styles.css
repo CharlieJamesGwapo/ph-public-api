@@ -1296,6 +1296,114 @@ img, svg { display: block; max-width: 100%; }
 }
 .builder-output.resume-rendered p { margin-bottom: var(--s2); }
 
+/* === Template picker === */
+.builder-card-wide { grid-column: 1 / -1; }
+@media (max-width: 767px) { .builder-card-wide { grid-column: auto; } }
+
+.tpl-picker {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--s2);
+  margin-bottom: var(--s4);
+}
+@media (min-width: 640px) { .tpl-picker { grid-template-columns: repeat(4, 1fr); } }
+
+.tpl-option {
+  background: var(--bg);
+  border: 2px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: var(--s2);
+  cursor: pointer;
+  display: flex; flex-direction: column;
+  text-align: center;
+  transition: border-color 150ms ease, transform 150ms ease;
+}
+.tpl-option:hover { border-color: var(--ph-blue); transform: translateY(-2px); }
+.tpl-option.active {
+  border-color: var(--ph-blue);
+  background: color-mix(in srgb, var(--ph-blue) 5%, var(--bg));
+}
+
+.tpl-preview {
+  height: 80px;
+  border-radius: var(--radius-sm);
+  margin-bottom: var(--s2);
+  padding: 8px;
+  position: relative;
+  overflow: hidden;
+  font-size: 8px;
+}
+.tpl-preview-dark-glow {
+  background: radial-gradient(circle at 30% 40%, #1e1b4b 0%, #0f172a 70%);
+}
+.tpl-preview-dark-glow .tp-orb {
+  position: absolute; right: 8px; top: 8px;
+  width: 24px; height: 24px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #8b5cf6, #06b6d4);
+  box-shadow: 0 0 12px rgba(139,92,246,0.6);
+}
+.tpl-preview-dark-glow .tp-name {
+  color: #fff; font-weight: 800; font-size: 10px;
+  background: linear-gradient(120deg, #06b6d4, #8b5cf6);
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+}
+.tpl-preview-dark-glow .tp-line {
+  height: 3px; background: rgba(255,255,255,0.15); margin-top: 6px; border-radius: 2px;
+}
+.tpl-preview-dark-glow .tp-line.short { width: 50%; }
+.tpl-preview-ph-pride {
+  background: #fff; display: flex; align-items: flex-start; flex-direction: column;
+}
+.tpl-preview-ph-pride .tp-stripe { height: 4px; width: 30%; margin-bottom: 2px; border-radius: 2px; }
+.tpl-preview-ph-pride .tp-blue { background: #0038A8; }
+.tpl-preview-ph-pride .tp-red { background: #CE1126; }
+.tpl-preview-ph-pride .tp-yellow { background: #FCD116; }
+.tpl-preview-ph-pride .tp-name { color: #0f172a; font-weight: 800; font-size: 10px; margin-top: 6px; }
+.tpl-preview-ph-pride .tp-line { height: 3px; background: #e2e8f0; margin-top: 4px; border-radius: 2px; }
+.tpl-preview-minimal {
+  background: #FAFAFA; padding: 12px;
+}
+.tpl-preview-minimal .tp-name {
+  font-family: serif; font-weight: 700; color: #171717; font-size: 11px;
+}
+.tpl-preview-minimal .tp-line { height: 3px; background: #d4d4d4; margin-top: 5px; border-radius: 2px; }
+.tpl-preview-minimal .tp-line.short { width: 40%; }
+.tpl-preview-sunset {
+  background: linear-gradient(135deg, #FFF7ED 0%, #FCA5A5 100%);
+  position: relative;
+}
+.tpl-preview-sunset .tp-orb {
+  position: absolute; right: 12px; top: 8px;
+  width: 18px; height: 18px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #F97316, #DC2626);
+}
+.tpl-preview-sunset .tp-name { color: #1c1917; font-weight: 800; font-size: 10px; }
+.tpl-preview-sunset .tp-line { height: 3px; background: rgba(28,25,23,0.15); margin-top: 6px; border-radius: 2px; }
+
+/* Resume template previews */
+.tpl-preview-r-modern { background: #fff; padding: 8px; }
+.tpl-preview-r-modern .rp-bar { height: 4px; background: #0038A8; width: 40%; margin-bottom: 4px; }
+.tpl-preview-r-modern .rp-name { font-weight: 800; color: #0f172a; font-size: 10px; }
+.tpl-preview-r-modern .rp-head { height: 5px; background: #0038A8; margin: 5px 0 3px; width: 30%; }
+.tpl-preview-r-modern .rp-line { height: 3px; background: #cbd5e1; margin-top: 3px; border-radius: 2px; }
+.tpl-preview-r-classic { background: #fff; padding: 10px; text-align: center; }
+.tpl-preview-r-classic .rp-name.center { font-family: serif; font-weight: 700; color: #000; font-size: 11px; }
+.tpl-preview-r-classic .rp-rule { height: 2px; background: #000; margin: 4px auto; width: 60%; }
+.tpl-preview-r-classic .rp-line { height: 3px; background: #d4d4d4; margin: 3px auto; border-radius: 2px; width: 80%; }
+.tpl-preview-r-creative { background: #fff; padding: 0; position: relative; }
+.tpl-preview-r-creative .rp-side { position: absolute; left: 0; top: 0; bottom: 0; width: 30%; background: #1e293b; }
+.tpl-preview-r-creative .rp-name.shifted { margin-left: 35%; font-weight: 800; color: #0f172a; font-size: 10px; padding-top: 10px; }
+.tpl-preview-r-creative .rp-line.shifted { margin-left: 35%; height: 3px; background: #cbd5e1; margin-top: 4px; border-radius: 2px; }
+.tpl-preview-r-minimal { background: #fff; padding: 8px; }
+.tpl-preview-r-minimal .rp-name.small { font-weight: 600; color: #0f172a; font-size: 9px; }
+.tpl-preview-r-minimal .rp-line { height: 2px; background: #e5e7eb; margin-top: 3px; border-radius: 1px; }
+.tpl-preview-r-minimal .rp-line.short { width: 50%; }
+
+.tpl-name { font-size: 12px; font-weight: 700; color: var(--fg); }
+.tpl-desc { font-size: 10px; color: var(--fg-muted); margin-top: 2px; }
+
 /* === Floating AI button === */
 .fab-ai {
   position: fixed;
