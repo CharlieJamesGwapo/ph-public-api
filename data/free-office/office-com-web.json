@@ -1,0 +1,20 @@
+{
+  "slug": "office-com-web",
+  "name": "Office.com (Web Version)",
+  "tagline": "Free online Word, Excel, PowerPoint — works on any device",
+  "cost": "Free",
+  "platforms": ["Web (any browser)"],
+  "includes": ["Word Online", "Excel Online", "PowerPoint Online", "OneNote Online", "5 GB OneDrive"],
+  "best_for": "Anyone with a free Microsoft/Outlook account — no install required",
+  "url": "https://www.office.com",
+  "steps": [
+    "Go to office.com in any browser (Chrome, Edge, Safari, Firefox)",
+    "Click 'Sign in'. Create a free Microsoft account if you don't have one (any email works)",
+    "Pick the app you want — Word, Excel, PowerPoint",
+    "Create or open documents. Auto-saved to OneDrive (5 GB free)",
+    "Download as .docx, .xlsx, .pptx, or .pdf anytime"
+  ],
+  "notes": "Web versions have ~80% of desktop features. Good enough for almost all student work.",
+  "legal": true,
+  "official": true
+}

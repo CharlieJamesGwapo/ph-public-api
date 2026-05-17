@@ -1,0 +1,20 @@
+{
+  "slug": "wps-office",
+  "name": "WPS Office",
+  "tagline": "Free MS-lookalike office suite. Best UI compatibility.",
+  "cost": "Free (with ads) / Premium $35/yr",
+  "platforms": ["Windows", "Mac", "Linux", "iOS", "Android"],
+  "includes": ["Writer", "Spreadsheets", "Presentation", "PDF tools"],
+  "best_for": "Students who want an interface that looks/feels exactly like MS Office.",
+  "url": "https://www.wps.com/download/",
+  "steps": [
+    "Go to wps.com/download",
+    "Download the free installer for your OS",
+    "Install — about 200 MB",
+    "Open WPS Office. The ribbon UI looks nearly identical to MS Office",
+    "Open or create .docx, .xlsx, .pptx files directly"
+  ],
+  "notes": "Free version has ads. Most MS-Office compatible interface of any free alternative. Has a mobile app too.",
+  "legal": true,
+  "official": true
+}

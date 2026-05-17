@@ -1,0 +1,20 @@
+{
+  "slug": "onlyoffice",
+  "name": "OnlyOffice Desktop",
+  "tagline": "Open-source office suite with the best MS file compatibility",
+  "cost": "Free (open source)",
+  "platforms": ["Windows", "Mac", "Linux"],
+  "includes": ["Document Editor", "Spreadsheet Editor", "Presentation Editor", "PDF tools"],
+  "best_for": "Students who need MS Office file format fidelity without paying.",
+  "url": "https://www.onlyoffice.com/download-desktop.aspx",
+  "steps": [
+    "Go to onlyoffice.com/download-desktop.aspx",
+    "Download the free Desktop Editor for your OS",
+    "Install (about 250 MB)",
+    "Open .docx / .xlsx / .pptx files — formatting is preserved better than LibreOffice in most cases",
+    "Save as MS format directly (no conversion needed)"
+  ],
+  "notes": "Often picked for offices because of high MS file fidelity. Has a cloud version too.",
+  "legal": true,
+  "official": true
+}

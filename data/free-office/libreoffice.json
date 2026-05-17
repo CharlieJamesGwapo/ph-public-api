@@ -1,0 +1,20 @@
+{
+  "slug": "libreoffice",
+  "name": "LibreOffice",
+  "tagline": "Free, open-source MS Office alternative. Works offline.",
+  "cost": "Free (forever, GPL license)",
+  "platforms": ["Windows", "Mac", "Linux"],
+  "includes": ["Writer (Word)", "Calc (Excel)", "Impress (PowerPoint)", "Draw", "Base (Access)", "Math"],
+  "best_for": "Students who need an offline office suite. Opens .docx, .xlsx, .pptx files directly.",
+  "url": "https://www.libreoffice.org/download/download-libreoffice/",
+  "steps": [
+    "Go to libreoffice.org/download",
+    "Download the installer for your OS (Windows, Mac, or Linux)",
+    "Run the installer — it's about 300 MB",
+    "Open LibreOffice Writer for Word, Calc for Excel, Impress for PowerPoint",
+    "Save files as Microsoft format: File > Save As > choose .docx / .xlsx / .pptx"
+  ],
+  "notes": "100% legal, no piracy. Used by governments worldwide. Looks slightly different from MS Office but functionally similar.",
+  "legal": true,
+  "official": true
+}

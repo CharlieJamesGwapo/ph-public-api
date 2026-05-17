@@ -1,0 +1,20 @@
+{
+  "slug": "google-workspace",
+  "name": "Google Docs / Sheets / Slides",
+  "tagline": "Free cloud office suite with real-time collaboration",
+  "cost": "Free",
+  "platforms": ["Web", "iOS", "Android"],
+  "includes": ["Docs (Word)", "Sheets (Excel)", "Slides (PowerPoint)", "Forms", "15 GB Drive"],
+  "best_for": "Group projects, thesis collaboration, and anything needing real-time editing.",
+  "url": "https://docs.google.com",
+  "steps": [
+    "Go to docs.google.com (or sheets.google.com, slides.google.com)",
+    "Sign in with any free Google account",
+    "Click '+' to create a new document",
+    "Share with classmates via 'Share' button — they can edit in real time",
+    "Download as .docx / .xlsx / .pptx via File > Download"
+  ],
+  "notes": "Best collaboration features of any free office suite. Auto-saves continuously. 15 GB of free Drive storage.",
+  "legal": true,
+  "official": true
+}

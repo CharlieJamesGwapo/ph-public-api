@@ -1,0 +1,21 @@
+{
+  "slug": "microsoft-365-education",
+  "name": "Microsoft 365 Education",
+  "tagline": "Full MS Office FREE forever with a school email",
+  "cost": "Free",
+  "platforms": ["Windows", "Mac", "Web", "iOS", "Android"],
+  "includes": ["Word", "Excel", "PowerPoint", "OneNote", "Outlook", "Teams", "1 TB OneDrive"],
+  "best_for": "Any Filipino student with a school .edu.ph email address",
+  "url": "https://www.microsoft.com/en-us/education/products/office",
+  "steps": [
+    "Go to microsoft.com/en-us/education/products/office",
+    "Click 'Get started for free'",
+    "Enter your school email (must be a verified .edu.ph or international .edu address)",
+    "Confirm you are a student",
+    "Verify the email confirmation link sent to your inbox",
+    "Sign in to Office.com to start using Word, Excel, PowerPoint, Teams"
+  ],
+  "notes": "Most PH universities (UP, Ateneo, DLSU, MSU, USTP, MOSCAT, etc.) issue .edu.ph emails to enrolled students. If your school doesn't, ask your registrar or IT office.",
+  "legal": true,
+  "official": true
+}
