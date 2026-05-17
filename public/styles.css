@@ -1707,6 +1707,9 @@ section { overflow-x: clip; }
   display: flex; align-items: flex-start; justify-content: center;
   padding: 10vh var(--s4) var(--s4);
 }
+.search-modal[hidden] {
+  display: none !important;
+}
 .search-backdrop {
   position: absolute; inset: 0;
   background: rgba(15,23,42,0.7);
