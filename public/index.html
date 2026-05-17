@@ -420,8 +420,184 @@ Pick a mode above (Coder, Research, Writer, Math) or just ask me anything. Tagal
       </div>
     </section>
 
+    <!-- ADVANCED BUILDERS -->
+    <section id="advanced" class="section">
+      <div class="container">
+        <div class="section-head">
+          <h2 class="section-title">🚀 Capstone Power Tools</h2>
+          <p class="section-subtitle">Built specifically for thesis and capstone work. AI does the heavy lifting, you do the thinking.</p>
+        </div>
+
+        <div class="builders-grid">
+
+          <!-- CODE PLAYGROUND -->
+          <div class="builder-card builder-card-wide">
+            <div class="builder-head">
+              <span class="builder-icon">💻</span>
+              <h3>Live Code Playground</h3>
+            </div>
+            <p>Run HTML, CSS, JavaScript in your browser instantly. No install, no signup. Hit Run to see output. Saved automatically in your browser.</p>
+            <div class="playground">
+              <div class="pg-tabs">
+                <button class="pg-tab active" data-pg="html">HTML</button>
+                <button class="pg-tab" data-pg="css">CSS</button>
+                <button class="pg-tab" data-pg="js">JS</button>
+                <button class="pg-run" id="pg-run">▶ Run</button>
+                <button class="pg-reset" id="pg-reset">↺ Reset</button>
+              </div>
+              <div class="pg-editors">
+                <textarea class="pg-editor active" data-pg-edit="html" spellcheck="false">&lt;!-- Try editing this HTML --&gt;
+&lt;div class="card"&gt;
+  &lt;h1&gt;Hello PH! 🇵🇭&lt;/h1&gt;
+  &lt;p&gt;Click "Run" to see output.&lt;/p&gt;
+  &lt;button onclick="alert('Kamusta!')"&gt;Click me&lt;/button&gt;
+&lt;/div&gt;</textarea>
+                <textarea class="pg-editor" data-pg-edit="css" spellcheck="false">.card {
+  font-family: system-ui;
+  padding: 24px;
+  background: linear-gradient(135deg, #0038A8, #CE1126);
+  color: white;
+  border-radius: 12px;
+  text-align: center;
+}
+button {
+  margin-top: 16px;
+  padding: 10px 20px;
+  background: white;
+  color: #0038A8;
+  border: none;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+}</textarea>
+                <textarea class="pg-editor" data-pg-edit="js" spellcheck="false">// JavaScript goes here. Try:
+console.log('Hello from JS!');
+document.body.style.background = '#FCD116';
+
+// Open browser console (F12) to see logs</textarea>
+              </div>
+              <div class="pg-preview-wrap">
+                <iframe id="pg-preview" sandbox="allow-scripts allow-modals" title="Code preview"></iframe>
+              </div>
+            </div>
+          </div>
+
+          <!-- CAPSTONE PROJECT GENERATOR -->
+          <div class="builder-card builder-card-wide">
+            <div class="builder-head">
+              <span class="builder-icon">🎓</span>
+              <h3>AI Capstone Project Generator</h3>
+            </div>
+            <p>Stuck on what to build? Pick your course + interests. AI generates a full proposal: title, problem, scope, methodology, schedule.</p>
+            <div class="resume-form">
+              <select id="cap-course" style="padding:10px;border:1px solid var(--border-strong);border-radius:var(--radius-sm);background:var(--bg);color:var(--fg);font-size:14px;">
+                <option value="BS Computer Science">BS Computer Science</option>
+                <option value="BS Information Technology">BS Information Technology</option>
+                <option value="BS Information Systems">BS Information Systems</option>
+                <option value="BS Computer Engineering">BS Computer Engineering</option>
+                <option value="BS Business Administration">BS Business Administration (BSBA)</option>
+                <option value="BS Accountancy">BS Accountancy</option>
+                <option value="BS Tourism Management">BS Tourism Management</option>
+                <option value="BS Hotel & Restaurant Management">BS HRM</option>
+                <option value="BS Hospitality Management">BS Hospitality Management</option>
+                <option value="BS Civil Engineering">BS Civil Engineering</option>
+                <option value="BS Mechanical Engineering">BS Mechanical Engineering</option>
+                <option value="BS Electrical Engineering">BS Electrical Engineering</option>
+                <option value="BS Education (BSEd)">BS Education (BSEd)</option>
+                <option value="BS Elementary Education (BEEd)">BS Elementary Education (BEEd)</option>
+                <option value="BS Nursing">BS Nursing</option>
+                <option value="BS Psychology">BS Psychology</option>
+                <option value="BS Criminology">BS Criminology</option>
+                <option value="BS Agriculture">BS Agriculture</option>
+                <option value="BS Architecture">BS Architecture</option>
+                <option value="Other">Other (describe below)</option>
+              </select>
+              <input type="text" id="cap-domain" placeholder="Problem domain (e.g. tourism in Misamis Oriental, online enrollment, livestock monitoring)" />
+              <input type="text" id="cap-users" placeholder="Target users (e.g. college students, MSMEs, farmers, jeepney drivers)" />
+              <select id="cap-tech" style="padding:10px;border:1px solid var(--border-strong);border-radius:var(--radius-sm);background:var(--bg);color:var(--fg);font-size:14px;">
+                <option value="any">Any tech stack (AI decides)</option>
+                <option value="web app">Web app (React/Next/PHP)</option>
+                <option value="mobile app">Mobile app (Flutter/React Native)</option>
+                <option value="desktop app">Desktop app (Electron/Python)</option>
+                <option value="IoT hardware">IoT / Arduino / hardware</option>
+                <option value="AI/ML">AI/Machine Learning</option>
+                <option value="non-technical">Non-technical (for non-IT courses)</option>
+              </select>
+              <textarea id="cap-notes" placeholder="Additional notes (optional): your interests, constraints, group size..." rows="2"></textarea>
+            </div>
+            <button class="btn btn-primary" id="cap-go" style="width:100%;margin-top:var(--s2);">Generate proposal ✨</button>
+            <div id="cap-output" class="builder-output" hidden></div>
+            <div id="cap-actions" hidden style="display:grid;grid-template-columns:1fr 1fr;gap:var(--s2);margin-top:var(--s3);">
+              <button class="btn btn-secondary" id="cap-word">📥 Download Word</button>
+              <button class="btn btn-secondary" id="cap-copy">📋 Copy text</button>
+            </div>
+          </div>
+
+          <!-- THESIS OUTLINER -->
+          <div class="builder-card builder-card-wide">
+            <div class="builder-head">
+              <span class="builder-icon">📝</span>
+              <h3>AI Thesis Section Writer</h3>
+            </div>
+            <p>Pick which thesis section to draft. AI writes a starting outline using your inputs. Edit + save. Auto-saved in browser.</p>
+            <div class="resume-form">
+              <select id="thes-section" style="padding:10px;border:1px solid var(--border-strong);border-radius:var(--radius-sm);background:var(--bg);color:var(--fg);font-size:14px;">
+                <option value="introduction">Chapter 1 — Introduction</option>
+                <option value="background">Background of the Study</option>
+                <option value="problem">Statement of the Problem</option>
+                <option value="objectives">Research Objectives</option>
+                <option value="significance">Significance of the Study</option>
+                <option value="scope">Scope and Delimitation</option>
+                <option value="rrl">Chapter 2 — Review of Related Literature</option>
+                <option value="methodology">Chapter 3 — Methodology</option>
+                <option value="instruments">Research Instruments</option>
+                <option value="data-analysis">Data Analysis Plan</option>
+                <option value="results-template">Chapter 4 — Results Template</option>
+                <option value="conclusion">Chapter 5 — Conclusion + Recommendations</option>
+                <option value="abstract">Abstract (write last)</option>
+              </select>
+              <input type="text" id="thes-title" placeholder="Your thesis/capstone title" />
+              <textarea id="thes-context" placeholder="Brief context (1-3 sentences). What is the study about? What problem does it solve?" rows="3"></textarea>
+              <select id="thes-style" style="padding:10px;border:1px solid var(--border-strong);border-radius:var(--radius-sm);background:var(--bg);color:var(--fg);font-size:14px;">
+                <option value="qualitative">Qualitative research</option>
+                <option value="quantitative">Quantitative research</option>
+                <option value="mixed">Mixed methods</option>
+                <option value="developmental">Developmental (capstone — system development)</option>
+              </select>
+            </div>
+            <button class="btn btn-primary" id="thes-go" style="width:100%;margin-top:var(--s2);">Draft this section ✨</button>
+            <div id="thes-output" class="builder-output" hidden contenteditable="true" style="min-height:200px;"></div>
+            <p style="font-size:11px;color:var(--fg-muted);margin-top:var(--s2);">💡 Output is editable. Auto-saved to your browser. Click below to copy or download.</p>
+            <div id="thes-actions" hidden style="display:grid;grid-template-columns:1fr 1fr;gap:var(--s2);margin-top:var(--s2);">
+              <button class="btn btn-secondary" id="thes-copy">📋 Copy</button>
+              <button class="btn btn-secondary" id="thes-word">📥 Download Word</button>
+            </div>
+          </div>
+
+          <!-- CAPSTONE TRACKER -->
+          <div class="builder-card builder-card-wide">
+            <div class="builder-head">
+              <span class="builder-icon">✅</span>
+              <h3>12-Week Capstone Tracker</h3>
+            </div>
+            <p>Complete from proposal to defense. Check off tasks. Progress saved in your browser. Stay on track sa thesis pressure.</p>
+            <div class="tracker-progress">
+              <div class="tracker-bar"><div class="tracker-fill" id="tracker-fill"></div></div>
+              <div class="tracker-stats">
+                <span><strong id="tracker-done">0</strong>/<span id="tracker-total">0</span> tasks done</span>
+                <span><strong id="tracker-percent">0</strong>%</span>
+              </div>
+            </div>
+            <div class="tracker-weeks" id="tracker-weeks"></div>
+            <button class="btn btn-secondary" id="tracker-reset" style="width:100%;margin-top:var(--s3);">↺ Reset progress</button>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
     <!-- STUDY TOOLS -->
-    <section id="tools" class="section">
+    <section id="tools" class="section section-muted">
       <div class="container">
         <div class="section-head">
           <h2 class="section-title">Free study tools 🛠️</h2>
