@@ -950,6 +950,27 @@ ${d.email ? `<section class="contact"><h2>Contact</h2><p>📧 <a href="mailto:${
     .catch(() => { grid.innerHTML = '<p style="color: var(--fg-muted); text-align: center;">Failed to load.</p>'; });
 })();
 
+// ===================== Share button =====================
+(function setupShare() {
+  const btn = $('#fab-share');
+  if (!btn) return;
+  btn.addEventListener('click', async () => {
+    const url = 'https://ph-public-api.vercel.app';
+    const data = {
+      title: 'PH StudentKit — Free APIs + AI tutor for Filipino students',
+      text: 'Lahat-libre platform para sa mga estudyanteng Pilipino. AI tutor, study tools, free Office, programming resources, scholarships, free APIs.',
+      url,
+    };
+    try {
+      if (navigator.share) await navigator.share(data);
+      else {
+        await navigator.clipboard.writeText(url);
+        toast('Link copied! Share with classmates.');
+      }
+    } catch (e) { /* user cancelled */ }
+  });
+})();
+
 // ===================== Stats counter =====================
 (function setupStats() {
   fetch(API_BASE + '/scholarships').then(r => r.json()).then(j => {

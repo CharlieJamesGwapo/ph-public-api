@@ -1,0 +1,20 @@
+{
+  "name": "PH StudentKit — Free APIs + AI tutor for Filipino students",
+  "short_name": "PH StudentKit",
+  "description": "All-in-one free platform for Filipino students: APIs, AI tutor (Kuya AI), study tools, free Office, programming resources",
+  "start_url": "/",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#FFFFFF",
+  "theme_color": "#0038A8",
+  "icons": [
+    {
+      "src": "https://image.pollinations.ai/prompt/Philippine%20flag%20app%20icon%20minimal%20flat?width=512&height=512&nologo=true&seed=1",
+      "sizes": "512x512",
+      "type": "image/jpeg",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["education", "productivity", "utilities"],
+  "lang": "en-PH"
+}
