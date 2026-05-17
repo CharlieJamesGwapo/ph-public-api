@@ -1,14 +1,27 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
 <head>
 <meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>🇵🇭 PH Public API + Kuya AI — Free APIs and AI tutor for Filipino students</title>
-<meta name="description" content="Free public data API for the Philippines + free AI study tutor (Kuya AI). Built for Filipino students, capstone projects, and developers. No API key required." />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<meta name="theme-color" content="#0038A8" />
+<title>🇵🇭 PH StudentKit — Free APIs, AI tutor, and tools for Filipino students</title>
+<meta name="description" content="The all-in-one free platform for Filipino students: APIs (regions, schools, scholarships, weather, currency), AI study tutor (Kuya AI), GPA calculator, Pomodoro, and free legal Office alternatives. Para sa thesis, capstone, at homework." />
+<meta property="og:title" content="PH StudentKit — Free APIs, AI tutor, tools for Filipino students" />
+<meta property="og:description" content="All-in-one free platform: PH data APIs, free AI tutor, study tools, free Office alternatives. Built for thesis & capstone projects." />
+<meta property="og:type" content="website" />
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/styles.css">
+<script>
+  // Set theme as early as possible to avoid flash
+  (function(){
+    try {
+      const t = localStorage.getItem('theme') || (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+      document.documentElement.setAttribute('data-theme', t);
+    } catch(e) {}
+  })();
+</script>
 </head>
 <body>
   <header class="site-header">
@@ -19,36 +32,57 @@
           <span class="flag-red"></span>
           <span class="flag-tri"><span class="flag-sun"></span></span>
         </span>
-        <span class="brand-name">PH Public API</span>
+        <span class="brand-name">PH StudentKit</span>
       </a>
-      <nav class="nav-links">
-        <a href="#endpoints">Endpoints</a>
-        <a href="#try">Try it</a>
-        <a href="#ai">Kuya AI</a>
-        <a href="#students">For students</a>
-        <a href="#free-apis">Free APIs</a>
+      <nav class="nav-links" aria-label="Primary">
+        <a class="nav-link" href="#start">Start</a>
+        <a class="nav-link" href="#ai">Kuya AI</a>
+        <a class="nav-link" href="#tools">Tools</a>
+        <a class="nav-link" href="#endpoints">APIs</a>
+        <a class="nav-link" href="#office">Office</a>
+        <a class="nav-link" href="#open-ai">Open AI</a>
+        <button class="theme-toggle" id="theme-toggle" aria-label="Toggle dark mode">
+          <svg class="theme-icon-moon" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+          <svg class="theme-icon-sun" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+        </button>
         <a class="nav-cta" href="https://github.com/CharlieJamesGwapo/ph-public-api" target="_blank" rel="noopener">
-          <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor" aria-hidden="true"><path d="M12 .5C5.65.5.5 5.65.5 12c0 5.08 3.29 9.39 7.86 10.91.58.11.79-.25.79-.55 0-.27-.01-1.16-.02-2.1-3.2.7-3.87-1.36-3.87-1.36-.52-1.34-1.27-1.69-1.27-1.69-1.04-.71.08-.7.08-.7 1.15.08 1.76 1.18 1.76 1.18 1.02 1.75 2.69 1.25 3.34.96.1-.74.4-1.25.72-1.54-2.55-.29-5.23-1.27-5.23-5.66 0-1.25.45-2.27 1.18-3.07-.12-.29-.51-1.46.11-3.05 0 0 .96-.31 3.15 1.17.91-.25 1.89-.38 2.86-.39.97.01 1.95.13 2.86.39 2.19-1.48 3.15-1.17 3.15-1.17.62 1.59.23 2.76.11 3.05.73.8 1.18 1.82 1.18 3.07 0 4.4-2.69 5.37-5.25 5.65.41.35.78 1.05.78 2.12 0 1.53-.01 2.77-.01 3.15 0 .31.21.67.8.55 4.57-1.52 7.85-5.83 7.85-10.91C23.5 5.65 18.35.5 12 .5z"/></svg>
-          GitHub
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true"><path d="M12 .5C5.65.5.5 5.65.5 12c0 5.08 3.29 9.39 7.86 10.91.58.11.79-.25.79-.55 0-.27-.01-1.16-.02-2.1-3.2.7-3.87-1.36-3.87-1.36-.52-1.34-1.27-1.69-1.27-1.69-1.04-.71.08-.7.08-.7 1.15.08 1.76 1.18 1.76 1.18 1.02 1.75 2.69 1.25 3.34.96.1-.74.4-1.25.72-1.54-2.55-.29-5.23-1.27-5.23-5.66 0-1.25.45-2.27 1.18-3.07-.12-.29-.51-1.46.11-3.05 0 0 .96-.31 3.15 1.17.91-.25 1.89-.38 2.86-.39.97.01 1.95.13 2.86.39 2.19-1.48 3.15-1.17 3.15-1.17.62 1.59.23 2.76.11 3.05.73.8 1.18 1.82 1.18 3.07 0 4.4-2.69 5.37-5.25 5.65.41.35.78 1.05.78 2.12 0 1.53-.01 2.77-.01 3.15 0 .31.21.67.8.55 4.57-1.52 7.85-5.83 7.85-10.91C23.5 5.65 18.35.5 12 .5z"/></svg>
+          <span>GitHub</span>
         </a>
+        <button class="menu-btn" id="menu-btn" aria-label="Open menu" aria-expanded="false">
+          <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+        </button>
       </nav>
+    </div>
+    <div class="mobile-menu" id="mobile-menu">
+      <a href="#start">Quick Start</a>
+      <a href="#ai">Kuya AI Tutor</a>
+      <a href="#tools">Study Tools</a>
+      <a href="#endpoints">All APIs</a>
+      <a href="#try">Try it</a>
+      <a href="#office">Free Office</a>
+      <a href="#open-ai">Open Source AI</a>
+      <a href="#free-apis">Other Free APIs</a>
+      <a href="#students">For Students</a>
+      <a href="https://github.com/CharlieJamesGwapo/ph-public-api" target="_blank" rel="noopener">GitHub →</a>
     </div>
   </header>
 
   <main>
+
     <!-- HERO -->
     <section class="hero">
       <div class="container">
         <div class="hero-pill">
           <span class="hero-pill-dot"></span>
-          Live · v0.3.0 · 100% free, no API key
+          Live · v0.4.0 · Lahat libre, walang API key
         </div>
         <h1 class="hero-title">
-          Free APIs, free AI tutor,
-          <span class="hero-title-accent">para sa mga estudyanteng Pilipino.</span>
+          Lahat ng kailangan mo,
+          <span class="hero-title-accent">in one free platform.</span>
         </h1>
         <p class="hero-subtitle">
-          One free, open platform with Philippines public data (regions, holidays, schools, scholarships, weather, currency) plus <strong>Kuya AI</strong> — a study tutor that explains in Taglish. Built for capstone projects, thesis research, and learning to code.
+          <strong>PH StudentKit</strong> — free APIs, free AI tutor (Kuya AI), free study tools (GPA, Pomodoro, currency converter), and a legal way to get Microsoft Office. Built for Filipino students working on thesis, capstone, or assignments.
         </p>
 
         <div class="hero-search">
@@ -61,16 +95,229 @@
         </div>
 
         <div class="hero-actions">
-          <a href="#try" class="btn btn-primary">Try the API</a>
-          <a href="#ai" class="btn btn-accent">Ask Kuya AI ✨</a>
-          <a href="https://github.com/CharlieJamesGwapo/ph-public-api" target="_blank" rel="noopener" class="btn btn-secondary">GitHub →</a>
+          <a href="#ai" class="btn btn-primary">Ask Kuya AI ✨</a>
+          <a href="#tools" class="btn btn-accent">Try the tools</a>
+          <a href="#start" class="btn btn-secondary">Quick Start →</a>
         </div>
 
         <div class="hero-stats" id="hero-stats">
-          <div class="stat"><div class="stat-num" data-stat="regions">17</div><div class="stat-label">Regions</div></div>
-          <div class="stat"><div class="stat-num" data-stat="holidays">33</div><div class="stat-label">Holidays</div></div>
-          <div class="stat"><div class="stat-num" data-stat="schools">—</div><div class="stat-label">Schools</div></div>
+          <div class="stat"><div class="stat-num" data-stat="apis">13+</div><div class="stat-label">Free APIs</div></div>
+          <div class="stat"><div class="stat-num" data-stat="tools">7+</div><div class="stat-label">Free tools</div></div>
           <div class="stat"><div class="stat-num" data-stat="scholarships">10</div><div class="stat-label">Scholarships</div></div>
+          <div class="stat"><div class="stat-num">∞</div><div class="stat-label">Kuya AI answers</div></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- QUICK START / INSTRUCTIONS -->
+    <section id="start" class="section section-muted">
+      <div class="container">
+        <div class="section-head">
+          <h2 class="section-title">Quick start</h2>
+          <p class="section-subtitle">Bagong gamit lang? Sundan mo 'tong 4 steps. No installation needed for most of it.</p>
+        </div>
+        <div class="steps-grid">
+          <div class="step-card">
+            <div class="step-num">1</div>
+            <div>
+              <h3>Need quick help? Ask Kuya AI</h3>
+              <p>Scroll to the <a href="#ai">Kuya AI</a> section. Type any question in Tagalog, English, or Taglish. He explains homework, debugs your code, and suggests capstone ideas.</p>
+            </div>
+          </div>
+          <div class="step-card">
+            <div class="step-num">2</div>
+            <div>
+              <h3>Use the study tools</h3>
+              <p>GPA calculator, Pomodoro timer, currency converter — all in the <a href="#tools">Tools</a> section. No login, no install. Works on phone or laptop.</p>
+            </div>
+          </div>
+          <div class="step-card">
+            <div class="step-num">3</div>
+            <div>
+              <h3>Need data for your capstone?</h3>
+              <p>Use the <a href="#endpoints">APIs</a> for PH regions, schools, scholarships, holidays, weather, etc. Example: <code>fetch('https://ph-public-api.vercel.app/scholarships')</code></p>
+            </div>
+          </div>
+          <div class="step-card">
+            <div class="step-num">4</div>
+            <div>
+              <h3>Walang MS Office? Free legal options</h3>
+              <p>If you have a .edu.ph email, get <strong>Microsoft 365 Education FREE forever</strong>. See <a href="#office">Free Office</a> for that + other legal alternatives.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- AI TUTOR -->
+    <section id="ai" class="section">
+      <div class="container">
+        <div class="section-head">
+          <h2 class="section-title">✨ Meet <span class="text-gradient">Kuya AI</span></h2>
+          <p class="section-subtitle">Free Filipino AI study tutor. Sumasagot sa Tagalog, English, o Taglish. Pwede mong itanong ang homework, capstone ideas, code bugs, paano gumawa ng intro, kahit study tips.</p>
+        </div>
+
+        <div class="ai-box">
+          <div id="ai-chat" class="ai-chat" aria-live="polite">
+            <div class="ai-msg ai-msg-bot">
+              <div class="ai-avatar">K</div>
+              <div class="ai-bubble"><strong>Hi! I'm Kuya AI 👋</strong>
+Ask me anything — homework, capstone ideas, coding bugs, paano mag-Excel, kahit chika lang. Try one of the example questions below or type your own.</div>
+            </div>
+          </div>
+
+          <div class="ai-suggestions">
+            <button class="ai-chip" data-q="Bigyan mo ako ng 5 capstone project ideas using web development para sa tourism management.">5 capstone ideas (tourism)</button>
+            <button class="ai-chip" data-q="Explain Big O notation in simple Taglish with examples.">Explain Big O sa Taglish</button>
+            <button class="ai-chip" data-q="Paano gumawa ng research paper introduction? Step by step please.">Paano mag-write ng intro?</button>
+            <button class="ai-chip" data-q="Translate to formal English: 'Sir, pa-extend po ng deadline ng project namin kasi may sakit po ako kahapon.'">Translate Tagalog → English</button>
+            <button class="ai-chip" data-q="Generate a 5-question quiz about Philippine history for a college student.">Generate a quiz</button>
+            <button class="ai-chip" data-q="Anong difference ng thesis at capstone project?">Thesis vs capstone?</button>
+          </div>
+
+          <form id="ai-form" class="ai-form">
+            <input id="ai-input" type="text" placeholder="Ask anything — Tagalog, English, or Taglish OK" autocomplete="off" maxlength="500" required />
+            <button type="submit" id="ai-send" class="btn btn-primary">Send</button>
+          </form>
+          <p class="ai-disclaimer">Free · Powered by Google Gemini + Hack Club AI (open) · Always double-check facts</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- STUDY TOOLS -->
+    <section id="tools" class="section section-muted">
+      <div class="container">
+        <div class="section-head">
+          <h2 class="section-title">Free study tools 🛠️</h2>
+          <p class="section-subtitle">Working browser-based tools. No install, no login, no ads. Open in any device.</p>
+        </div>
+
+        <div class="tools-grid">
+
+          <!-- GPA Calculator -->
+          <div class="tool-card" id="gpa-tool">
+            <h3>🎓 GPA Calculator</h3>
+            <p>Compute your weighted GPA from your subjects. Uses standard PH 1.00–5.00 grading.</p>
+            <div id="gpa-rows">
+              <div class="gpa-grid">
+                <input type="text" placeholder="Subject (e.g. Calculus)" class="gpa-subject" />
+                <input type="number" placeholder="Units" class="gpa-units" min="1" max="10" step="0.5" value="3" />
+                <select class="gpa-grade">
+                  <option value="1.00">1.00</option>
+                  <option value="1.25">1.25</option>
+                  <option value="1.50" selected>1.50</option>
+                  <option value="1.75">1.75</option>
+                  <option value="2.00">2.00</option>
+                  <option value="2.25">2.25</option>
+                  <option value="2.50">2.50</option>
+                  <option value="2.75">2.75</option>
+                  <option value="3.00">3.00</option>
+                  <option value="5.00">5.00 (Failed)</option>
+                </select>
+              </div>
+            </div>
+            <button class="gpa-add" id="gpa-add">+ Add subject</button>
+            <div class="gpa-result">
+              <div class="gpa-result-num" id="gpa-result-num">—</div>
+              <div class="gpa-result-label" id="gpa-result-label">Add subjects to see GPA</div>
+            </div>
+          </div>
+
+          <!-- Pomodoro Timer -->
+          <div class="tool-card" id="pomo-tool">
+            <h3>⏱️ Pomodoro Timer</h3>
+            <p>25-min focus, 5-min break. Pinaka-effective study method. Auto-cycles.</p>
+            <div class="pomo-state" id="pomo-state">FOCUS</div>
+            <div class="pomo-display" id="pomo-display">25:00</div>
+            <div class="pomo-controls">
+              <button class="btn btn-primary" id="pomo-start">Start</button>
+              <button class="btn btn-secondary" id="pomo-reset">Reset</button>
+            </div>
+          </div>
+
+          <!-- Currency Converter -->
+          <div class="tool-card" id="curr-tool">
+            <h3>💱 Currency Converter</h3>
+            <p>Live PHP rates from the API. Useful para sa thesis on remittances, OFW data, etc.</p>
+            <div class="curr-row">
+              <div>
+                <label for="curr-from-amount">Amount</label>
+                <input type="number" id="curr-from-amount" value="100" min="0" step="any" />
+              </div>
+              <div>
+                <label for="curr-from">From</label>
+                <select id="curr-from">
+                  <option value="USD" selected>USD</option>
+                  <option value="PHP">PHP</option>
+                  <option value="EUR">EUR</option>
+                  <option value="JPY">JPY</option>
+                  <option value="KRW">KRW</option>
+                  <option value="CNY">CNY</option>
+                  <option value="SGD">SGD</option>
+                  <option value="HKD">HKD</option>
+                  <option value="AUD">AUD</option>
+                  <option value="GBP">GBP</option>
+                  <option value="CAD">CAD</option>
+                  <option value="SAR">SAR</option>
+                  <option value="AED">AED</option>
+                </select>
+              </div>
+              <button class="curr-swap" id="curr-swap" aria-label="Swap currencies">⇄</button>
+              <div></div>
+              <div>
+                <label for="curr-to">To</label>
+                <select id="curr-to">
+                  <option value="PHP" selected>PHP</option>
+                  <option value="USD">USD</option>
+                  <option value="EUR">EUR</option>
+                  <option value="JPY">JPY</option>
+                  <option value="KRW">KRW</option>
+                  <option value="CNY">CNY</option>
+                  <option value="SGD">SGD</option>
+                  <option value="HKD">HKD</option>
+                  <option value="AUD">AUD</option>
+                  <option value="GBP">GBP</option>
+                  <option value="CAD">CAD</option>
+                  <option value="SAR">SAR</option>
+                  <option value="AED">AED</option>
+                </select>
+              </div>
+            </div>
+            <div class="curr-result" id="curr-result">—</div>
+          </div>
+
+          <!-- Word Counter -->
+          <div class="tool-card" id="word-tool">
+            <h3>📝 Word Counter</h3>
+            <p>Paste your essay/thesis paragraph. Counts words, characters, reading time.</p>
+            <textarea id="word-input" placeholder="Paste your text here..." style="width:100%; min-height: 120px; padding: var(--s3); border: 1px solid var(--border-strong); border-radius: var(--radius-sm); background: var(--bg); color: var(--fg); font-family: inherit; font-size: 14px; resize: vertical; margin-bottom: var(--s3);"></textarea>
+            <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--s2); text-align: center;">
+              <div><div style="font-size: 20px; font-weight: 700; color: var(--ph-blue);" id="word-count-words">0</div><div style="font-size: 11px; color: var(--fg-muted); text-transform: uppercase;">words</div></div>
+              <div><div style="font-size: 20px; font-weight: 700; color: var(--ph-blue);" id="word-count-chars">0</div><div style="font-size: 11px; color: var(--fg-muted); text-transform: uppercase;">chars</div></div>
+              <div><div style="font-size: 20px; font-weight: 700; color: var(--ph-blue);" id="word-count-read">0m</div><div style="font-size: 11px; color: var(--fg-muted); text-transform: uppercase;">read</div></div>
+            </div>
+          </div>
+
+          <!-- Citation Generator -->
+          <div class="tool-card" id="cite-tool">
+            <h3>📚 Citation Generator (APA 7)</h3>
+            <p>Quick APA citation for your thesis references. Fill the fields, copy the output.</p>
+            <input type="text" id="cite-authors" placeholder="Author(s) — e.g. Santos, J. M." style="width:100%; padding: 8px 10px; border: 1px solid var(--border-strong); border-radius: var(--radius-sm); background: var(--bg); color: var(--fg); font-size: 13px; margin-bottom: var(--s2);" />
+            <input type="text" id="cite-year" placeholder="Year" style="width:100%; padding: 8px 10px; border: 1px solid var(--border-strong); border-radius: var(--radius-sm); background: var(--bg); color: var(--fg); font-size: 13px; margin-bottom: var(--s2);" />
+            <input type="text" id="cite-title" placeholder="Title of work" style="width:100%; padding: 8px 10px; border: 1px solid var(--border-strong); border-radius: var(--radius-sm); background: var(--bg); color: var(--fg); font-size: 13px; margin-bottom: var(--s2);" />
+            <input type="text" id="cite-source" placeholder="Publisher / Journal / URL" style="width:100%; padding: 8px 10px; border: 1px solid var(--border-strong); border-radius: var(--radius-sm); background: var(--bg); color: var(--fg); font-size: 13px; margin-bottom: var(--s3);" />
+            <div id="cite-output" style="padding: var(--s3); background: var(--bg-subtle); border-radius: var(--radius-sm); font-size: 13px; line-height: 1.6; min-height: 60px; font-family: serif; color: var(--fg);">Your APA citation will appear here.</div>
+            <button class="btn btn-secondary" id="cite-copy" style="margin-top: var(--s3); width: 100%;">Copy citation</button>
+          </div>
+
+          <!-- Random PH Trivia -->
+          <div class="tool-card" id="trivia-tool">
+            <h3>💡 Random PH Trivia</h3>
+            <p>Para sa intro slides ng presentation or for fun. Tap "Next" for another.</p>
+            <div id="trivia-display" style="padding: var(--s4); background: var(--bg-subtle); border-radius: var(--radius-sm); margin-bottom: var(--s3); min-height: 100px; font-size: 14px; line-height: 1.6;">Loading trivia...</div>
+            <button class="btn btn-primary" id="trivia-next" style="width: 100%;">Next trivia →</button>
+          </div>
+
         </div>
       </div>
     </section>
@@ -79,8 +326,8 @@
     <section id="endpoints" class="section">
       <div class="container">
         <div class="section-head">
-          <h2 class="section-title">All endpoints</h2>
-          <p class="section-subtitle">Return JSON. CORS enabled. No authentication required. Click any card to try it.</p>
+          <h2 class="section-title">All API endpoints</h2>
+          <p class="section-subtitle">REST JSON. CORS enabled. No auth required. Click any card to try it.</p>
         </div>
 
         <div class="endpoint-grid">
@@ -122,8 +369,20 @@
 
           <article class="endpoint-card highlight-new" data-endpoint="/weather/cagayan-de-oro">
             <div class="endpoint-head"><span class="method">GET</span><code class="path">/weather/:city</code><span class="badge-new">NEW</span></div>
-            <p class="endpoint-desc">Live weather for 20 PH cities (open-meteo).</p>
+            <p class="endpoint-desc">Live weather for 20 PH cities (powered by open-meteo).</p>
             <div class="endpoint-meta"><span>/weather/manila &nbsp;·&nbsp; /weather/cebu-city</span></div>
+          </article>
+
+          <article class="endpoint-card highlight-new" data-endpoint="/trivia/random">
+            <div class="endpoint-head"><span class="method">GET</span><code class="path">/trivia</code><span class="badge-new">NEW</span></div>
+            <p class="endpoint-desc">PH trivia — geography, history, culture, science.</p>
+            <div class="endpoint-meta"><span>/trivia/random &nbsp;·&nbsp; ?category=Geography</span></div>
+          </article>
+
+          <article class="endpoint-card highlight-new" data-endpoint="/free-office">
+            <div class="endpoint-head"><span class="method">GET</span><code class="path">/free-office</code><span class="badge-new">NEW</span></div>
+            <p class="endpoint-desc">Free legal MS Office alternatives + step-by-step setup.</p>
+            <div class="endpoint-meta"><span>/free-office/microsoft-365-education</span></div>
           </article>
 
           <article class="endpoint-card highlight-ai" data-section="ai">
@@ -139,7 +398,7 @@
     <section id="try" class="section section-muted">
       <div class="container">
         <div class="section-head">
-          <h2 class="section-title">Try it live</h2>
+          <h2 class="section-title">Try the API live</h2>
           <p class="section-subtitle">Pick an endpoint, hit Send, see real JSON response.</p>
         </div>
 
@@ -153,6 +412,8 @@
                 <option value="/cities?region=R10">/cities?region=R10</option>
                 <option value="/schools?region=R10">/schools?region=R10</option>
                 <option value="/scholarships">/scholarships</option>
+                <option value="/trivia/random">/trivia/random</option>
+                <option value="/free-office">/free-office</option>
               </optgroup>
               <optgroup label="Live Data">
                 <option value="/currency">/currency (live PHP rates)</option>
@@ -169,47 +430,99 @@
       </div>
     </section>
 
-    <!-- AI TUTOR -->
-    <section id="ai" class="section">
+    <!-- FREE OFFICE -->
+    <section id="office" class="section">
       <div class="container">
         <div class="section-head">
-          <h2 class="section-title">✨ Meet <span class="text-gradient">Kuya AI</span></h2>
-          <p class="section-subtitle">Your free Filipino AI study tutor. Ask about your homework, capstone, coding, Tagalog grammar, exam prep — anything. Sumasagot sa Taglish kasi natural sa mga estudyante.</p>
+          <h2 class="section-title">📄 Free Microsoft Office (Legal)</h2>
+          <p class="section-subtitle">No piracy, no cracks, no risk. These are 100% legal ways to get Word, Excel, PowerPoint for free. The starred option is FREE FOREVER if you have any .edu.ph email.</p>
         </div>
 
-        <div class="ai-box">
-          <div id="ai-chat" class="ai-chat">
-            <div class="ai-msg ai-msg-bot">
-              <div class="ai-avatar">K</div>
-              <div class="ai-bubble">
-                <strong>Hi! I'm Kuya AI 👋</strong><br>
-                Ask me anything — homework, capstone ideas, coding bugs, paano mag-Excel, kahit chika lang. Try one of the example questions below or type your own.
-              </div>
-            </div>
-          </div>
+        <div class="office-grid" id="office-grid">
+          <!-- populated by JS from /free-office endpoint -->
+        </div>
+      </div>
+    </section>
 
-          <div class="ai-suggestions">
-            <button class="ai-chip" data-q="Bigyan mo ako ng 5 capstone project ideas using web development for Tourism management.">5 capstone ideas para sa tourism</button>
-            <button class="ai-chip" data-q="Explain Big O notation in simple Taglish with examples.">Explain Big O sa Taglish</button>
-            <button class="ai-chip" data-q="Paano gumawa ng research paper introduction? Step by step please.">Paano mag-write ng intro?</button>
-            <button class="ai-chip" data-q="What is the difference between thesis and capstone project? Explain in simple terms.">Thesis vs capstone?</button>
-          </div>
+    <!-- OPEN SOURCE AI -->
+    <section id="open-ai" class="section section-muted">
+      <div class="container">
+        <div class="section-head">
+          <h2 class="section-title">🤖 Open-source AI for students</h2>
+          <p class="section-subtitle">Lahat ito is free or has generous free tier. Use them for your capstone, research, or learning to build AI apps.</p>
+        </div>
 
-          <form id="ai-form" class="ai-form">
-            <input id="ai-input" type="text" placeholder="Ask anything... pwede in Tagalog, English, or Taglish" autocomplete="off" maxlength="500" required />
-            <button type="submit" id="ai-send" class="btn btn-primary">Send</button>
-          </form>
-          <p class="ai-disclaimer">Free tier · Powered by Google Gemini · Always double-check facts</p>
+        <div class="api-grid">
+          <a class="api-card" href="https://aistudio.google.com/app/apikey" target="_blank" rel="noopener">
+            <div class="api-card-name">Google Gemini API</div>
+            <div class="api-card-desc">Free tier: 1500 requests/min for Gemini 2.0 Flash. Excellent for chatbots, translation, summarization. Powering Kuya AI here.</div>
+            <div class="api-card-tag">⭐ Best for students</div>
+          </a>
+          <a class="api-card" href="https://ai.hackclub.com/" target="_blank" rel="noopener">
+            <div class="api-card-name">Hack Club AI</div>
+            <div class="api-card-desc">Free, no API key needed. Made specifically for students/hackers. OpenAI-compatible. Open source.</div>
+            <div class="api-card-tag">No key needed</div>
+          </a>
+          <a class="api-card" href="https://pollinations.ai/" target="_blank" rel="noopener">
+            <div class="api-card-name">Pollinations.ai</div>
+            <div class="api-card-desc">Free image + text generation. No API key. Pure HTTP GET. Perfect for school projects.</div>
+            <div class="api-card-tag">No key needed</div>
+          </a>
+          <a class="api-card" href="https://openrouter.ai/" target="_blank" rel="noopener">
+            <div class="api-card-name">OpenRouter</div>
+            <div class="api-card-desc">One API for 200+ LLMs (Llama, Qwen, DeepSeek). Has free models (suffix :free). Get started libre.</div>
+            <div class="api-card-tag">Free models</div>
+          </a>
+          <a class="api-card" href="https://huggingface.co/" target="_blank" rel="noopener">
+            <div class="api-card-name">Hugging Face</div>
+            <div class="api-card-desc">Inference API has free tier. 200k+ open-source models for text, image, audio, video. The GitHub of AI.</div>
+            <div class="api-card-tag">Open source</div>
+          </a>
+          <a class="api-card" href="https://groq.com/" target="_blank" rel="noopener">
+            <div class="api-card-name">Groq</div>
+            <div class="api-card-desc">Fastest LLM inference on the planet. Free tier for Llama 3.1, Mistral. Sub-second responses.</div>
+            <div class="api-card-tag">Free tier</div>
+          </a>
+          <a class="api-card" href="https://github.com/ollama/ollama" target="_blank" rel="noopener">
+            <div class="api-card-name">Ollama (local)</div>
+            <div class="api-card-desc">Run Llama 3, Qwen, DeepSeek 100% on your laptop. Offline, private, free forever. Needs 8GB+ RAM.</div>
+            <div class="api-card-tag">Run on laptop</div>
+          </a>
+          <a class="api-card" href="https://www.cloudflare.com/developer-platform/workers-ai/" target="_blank" rel="noopener">
+            <div class="api-card-name">Cloudflare Workers AI</div>
+            <div class="api-card-desc">Free tier: 10k neurons/day. Llama, Mistral, Whisper, image gen. Easy deployment.</div>
+            <div class="api-card-tag">Free tier</div>
+          </a>
+          <a class="api-card" href="https://github.com/meta-llama/llama-models" target="_blank" rel="noopener">
+            <div class="api-card-name">Llama 3.1 (Meta)</div>
+            <div class="api-card-desc">Open-weight model from Meta. Free for commercial use up to 700M users. Use via Groq, OpenRouter, or self-host.</div>
+            <div class="api-card-tag">Open weights</div>
+          </a>
+          <a class="api-card" href="https://github.com/QwenLM/Qwen2.5" target="_blank" rel="noopener">
+            <div class="api-card-name">Qwen 2.5 (Alibaba)</div>
+            <div class="api-card-desc">Excellent multilingual (Tagalog!) open-source model. Great for PH-context tasks.</div>
+            <div class="api-card-tag">Open weights</div>
+          </a>
+          <a class="api-card" href="https://github.com/deepseek-ai/DeepSeek-V3" target="_blank" rel="noopener">
+            <div class="api-card-name">DeepSeek V3</div>
+            <div class="api-card-desc">Top-tier open-source LLM. Free API tier from deepseek.com. Strong reasoning, code, math.</div>
+            <div class="api-card-tag">Open weights</div>
+          </a>
+          <a class="api-card" href="https://github.com/mistralai" target="_blank" rel="noopener">
+            <div class="api-card-name">Mistral 7B</div>
+            <div class="api-card-desc">Compact, fast, open-source. Apache 2.0 license. Free via Hugging Face, Groq, Ollama.</div>
+            <div class="api-card-tag">Open weights</div>
+          </a>
         </div>
       </div>
     </section>
 
     <!-- FOR STUDENTS -->
-    <section id="students" class="section section-muted">
+    <section id="students" class="section">
       <div class="container">
         <div class="section-head">
           <h2 class="section-title">For students 🎓</h2>
-          <p class="section-subtitle">How you can use this API in your school work.</p>
+          <p class="section-subtitle">How to use this platform in your school work.</p>
         </div>
 
         <div class="student-grid">
@@ -248,80 +561,38 @@
     </section>
 
     <!-- FREE APIs DIRECTORY -->
-    <section id="free-apis" class="section">
+    <section id="free-apis" class="section section-muted">
       <div class="container">
         <div class="section-head">
           <h2 class="section-title">Other 100% free APIs students can use</h2>
-          <p class="section-subtitle">Hand-picked free APIs — no credit card, no API key (or generous free tiers).</p>
+          <p class="section-subtitle">Hand-picked free APIs — no credit card, no API key (or generous free tiers). For your capstone, side project, or learning.</p>
         </div>
 
         <div class="api-grid">
-          <a class="api-card" href="https://open-meteo.com/" target="_blank" rel="noopener">
-            <div class="api-card-name">Open-Meteo</div>
-            <div class="api-card-desc">Free weather forecast API. No key, no rate limit for non-commercial use.</div>
-            <div class="api-card-tag">Weather</div>
-          </a>
-          <a class="api-card" href="https://www.exchangerate-api.com/" target="_blank" rel="noopener">
-            <div class="api-card-name">ExchangeRate-API</div>
-            <div class="api-card-desc">Live currency exchange rates. Free open endpoint, 161 currencies.</div>
-            <div class="api-card-tag">Finance</div>
-          </a>
-          <a class="api-card" href="https://restcountries.com/" target="_blank" rel="noopener">
-            <div class="api-card-name">REST Countries</div>
-            <div class="api-card-desc">Info about every country — population, capitals, flags, currencies.</div>
-            <div class="api-card-tag">Geography</div>
-          </a>
-          <a class="api-card" href="https://dictionaryapi.dev/" target="_blank" rel="noopener">
-            <div class="api-card-name">Free Dictionary API</div>
-            <div class="api-card-desc">English word definitions, phonetics, synonyms. No key needed.</div>
-            <div class="api-card-tag">Education</div>
-          </a>
-          <a class="api-card" href="https://openlibrary.org/developers/api" target="_blank" rel="noopener">
-            <div class="api-card-name">Open Library</div>
-            <div class="api-card-desc">Book metadata, ISBN lookups, cover images. Free, no key.</div>
-            <div class="api-card-tag">Books</div>
-          </a>
-          <a class="api-card" href="https://numbersapi.com/" target="_blank" rel="noopener">
-            <div class="api-card-name">Numbers API</div>
-            <div class="api-card-desc">Trivia, math facts, year facts about any number. Fun for fill-in widgets.</div>
-            <div class="api-card-tag">Trivia</div>
-          </a>
-          <a class="api-card" href="https://nominatim.org/release-docs/develop/api/Overview/" target="_blank" rel="noopener">
-            <div class="api-card-name">Nominatim (OpenStreetMap)</div>
-            <div class="api-card-desc">Free geocoding — addresses to lat/lng and back. Good for maps.</div>
-            <div class="api-card-tag">Maps</div>
-          </a>
-          <a class="api-card" href="https://www.themealdb.com/api.php" target="_blank" rel="noopener">
-            <div class="api-card-name">TheMealDB</div>
-            <div class="api-card-desc">Recipe API including Filipino dishes. Free, no key for test endpoints.</div>
-            <div class="api-card-tag">Food</div>
-          </a>
-          <a class="api-card" href="https://api.nasa.gov/" target="_blank" rel="noopener">
-            <div class="api-card-name">NASA APIs</div>
-            <div class="api-card-desc">Astronomy Picture of the Day, Mars rover photos, space data. Free key.</div>
-            <div class="api-card-tag">Science</div>
-          </a>
-          <a class="api-card" href="https://jsonplaceholder.typicode.com/" target="_blank" rel="noopener">
-            <div class="api-card-name">JSONPlaceholder</div>
-            <div class="api-card-desc">Fake REST API for testing/practice. No setup needed.</div>
-            <div class="api-card-tag">Testing</div>
-          </a>
-          <a class="api-card" href="https://ai.hackclub.com/" target="_blank" rel="noopener">
-            <div class="api-card-name">Hack Club AI</div>
-            <div class="api-card-desc">Free LLM API made for students. OpenAI-compatible, no key.</div>
-            <div class="api-card-tag">AI</div>
-          </a>
-          <a class="api-card" href="https://aistudio.google.com/app/apikey" target="_blank" rel="noopener">
-            <div class="api-card-name">Google Gemini</div>
-            <div class="api-card-desc">Generous free tier (1500 RPM Flash). Get a key for free.</div>
-            <div class="api-card-tag">AI</div>
-          </a>
+          <a class="api-card" href="https://open-meteo.com/" target="_blank" rel="noopener"><div class="api-card-name">Open-Meteo</div><div class="api-card-desc">Free weather forecast API. No key, no rate limit for non-commercial use.</div><div class="api-card-tag">Weather</div></a>
+          <a class="api-card" href="https://www.exchangerate-api.com/" target="_blank" rel="noopener"><div class="api-card-name">ExchangeRate-API</div><div class="api-card-desc">Live currency exchange rates. Free open endpoint, 161 currencies.</div><div class="api-card-tag">Finance</div></a>
+          <a class="api-card" href="https://restcountries.com/" target="_blank" rel="noopener"><div class="api-card-name">REST Countries</div><div class="api-card-desc">Info about every country — population, capitals, flags, currencies.</div><div class="api-card-tag">Geography</div></a>
+          <a class="api-card" href="https://dictionaryapi.dev/" target="_blank" rel="noopener"><div class="api-card-name">Free Dictionary API</div><div class="api-card-desc">English word definitions, phonetics, synonyms. No key needed.</div><div class="api-card-tag">Education</div></a>
+          <a class="api-card" href="https://openlibrary.org/developers/api" target="_blank" rel="noopener"><div class="api-card-name">Open Library</div><div class="api-card-desc">Book metadata, ISBN lookups, cover images. Free, no key.</div><div class="api-card-tag">Books</div></a>
+          <a class="api-card" href="https://numbersapi.com/" target="_blank" rel="noopener"><div class="api-card-name">Numbers API</div><div class="api-card-desc">Trivia, math facts, year facts about any number.</div><div class="api-card-tag">Trivia</div></a>
+          <a class="api-card" href="https://nominatim.org/release-docs/develop/api/Overview/" target="_blank" rel="noopener"><div class="api-card-name">Nominatim (OSM)</div><div class="api-card-desc">Free geocoding — addresses to lat/lng and back.</div><div class="api-card-tag">Maps</div></a>
+          <a class="api-card" href="https://www.themealdb.com/api.php" target="_blank" rel="noopener"><div class="api-card-name">TheMealDB</div><div class="api-card-desc">Recipe API including Filipino dishes. Free, no key for test endpoints.</div><div class="api-card-tag">Food</div></a>
+          <a class="api-card" href="https://api.nasa.gov/" target="_blank" rel="noopener"><div class="api-card-name">NASA APIs</div><div class="api-card-desc">Astronomy Picture of the Day, Mars rover photos. Free key.</div><div class="api-card-tag">Science</div></a>
+          <a class="api-card" href="https://jsonplaceholder.typicode.com/" target="_blank" rel="noopener"><div class="api-card-name">JSONPlaceholder</div><div class="api-card-desc">Fake REST API for testing/practice. No setup needed.</div><div class="api-card-tag">Testing</div></a>
+          <a class="api-card" href="https://goqr.me/api/" target="_blank" rel="noopener"><div class="api-card-name">QR Server</div><div class="api-card-desc">Free QR code generator. Pure HTTP GET, no key.</div><div class="api-card-tag">Utility</div></a>
+          <a class="api-card" href="https://wttr.in/" target="_blank" rel="noopener"><div class="api-card-name">wttr.in</div><div class="api-card-desc">Console-friendly weather. curl wttr.in/Manila.</div><div class="api-card-tag">Weather</div></a>
+          <a class="api-card" href="https://github.com/AdvaitaJassal/Tagalog-Dictionary" target="_blank" rel="noopener"><div class="api-card-name">Tagalog Dictionary</div><div class="api-card-desc">Open-source PH language data. Useful for Filipino NLP capstones.</div><div class="api-card-tag">Language</div></a>
+          <a class="api-card" href="https://date.nager.at/" target="_blank" rel="noopener"><div class="api-card-name">Nager.Date</div><div class="api-card-desc">Public holidays for 100+ countries. Includes Philippines.</div><div class="api-card-tag">Calendar</div></a>
+          <a class="api-card" href="https://disease.sh/" target="_blank" rel="noopener"><div class="api-card-name">disease.sh</div><div class="api-card-desc">Live COVID-19, flu, and disease stats by country. Free, no key.</div><div class="api-card-tag">Health</div></a>
+          <a class="api-card" href="https://api.quotable.io/" target="_blank" rel="noopener"><div class="api-card-name">Quotable</div><div class="api-card-desc">Random famous quotes. Filter by author, tag. Free, no key.</div><div class="api-card-tag">Content</div></a>
+          <a class="api-card" href="https://pokeapi.co/" target="_blank" rel="noopener"><div class="api-card-name">PokeAPI</div><div class="api-card-desc">Complete Pokemon data. Classic for learning API consumption.</div><div class="api-card-tag">Fun</div></a>
+          <a class="api-card" href="https://randomuser.me/" target="_blank" rel="noopener"><div class="api-card-name">RandomUser</div><div class="api-card-desc">Generate fake user data for prototyping. Free, no key.</div><div class="api-card-tag">Testing</div></a>
         </div>
       </div>
     </section>
 
     <!-- EXAMPLES -->
-    <section id="examples" class="section section-muted">
+    <section id="examples" class="section">
       <div class="container">
         <div class="section-head">
           <h2 class="section-title">Code examples</h2>
@@ -365,10 +636,13 @@ print(r.json())</code></pre>
     </section>
   </main>
 
+  <button class="fab-ai" id="fab-ai" aria-label="Open Kuya AI" title="Ask Kuya AI">✨</button>
+  <div class="toast" id="toast"></div>
+
   <footer class="site-footer">
     <div class="container footer-row">
       <div>
-        <strong>PH Public API + Kuya AI</strong> · MIT License · Made with ❤ in Misamis Oriental
+        <strong>PH StudentKit</strong> · MIT License · Made with ❤ in Misamis Oriental, PH
       </div>
       <div>
         <a href="https://github.com/CharlieJamesGwapo/ph-public-api" target="_blank" rel="noopener">GitHub</a>
