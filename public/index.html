@@ -1194,7 +1194,9 @@ document.body.style.background = '#FCD116';
         <!-- TABS -->
         <div class="excel-tabs" role="tablist">
           <button class="excel-tab active" data-extab="basics">📘 Basics</button>
-          <button class="excel-tab" data-extab="formulas">🧮 Formulas (30+)</button>
+          <button class="excel-tab" data-extab="formulas">🧮 Formulas (38)</button>
+          <button class="excel-tab" data-extab="data">📊 Data Analysis</button>
+          <button class="excel-tab" data-extab="vba">💻 VBA Code</button>
           <button class="excel-tab" data-extab="shortcuts">⌨️ Shortcuts</button>
           <button class="excel-tab" data-extab="tasks">✅ Common Tasks</button>
           <button class="excel-tab" data-extab="practice">💪 Practice</button>
@@ -1276,6 +1278,337 @@ A$1    ← lock row only</pre>
           </div>
           <div class="excel-formulas" id="excel-formulas">
             <!-- populated by JS -->
+          </div>
+        </div>
+
+        <!-- DATA ANALYSIS -->
+        <div class="excel-panel" data-expanel="data">
+          <div class="excel-cards">
+            <div class="excel-card excel-card-feature">
+              <h3>📊 Pivot Tables (Step-by-Step)</h3>
+              <p>The most powerful Excel feature. Summarize 10,000 rows into a clean table in 30 seconds.</p>
+              <ol style="padding-left:24px;line-height:1.8;font-size:13px;">
+                <li>Click any cell inside your data</li>
+                <li>Insert → PivotTable → New worksheet</li>
+                <li>Drag fields to: <strong>Rows</strong> (categories), <strong>Columns</strong> (subcategories), <strong>Values</strong> (numbers)</li>
+                <li>Right-click value → Summarize By → Sum / Count / Average</li>
+                <li>Right-click value → Show Values As → % of column total</li>
+              </ol>
+              <p style="font-size:13px;color:var(--fg-muted);margin-top:8px;">💡 Capstone use: count respondents by gender × course, average grade by subject, etc.</p>
+            </div>
+
+            <div class="excel-card excel-card-feature">
+              <h3>🔗 Power Query (Get & Transform)</h3>
+              <p>Built-in ETL tool. Pull data from CSV, JSON, web, database — clean it — load to Excel.</p>
+              <ol style="padding-left:24px;line-height:1.8;font-size:13px;">
+                <li>Data tab → Get Data → From File / Web / Database</li>
+                <li>Power Query Editor opens</li>
+                <li>Transform: remove columns, filter rows, split text, change types</li>
+                <li>Each step is recorded — refresh = re-runs all steps with new data</li>
+                <li>Click Close & Load → data appears in Excel</li>
+              </ol>
+              <p style="font-size:13px;color:var(--fg-muted);margin-top:8px;">⭐ Best feature: refresh once = updates everything when source changes.</p>
+            </div>
+
+            <div class="excel-card">
+              <h3>🎯 Goal Seek (Reverse Math)</h3>
+              <p>Excel finds the input value needed to get the output you want.</p>
+              <pre class="excel-code">Example: What grade do I need on final
+to get an overall 1.50?
+
+1. Set up: Subjects with grades + final cell
+2. Data → What-If Analysis → Goal Seek
+3. Set cell: B10 (overall GPA)
+   To value: 1.50
+   By changing: B9 (final exam grade)
+4. Excel solves it!</pre>
+            </div>
+
+            <div class="excel-card">
+              <h3>🔬 Solver (Optimization)</h3>
+              <p>For optimization problems — find max/min subject to constraints.</p>
+              <pre class="excel-code">Use for: budget allocation,
+schedule optimization, etc.
+
+Enable: File → Options → Add-ins
+→ Solver → Go → check Solver → OK
+
+Then: Data tab → Solver
+- Set objective (maximize profit)
+- By changing: variable cells
+- Subject to constraints (≤, ≥, =)
+- Solve</pre>
+            </div>
+
+            <div class="excel-card">
+              <h3>📈 Statistical Functions</h3>
+              <pre class="excel-code">=STDEV.S(range)    standard deviation (sample)
+=VAR.S(range)      variance (sample)
+=MEDIAN(range)     middle value
+=MODE.SNGL(range)  most common value
+=PERCENTILE(r,k)   k-th percentile
+=QUARTILE(r,q)     quartile (q=1,2,3,4)
+=CORREL(x,y)       correlation
+=PEARSON(x,y)      Pearson r
+=LINEST(y,x)       linear regression
+=TTEST(x,y,t,t)    t-test
+=CHISQ.TEST(a,e)   chi-square test</pre>
+            </div>
+
+            <div class="excel-card">
+              <h3>📉 Data Tables (What-If)</h3>
+              <p>See multiple outcomes side-by-side without re-running formulas.</p>
+              <ol style="padding-left:24px;line-height:1.8;font-size:13px;">
+                <li>Build formula with one or two variable cells</li>
+                <li>Create row/column of test values</li>
+                <li>Data → What-If Analysis → Data Table</li>
+                <li>Set Row Input Cell + Column Input Cell</li>
+                <li>Excel fills in all scenarios</li>
+              </ol>
+            </div>
+
+            <div class="excel-card">
+              <h3>🐍 Excel + Python (New!)</h3>
+              <p>Excel 365 now supports Python directly. Or use Pandas externally.</p>
+              <pre class="excel-code">In a cell: =PY(
+  df.groupby('category').sum()
+)
+
+Or externally with Pandas:
+import pandas as pd
+df = pd.read_excel('thesis-data.xlsx')
+df.describe()
+df.to_excel('summary.xlsx')</pre>
+            </div>
+
+            <div class="excel-card">
+              <h3>📡 Live External Data</h3>
+              <p>Pull live data from web into Excel.</p>
+              <pre class="excel-code">Data → From Web → paste URL
+
+Example sources:
+- Stock prices (Yahoo Finance)
+- Currency rates
+- PSA statistics tables
+- ph-public-api.vercel.app endpoints
+  (e.g. /scholarships, /weather/cebu-city)
+
+Right-click table → Refresh
+to update anytime.</pre>
+            </div>
+
+            <div class="excel-card">
+              <h3>🎨 Conditional Formatting Recipes</h3>
+              <pre class="excel-code">⭐ Heatmap for grades:
+Home → Conditional → Color Scales
+Red-Yellow-Green based on value
+
+⭐ Highlight duplicates:
+Home → Conditional → Highlight
+→ Duplicate Values
+
+⭐ Top/Bottom 10:
+Home → Conditional → Top/Bottom Rules
+
+⭐ Formula-based:
+Use a formula → =$C2>3
+(highlights failing rows)</pre>
+            </div>
+          </div>
+        </div>
+
+        <!-- VBA CODE -->
+        <div class="excel-panel" data-expanel="vba">
+          <div style="background:linear-gradient(135deg,#185C37,#21A366);color:white;padding:var(--s5);border-radius:var(--radius-md);margin-bottom:var(--s5);">
+            <h3 style="font-size:20px;font-weight:800;margin-bottom:var(--s2);">💻 What is VBA?</h3>
+            <p style="font-size:14px;line-height:1.6;opacity:0.95;">VBA (Visual Basic for Applications) is Excel's built-in programming language. Use it to automate any repetitive task: formatting, calculating, sending emails, generating reports. <strong>Open the VBA Editor: Press Alt+F11 in Excel.</strong></p>
+          </div>
+
+          <div class="excel-cards">
+            <div class="excel-card">
+              <h3>👋 Hello World</h3>
+              <pre class="excel-code">Sub HelloWorld()
+    MsgBox "Hello, Filipino students!"
+End Sub</pre>
+              <p style="font-size:12px;color:var(--fg-muted);margin-top:8px;">Press F5 to run, or assign to a button.</p>
+            </div>
+
+            <div class="excel-card">
+              <h3>🔁 Loop Through Rows</h3>
+              <pre class="excel-code">Sub ProcessGrades()
+    Dim i As Long
+    Dim lastRow As Long
+    lastRow = Cells(Rows.Count, "B").End(xlUp).Row
+
+    For i = 2 To lastRow
+        If Cells(i, "B").Value &lt; 75 Then
+            Cells(i, "C").Value = "FAIL"
+            Cells(i, "C").Interior.Color = RGB(255, 100, 100)
+        Else
+            Cells(i, "C").Value = "PASS"
+            Cells(i, "C").Interior.Color = RGB(100, 255, 100)
+        End If
+    Next i
+End Sub</pre>
+            </div>
+
+            <div class="excel-card">
+              <h3>🔢 Convert Grades to Letter</h3>
+              <pre class="excel-code">Function LetterGrade(score As Double) As String
+    Select Case score
+        Case Is &gt;= 90: LetterGrade = "A"
+        Case Is &gt;= 80: LetterGrade = "B"
+        Case Is &gt;= 75: LetterGrade = "C"
+        Case Else: LetterGrade = "F"
+    End Select
+End Function
+
+' Use in any cell: =LetterGrade(B2)</pre>
+            </div>
+
+            <div class="excel-card">
+              <h3>🗑️ Remove Duplicates</h3>
+              <pre class="excel-code">Sub RemoveDups()
+    Dim ws As Worksheet
+    Set ws = ActiveSheet
+    ws.Range("A1").CurrentRegion.RemoveDuplicates _
+        Columns:=Array(1), Header:=xlYes
+    MsgBox "Done!"
+End Sub</pre>
+            </div>
+
+            <div class="excel-card">
+              <h3>📧 Send Email from Excel</h3>
+              <pre class="excel-code">Sub SendThesisToAdviser()
+    Dim Outlook As Object
+    Dim Mail As Object
+    Set Outlook = CreateObject("Outlook.Application")
+    Set Mail = Outlook.CreateItem(0)
+
+    With Mail
+        .To = "adviser@school.edu.ph"
+        .Subject = "Thesis Draft - Chapter 3"
+        .Body = "Hi Sir/Ma'am, attached is my latest draft."
+        .Attachments.Add ActiveWorkbook.FullName
+        .Display  ' or .Send to send right away
+    End With
+End Sub</pre>
+            </div>
+
+            <div class="excel-card">
+              <h3>📋 Copy Data to New Sheet</h3>
+              <pre class="excel-code">Sub CopyToSummary()
+    Dim src As Worksheet, dst As Worksheet
+    Set src = Sheets("Raw Data")
+    Set dst = Sheets("Summary")
+
+    dst.Cells.Clear
+    src.Range("A1:F100").Copy Destination:=dst.Range("A1")
+
+    dst.Activate
+    MsgBox "Copied 100 rows"
+End Sub</pre>
+            </div>
+
+            <div class="excel-card">
+              <h3>🎨 Auto-Format Headers</h3>
+              <pre class="excel-code">Sub FormatHeaders()
+    With Rows(1)
+        .Font.Bold = True
+        .Font.Color = RGB(255, 255, 255)
+        .Interior.Color = RGB(0, 56, 168) ' PH Blue
+        .HorizontalAlignment = xlCenter
+        .RowHeight = 24
+    End With
+
+    Columns.AutoFit
+End Sub</pre>
+            </div>
+
+            <div class="excel-card">
+              <h3>📊 Generate Random Survey Data</h3>
+              <pre class="excel-code">Sub GenSurvey()
+    Dim i As Long, j As Long
+    Cells(1, 1).Value = "Respondent"
+
+    For j = 1 To 10
+        Cells(1, j + 1).Value = "Q" &amp; j
+    Next j
+
+    For i = 2 To 101
+        Cells(i, 1).Value = i - 1
+        For j = 1 To 10
+            Cells(i, j + 1).Value = Int(Rnd() * 5) + 1
+        Next j
+    Next i
+End Sub</pre>
+              <p style="font-size:12px;color:var(--fg-muted);margin-top:8px;">⭐ Use for testing your analysis before real data comes in.</p>
+            </div>
+
+            <div class="excel-card">
+              <h3>🔍 Find &amp; Highlight</h3>
+              <pre class="excel-code">Sub HighlightFailing()
+    Dim rng As Range, cell As Range
+    Set rng = Range("B2:B" &amp; Cells(Rows.Count, "B").End(xlUp).Row)
+
+    For Each cell In rng
+        If IsNumeric(cell.Value) And cell.Value &gt; 3 Then
+            cell.Interior.Color = RGB(255, 200, 200)
+            cell.Font.Bold = True
+        End If
+    Next cell
+End Sub</pre>
+            </div>
+
+            <div class="excel-card">
+              <h3>💾 Save with Timestamp</h3>
+              <pre class="excel-code">Sub SaveBackup()
+    Dim fname As String
+    fname = ThisWorkbook.Path &amp; "\Backup_" &amp; _
+            Format(Now, "yyyymmdd_hhmmss") &amp; ".xlsx"
+
+    ActiveWorkbook.SaveCopyAs fname
+    MsgBox "Backup saved: " &amp; fname
+End Sub</pre>
+              <p style="font-size:12px;color:var(--fg-muted);margin-top:8px;">⭐ Run before risky changes — instant restore point.</p>
+            </div>
+
+            <div class="excel-card">
+              <h3>🧮 Build Custom Function</h3>
+              <pre class="excel-code">Function PHTAX(salary As Double) As Double
+    ' PH 2026 simplified tax brackets
+    Select Case salary
+        Case 0 To 250000: PHTAX = 0
+        Case 250001 To 400000
+            PHTAX = (salary - 250000) * 0.15
+        Case 400001 To 800000
+            PHTAX = 22500 + (salary - 400000) * 0.2
+        Case Else
+            PHTAX = 102500 + (salary - 800000) * 0.25
+    End Select
+End Function
+
+' Use: =PHTAX(450000)</pre>
+            </div>
+
+            <div class="excel-card">
+              <h3>📥 Import CSV at Click</h3>
+              <pre class="excel-code">Sub ImportCSV()
+    Dim filePath As Variant
+    filePath = Application.GetOpenFilename( _
+        "CSV Files (*.csv), *.csv")
+
+    If filePath = False Then Exit Sub
+
+    Workbooks.OpenText Filename:=filePath, _
+        DataType:=xlDelimited, Comma:=True
+End Sub</pre>
+            </div>
+          </div>
+
+          <div style="margin-top:var(--s5);padding:var(--s4);background:#FEF3C7;border-radius:var(--radius-md);border-left:4px solid #F59E0B;">
+            <strong style="color:#92400E;">📥 Save .xlsm to keep macros:</strong>
+            <span style="color:#78350F;font-size:14px;"> When a file has VBA code, save as <code>.xlsm</code> (Excel Macro-Enabled Workbook), not <code>.xlsx</code>. Otherwise macros are stripped on save.</span>
           </div>
         </div>
 
@@ -1931,6 +2264,739 @@ A$1    ← lock row only</pre>
             <a class="api-card" href="https://learn.microsoft.com/en-us/training/paths/m365-powerpoint-associate/" target="_blank" rel="noopener"><div class="api-card-name">MS Learn PowerPoint</div><div class="api-card-desc">Official Microsoft training, free with certifications.</div><div class="api-card-tag">Official</div></a>
             <a class="api-card" href="https://duarte.com/blog/" target="_blank" rel="noopener"><div class="api-card-name">Duarte Blog</div><div class="api-card-desc">Presentation design pros. Free articles on visual storytelling.</div><div class="api-card-tag">Pro design</div></a>
             <a class="api-card" href="https://www.ted.com/talks" target="_blank" rel="noopener"><div class="api-card-name">TED Talks</div><div class="api-card-desc">Watch how pros present. Steal their structure.</div><div class="api-card-tag">Inspiration</div></a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CAREER PATHS -->
+    <section id="career-paths" class="section section-muted">
+      <div class="container">
+        <div class="section-head">
+          <h2 class="section-title">🎯 Career Path Learning Tracks</h2>
+          <p class="section-subtitle">Curated learning paths sa specific career — from zero to hireable. Lahat free or freemium. Pick your path.</p>
+        </div>
+
+        <div class="lang-grid">
+          <div class="lang-card lang-card-feature">
+            <div class="lang-header"><span class="lang-icon">👩‍💻</span><h3>Virtual Assistant (VA)</h3></div>
+            <p>Work-from-home for foreign clients. ₱15-50k/month entry. No specific course required — just skills.</p>
+            <h4>Free training:</h4>
+            <ul class="lang-links">
+              <li><a href="https://www.onlinejobs.ph/onlinejobs-university" target="_blank" rel="noopener">⭐ OnlineJobs University (free PH VA training)</a></li>
+              <li><a href="https://www.youtube.com/@JhanilouVirtualOfficeMate" target="_blank" rel="noopener">VA training (YouTube PH)</a></li>
+              <li><a href="https://www.youtube.com/@KateAnders" target="_blank" rel="noopener">Kate Anders VA channel</a></li>
+              <li><a href="https://www.virtualgurus.com/blog" target="_blank" rel="noopener">Virtual Gurus blog</a></li>
+              <li><a href="https://www.coursera.org/learn/virtual-assistant" target="_blank" rel="noopener">Coursera VA Foundations</a></li>
+            </ul>
+            <h4>Skills to learn:</h4>
+            <ul style="padding-left:18px;line-height:1.7;font-size:13px;color:var(--fg-muted);">
+              <li>Email management (Gmail, Outlook)</li>
+              <li>Calendar scheduling (Calendly, Google Calendar)</li>
+              <li>Data entry + Excel/Google Sheets</li>
+              <li>Canva design + Loom video</li>
+              <li>English communication</li>
+              <li>Project management (Asana, Trello, ClickUp)</li>
+            </ul>
+            <h4>Get hired:</h4>
+            <ul class="lang-links">
+              <li><a href="https://www.onlinejobs.ph/" target="_blank" rel="noopener">⭐ OnlineJobs.ph (#1 for PH VAs)</a></li>
+              <li><a href="https://www.upwork.com/freelance-jobs/virtual-assistant/" target="_blank" rel="noopener">Upwork VA jobs</a></li>
+            </ul>
+          </div>
+
+          <div class="lang-card lang-card-feature">
+            <div class="lang-header"><span class="lang-icon">🌐</span><h3>Web Development</h3></div>
+            <p>Build websites and web apps. ₱20-80k entry, ₱100k+ senior. Highest demand.</p>
+            <h4>Learning roadmap:</h4>
+            <ol style="padding-left:20px;line-height:1.8;font-size:13px;">
+              <li>HTML + CSS basics (1 month)</li>
+              <li>JavaScript fundamentals (2 months)</li>
+              <li>React/Next.js OR Vue/Nuxt (2 months)</li>
+              <li>Backend: Node.js + Express OR PHP/Laravel (2 months)</li>
+              <li>Database: MySQL/PostgreSQL/MongoDB</li>
+              <li>Git/GitHub + Deploy (Vercel, Netlify)</li>
+              <li>Portfolio with 3-5 real projects</li>
+            </ol>
+            <h4>Free courses:</h4>
+            <ul class="lang-links">
+              <li><a href="https://www.theodinproject.com/" target="_blank" rel="noopener">⭐ The Odin Project (full curriculum)</a></li>
+              <li><a href="https://www.freecodecamp.org/" target="_blank" rel="noopener">⭐ freeCodeCamp (certifications)</a></li>
+              <li><a href="https://fullstackopen.com/en/" target="_blank" rel="noopener">⭐ Full Stack Open (Univ of Helsinki, FREE)</a></li>
+              <li><a href="https://www.youtube.com/@TraversyMedia" target="_blank" rel="noopener">Traversy Media (YouTube)</a></li>
+              <li><a href="https://www.youtube.com/@WebDevSimplified" target="_blank" rel="noopener">Web Dev Simplified</a></li>
+            </ul>
+          </div>
+
+          <div class="lang-card lang-card-feature">
+            <div class="lang-header"><span class="lang-icon">📱</span><h3>Mobile App Development</h3></div>
+            <p>Build iOS/Android apps. ₱30-100k entry. Great freelance market.</p>
+            <h4>Pick your stack:</h4>
+            <ul style="padding-left:18px;line-height:1.7;font-size:13px;color:var(--fg-muted);">
+              <li><strong>Flutter</strong> — best cross-platform. Dart language. By Google.</li>
+              <li><strong>React Native</strong> — JavaScript. By Meta. Used by FB, Instagram.</li>
+              <li><strong>Swift/SwiftUI</strong> — iOS only. Native, fast.</li>
+              <li><strong>Kotlin Compose</strong> — Android only. Modern.</li>
+            </ul>
+            <h4>Free courses:</h4>
+            <ul class="lang-links">
+              <li><a href="https://docs.flutter.dev/get-started/codelab" target="_blank" rel="noopener">⭐ Flutter Codelabs (official)</a></li>
+              <li><a href="https://www.youtube.com/@flutterdev" target="_blank" rel="noopener">Flutter YouTube channel</a></li>
+              <li><a href="https://reactnative.dev/docs/tutorial" target="_blank" rel="noopener">React Native Tutorial</a></li>
+              <li><a href="https://developer.android.com/courses/android-basics-compose/course" target="_blank" rel="noopener">⭐ Google Android Basics (Kotlin)</a></li>
+              <li><a href="https://developer.apple.com/tutorials/swiftui" target="_blank" rel="noopener">Apple SwiftUI Tutorials</a></li>
+              <li><a href="https://www.hackingwithswift.com/100" target="_blank" rel="noopener">100 Days of Swift (free)</a></li>
+            </ul>
+          </div>
+
+          <div class="lang-card lang-card-feature">
+            <div class="lang-header"><span class="lang-icon">🎨</span><h3>UI/UX Design</h3></div>
+            <p>Design how apps look + work. ₱25-80k. Highly creative + technical.</p>
+            <h4>Learning path:</h4>
+            <ol style="padding-left:20px;line-height:1.8;font-size:13px;">
+              <li>Figma fundamentals (free, 1 month)</li>
+              <li>UI design principles (typography, color, layout)</li>
+              <li>UX research basics (user interviews, personas)</li>
+              <li>Wireframing → mockups → prototypes</li>
+              <li>Build portfolio (3-5 redesigns + 1 original)</li>
+              <li>Get on Dribbble, Behance, LinkedIn</li>
+            </ol>
+            <h4>Free courses:</h4>
+            <ul class="lang-links">
+              <li><a href="https://www.figma.com/resource-library/" target="_blank" rel="noopener">⭐ Figma Resource Library</a></li>
+              <li><a href="https://www.figma.com/education/" target="_blank" rel="noopener">⭐ Figma Education (FREE Pro)</a></li>
+              <li><a href="https://www.coursera.org/specializations/google-ux-design" target="_blank" rel="noopener">Google UX Design Cert (audit free)</a></li>
+              <li><a href="https://designcourse.com/" target="_blank" rel="noopener">DesignCourse (YouTube)</a></li>
+              <li><a href="https://www.youtube.com/@AJSmart" target="_blank" rel="noopener">AJ&Smart (UX research)</a></li>
+              <li><a href="https://uxdesign.cc/" target="_blank" rel="noopener">UX Collective (Medium)</a></li>
+              <li><a href="https://www.refactoringui.com/" target="_blank" rel="noopener">Refactoring UI (free book preview)</a></li>
+            </ul>
+          </div>
+
+          <div class="lang-card lang-card-feature">
+            <div class="lang-header"><span class="lang-icon">🎮</span><h3>Game Development</h3></div>
+            <p>Make games. Indie game devs earn ₱30-120k. Fun career path.</p>
+            <h4>Engine choices:</h4>
+            <ul style="padding-left:18px;line-height:1.7;font-size:13px;color:var(--fg-muted);">
+              <li><strong>Unity</strong> — most popular. C#. 2D and 3D.</li>
+              <li><strong>Unreal Engine</strong> — AAA visuals. C++ or Blueprints.</li>
+              <li><strong>Godot</strong> — free, open source. GDScript (easy).</li>
+              <li><strong>Construct 3</strong> — no-code, browser-based.</li>
+            </ul>
+            <h4>Free courses:</h4>
+            <ul class="lang-links">
+              <li><a href="https://learn.unity.com/" target="_blank" rel="noopener">⭐ Unity Learn (official, free)</a></li>
+              <li><a href="https://dev.epicgames.com/community/learning" target="_blank" rel="noopener">Unreal Online Learning</a></li>
+              <li><a href="https://docs.godotengine.org/en/stable/getting_started/" target="_blank" rel="noopener">⭐ Godot Official Docs</a></li>
+              <li><a href="https://www.youtube.com/@Brackeys" target="_blank" rel="noopener">Brackeys (classic Unity tuts)</a></li>
+              <li><a href="https://www.youtube.com/@gamedevbeginner" target="_blank" rel="noopener">Game Dev Beginner</a></li>
+              <li><a href="https://www.youtube.com/@CodeMonkeyUnity" target="_blank" rel="noopener">Code Monkey Unity</a></li>
+              <li><a href="https://www.gdquest.com/" target="_blank" rel="noopener">GDQuest (Godot)</a></li>
+            </ul>
+          </div>
+
+          <div class="lang-card lang-card-feature">
+            <div class="lang-header"><span class="lang-icon">🧠</span><h3>AI / Machine Learning</h3></div>
+            <p>Build AI apps, models. Hottest field. ₱40-150k entry.</p>
+            <h4>Learning path:</h4>
+            <ol style="padding-left:20px;line-height:1.8;font-size:13px;">
+              <li>Python (must!) - 2 months</li>
+              <li>NumPy, Pandas (data manipulation)</li>
+              <li>Statistics + Math (linear algebra basics)</li>
+              <li>Scikit-learn (classical ML)</li>
+              <li>TensorFlow OR PyTorch (deep learning)</li>
+              <li>LLM apps: LangChain, OpenAI SDK</li>
+            </ol>
+            <h4>Free courses:</h4>
+            <ul class="lang-links">
+              <li><a href="https://www.kaggle.com/learn" target="_blank" rel="noopener">⭐ Kaggle Learn (free, hands-on)</a></li>
+              <li><a href="https://www.deeplearning.ai/courses/" target="_blank" rel="noopener">⭐ DeepLearning.AI (Andrew Ng)</a></li>
+              <li><a href="https://www.fast.ai/" target="_blank" rel="noopener">fast.ai (top free DL course)</a></li>
+              <li><a href="https://www.coursera.org/learn/machine-learning" target="_blank" rel="noopener">Stanford ML (Coursera audit)</a></li>
+              <li><a href="https://huggingface.co/learn" target="_blank" rel="noopener">Hugging Face Learn</a></li>
+              <li><a href="https://www.youtube.com/@3blue1brown" target="_blank" rel="noopener">3Blue1Brown (intuition)</a></li>
+            </ul>
+          </div>
+
+          <div class="lang-card">
+            <div class="lang-header"><span class="lang-icon">🔒</span><h3>Cybersecurity</h3></div>
+            <p>Protect systems from hackers. ₱30-100k. High demand, ethical hacking.</p>
+            <ul class="lang-links">
+              <li><a href="https://tryhackme.com/" target="_blank" rel="noopener">⭐ TryHackMe (gamified hacking)</a></li>
+              <li><a href="https://www.hackthebox.com/" target="_blank" rel="noopener">HackTheBox</a></li>
+              <li><a href="https://overthewire.org/wargames/" target="_blank" rel="noopener">OverTheWire (CTF games)</a></li>
+              <li><a href="https://www.cybrary.it/" target="_blank" rel="noopener">Cybrary (free courses)</a></li>
+              <li><a href="https://www.sans.org/cyberaces/" target="_blank" rel="noopener">SANS Cyber Aces</a></li>
+              <li><a href="https://www.youtube.com/@_JohnHammond" target="_blank" rel="noopener">John Hammond (YouTube)</a></li>
+            </ul>
+          </div>
+
+          <div class="lang-card">
+            <div class="lang-header"><span class="lang-icon">📊</span><h3>Data Analytics</h3></div>
+            <p>Turn data into insights. ₱30-90k. Business-friendly tech career.</p>
+            <ul class="lang-links">
+              <li><a href="https://www.coursera.org/professional-certificates/google-data-analytics" target="_blank" rel="noopener">⭐ Google Data Analytics Cert</a></li>
+              <li><a href="https://www.kaggle.com/learn" target="_blank" rel="noopener">Kaggle Learn (free)</a></li>
+              <li><a href="https://learn.microsoft.com/en-us/training/paths/data-analytics-microsoft/" target="_blank" rel="noopener">MS Learn Data Analytics</a></li>
+              <li><a href="https://www.youtube.com/@AlexTheAnalyst" target="_blank" rel="noopener">Alex The Analyst (YouTube)</a></li>
+              <li><a href="https://www.tableau.com/learn/training" target="_blank" rel="noopener">Tableau training (free trial)</a></li>
+              <li><a href="https://powerbi.microsoft.com/en-us/learning/" target="_blank" rel="noopener">Power BI learning</a></li>
+            </ul>
+          </div>
+
+          <div class="lang-card">
+            <div class="lang-header"><span class="lang-icon">📱</span><h3>Digital Marketing</h3></div>
+            <p>SEO, ads, social. ₱20-70k. Combines creative + analytical.</p>
+            <ul class="lang-links">
+              <li><a href="https://skillshop.exceedlms.com/student/catalog/list?category_ids=2987-google-ads" target="_blank" rel="noopener">⭐ Google Ads Skillshop (free cert)</a></li>
+              <li><a href="https://www.facebook.com/business/learn" target="_blank" rel="noopener">Meta Blueprint (FB ads cert)</a></li>
+              <li><a href="https://academy.hubspot.com/" target="_blank" rel="noopener">HubSpot Academy (free certs)</a></li>
+              <li><a href="https://www.semrush.com/academy/" target="_blank" rel="noopener">Semrush Academy (SEO)</a></li>
+              <li><a href="https://www.youtube.com/@nathangotch" target="_blank" rel="noopener">Nathan Gotch (SEO YouTube)</a></li>
+            </ul>
+          </div>
+
+          <div class="lang-card">
+            <div class="lang-header"><span class="lang-icon">📝</span><h3>Copywriting / Content</h3></div>
+            <p>Write words that sell. ₱20-80k. Pure remote, English-only.</p>
+            <ul class="lang-links">
+              <li><a href="https://www.copyhackers.com/articles/" target="_blank" rel="noopener">⭐ Copyhackers (best resources)</a></li>
+              <li><a href="https://www.youtube.com/@AlexCattoni" target="_blank" rel="noopener">Alex Cattoni (Copy Posse)</a></li>
+              <li><a href="https://www.coursera.org/specializations/copywriting" target="_blank" rel="noopener">Coursera Copywriting</a></li>
+              <li><a href="https://www.youtube.com/@danlok" target="_blank" rel="noopener">Dan Lok (high-ticket copy)</a></li>
+              <li><a href="https://swiped.co/" target="_blank" rel="noopener">Swiped.co (winning ads archive)</a></li>
+            </ul>
+          </div>
+
+          <div class="lang-card">
+            <div class="lang-header"><span class="lang-icon">🎬</span><h3>Video Editing</h3></div>
+            <p>Edit content for YouTubers, brands. ₱20-80k. High demand on Upwork.</p>
+            <ul class="lang-links">
+              <li><a href="https://www.youtube.com/@PremiereGal" target="_blank" rel="noopener">Premiere Gal (Adobe Premiere)</a></li>
+              <li><a href="https://www.youtube.com/@JustinOdisho" target="_blank" rel="noopener">Justin Odisho (motion design)</a></li>
+              <li><a href="https://www.blackmagicdesign.com/products/davinciresolve/training" target="_blank" rel="noopener">⭐ DaVinci Resolve Training (free)</a></li>
+              <li><a href="https://www.youtube.com/@PetersonDocs" target="_blank" rel="noopener">Peterson DocSeptember (CapCut)</a></li>
+              <li><a href="https://www.skillshare.com/en/browse/video-editing" target="_blank" rel="noopener">Skillshare video editing</a></li>
+            </ul>
+          </div>
+
+          <div class="lang-card">
+            <div class="lang-header"><span class="lang-icon">🛒</span><h3>E-commerce / Dropshipping</h3></div>
+            <p>Sell online. PH market: TikTok Shop, Shopee, Lazada. Side hustle to full-time.</p>
+            <ul class="lang-links">
+              <li><a href="https://www.shopify.com/learn" target="_blank" rel="noopener">⭐ Shopify Learn</a></li>
+              <li><a href="https://seller.tiktok.com/university" target="_blank" rel="noopener">TikTok Shop University</a></li>
+              <li><a href="https://www.youtube.com/@CamiloUreyMancera" target="_blank" rel="noopener">Camilo Urey (Shopify tutorial)</a></li>
+              <li><a href="https://www.youtube.com/@AcDc" target="_blank" rel="noopener">ACDC (PH dropshipping)</a></li>
+              <li><a href="https://www.facebook.com/business/help" target="_blank" rel="noopener">FB Business Help</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ARDUINO MASTERY -->
+    <section id="arduino" class="section section-muted">
+      <div class="container">
+        <div class="section-head">
+          <h2 class="section-title">🤖 Arduino & IoT Mastery</h2>
+          <p class="section-subtitle">Para sa BSCpE, BSEE, BSIT capstone projects. Full guide: basics, code examples, sensors, projects. No hardware? Use online simulators.</p>
+        </div>
+
+        <div class="excel-tabs">
+          <button class="excel-tab active ard-tab" data-atab="basics">📘 Basics</button>
+          <button class="excel-tab ard-tab" data-atab="code">💻 Code Examples (12+)</button>
+          <button class="excel-tab ard-tab" data-atab="sensors">📡 Sensors Guide</button>
+          <button class="excel-tab ard-tab" data-atab="projects">🎯 Capstone Projects</button>
+          <button class="excel-tab ard-tab" data-atab="libs">📚 Libraries</button>
+          <button class="excel-tab ard-tab" data-atab="learn">📺 Learn</button>
+        </div>
+
+        <!-- BASICS -->
+        <div class="excel-panel ard-panel active" data-apanel="basics">
+          <div class="excel-cards">
+            <div class="excel-card excel-card-feature">
+              <h3>🟦 Pick Your Board</h3>
+              <ul style="padding-left:20px;line-height:1.8;font-size:14px;">
+                <li><strong>Arduino Uno R3</strong> — classic, beginner-friendly. ₱500 local clones. Best to start.</li>
+                <li><strong>Arduino Nano</strong> — same chip as Uno, smaller. Cheap clones ₱150.</li>
+                <li><strong>ESP32</strong> — has WiFi + Bluetooth built-in. ₱200-300. ⭐ Best for IoT capstones.</li>
+                <li><strong>ESP8266 (NodeMCU)</strong> — cheaper WiFi board. ₱150.</li>
+                <li><strong>Raspberry Pi Pico</strong> — newer, dual-core. ₱250.</li>
+              </ul>
+              <p style="font-size:13px;color:var(--fg-muted);margin-top:8px;">⭐ Where to buy: Shopee, Lazada, Circuit Rocks (Manila), DEEC (Cebu).</p>
+            </div>
+            <div class="excel-card">
+              <h3>📌 Pin Types</h3>
+              <ul style="padding-left:20px;line-height:1.8;font-size:14px;">
+                <li><strong>Digital pins (0-13):</strong> HIGH (5V) or LOW (0V). For buttons, LEDs.</li>
+                <li><strong>Analog pins (A0-A5):</strong> Read 0-1023 (10-bit). For sensors that vary.</li>
+                <li><strong>PWM pins (~3, 5, 6, 9, 10, 11):</strong> "Fake" analog output 0-255.</li>
+                <li><strong>VIN, 5V, 3.3V, GND:</strong> Power supply pins.</li>
+                <li><strong>TX, RX:</strong> Serial communication (USB).</li>
+                <li><strong>SDA, SCL:</strong> I2C (for OLED, sensors).</li>
+              </ul>
+            </div>
+            <div class="excel-card">
+              <h3>💻 Arduino IDE Setup</h3>
+              <ol style="padding-left:24px;line-height:1.8;font-size:13px;">
+                <li>Download from <a href="https://www.arduino.cc/en/software" target="_blank" rel="noopener" style="color:var(--ph-blue)">arduino.cc/en/software</a></li>
+                <li>Plug board via USB</li>
+                <li>Tools → Board → Arduino Uno (or your board)</li>
+                <li>Tools → Port → pick the COM port</li>
+                <li>For ESP32: File → Preferences → Add board URL → install in Boards Manager</li>
+              </ol>
+            </div>
+            <div class="excel-card">
+              <h3>🧩 Sketch Structure</h3>
+              <pre class="excel-code">// Variables here (run once)
+int ledPin = 13;
+
+void setup() {
+  // Runs once at power-on
+  pinMode(ledPin, OUTPUT);
+  Serial.begin(9600);
+}
+
+void loop() {
+  // Runs forever
+  digitalWrite(ledPin, HIGH);
+  delay(500);
+  digitalWrite(ledPin, LOW);
+  delay(500);
+}</pre>
+            </div>
+            <div class="excel-card">
+              <h3>🖥️ No Hardware? Use Simulators</h3>
+              <ul style="padding-left:20px;line-height:1.8;font-size:14px;">
+                <li><a href="https://wokwi.com/" target="_blank" rel="noopener" style="color:var(--ph-blue)">⭐ Wokwi</a> — best free Arduino/ESP32 simulator</li>
+                <li><a href="https://www.tinkercad.com/circuits" target="_blank" rel="noopener" style="color:var(--ph-blue)">Tinkercad Circuits</a> — drag-drop, by Autodesk</li>
+                <li><a href="https://www.simulide.com/" target="_blank" rel="noopener" style="color:var(--ph-blue)">SimulIDE</a> — desktop simulator</li>
+              </ul>
+              <p style="font-size:13px;color:var(--fg-muted);margin-top:8px;">⭐ Build entire capstone prototype in browser before buying hardware!</p>
+            </div>
+            <div class="excel-card">
+              <h3>📐 Reading the Datasheet</h3>
+              <ul style="padding-left:20px;line-height:1.8;font-size:14px;">
+                <li><strong>Operating voltage:</strong> usually 3.3V or 5V — match your board!</li>
+                <li><strong>Current draw:</strong> sa mA — avoid burning Arduino pins (40mA max each)</li>
+                <li><strong>Pinout:</strong> what does each pin do</li>
+                <li><strong>Sample code:</strong> usually in the datasheet</li>
+                <li>Always Google: "<em>component-name</em> arduino tutorial"</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <!-- CODE EXAMPLES -->
+        <div class="excel-panel ard-panel" data-apanel="code">
+          <div class="excel-cards">
+            <div class="excel-card">
+              <h3>💡 Blink LED (Hello World)</h3>
+              <pre class="excel-code">void setup() {
+  pinMode(LED_BUILTIN, OUTPUT);
+}
+
+void loop() {
+  digitalWrite(LED_BUILTIN, HIGH);
+  delay(1000);
+  digitalWrite(LED_BUILTIN, LOW);
+  delay(1000);
+}</pre>
+            </div>
+
+            <div class="excel-card">
+              <h3>🔘 Read Button</h3>
+              <pre class="excel-code">const int BUTTON = 2;
+const int LED = 13;
+
+void setup() {
+  pinMode(BUTTON, INPUT_PULLUP);
+  pinMode(LED, OUTPUT);
+  Serial.begin(9600);
+}
+
+void loop() {
+  if (digitalRead(BUTTON) == LOW) {
+    digitalWrite(LED, HIGH);
+    Serial.println("Pressed!");
+  } else {
+    digitalWrite(LED, LOW);
+  }
+  delay(50);
+}</pre>
+            </div>
+
+            <div class="excel-card">
+              <h3>🎛️ Potentiometer (Analog)</h3>
+              <pre class="excel-code">const int POT = A0;
+const int LED = 9; // PWM pin
+
+void setup() {
+  pinMode(LED, OUTPUT);
+  Serial.begin(9600);
+}
+
+void loop() {
+  int val = analogRead(POT);     // 0-1023
+  int brightness = val / 4;      // map to 0-255
+  analogWrite(LED, brightness);
+  Serial.print("Pot: ");
+  Serial.println(val);
+  delay(50);
+}</pre>
+            </div>
+
+            <div class="excel-card">
+              <h3>🌡️ DHT11 Temperature/Humidity</h3>
+              <pre class="excel-code">#include &lt;DHT.h&gt;
+DHT dht(2, DHT11);  // Pin 2, DHT11 sensor
+
+void setup() {
+  Serial.begin(9600);
+  dht.begin();
+}
+
+void loop() {
+  float h = dht.readHumidity();
+  float t = dht.readTemperature();
+
+  Serial.print("Temp: ");
+  Serial.print(t);
+  Serial.print("°C  Humidity: ");
+  Serial.print(h);
+  Serial.println("%");
+  delay(2000);
+}</pre>
+              <p style="font-size:12px;color:var(--fg-muted);margin-top:6px;">📚 Library: Install "DHT sensor library" by Adafruit</p>
+            </div>
+
+            <div class="excel-card">
+              <h3>🔊 Ultrasonic (HC-SR04 Distance)</h3>
+              <pre class="excel-code">const int TRIG = 9;
+const int ECHO = 10;
+
+void setup() {
+  pinMode(TRIG, OUTPUT);
+  pinMode(ECHO, INPUT);
+  Serial.begin(9600);
+}
+
+void loop() {
+  digitalWrite(TRIG, LOW);
+  delayMicroseconds(2);
+  digitalWrite(TRIG, HIGH);
+  delayMicroseconds(10);
+  digitalWrite(TRIG, LOW);
+
+  long duration = pulseIn(ECHO, HIGH);
+  float distance = duration * 0.034 / 2;
+
+  Serial.print("Distance: ");
+  Serial.print(distance);
+  Serial.println(" cm");
+  delay(500);
+}</pre>
+            </div>
+
+            <div class="excel-card">
+              <h3>📺 OLED Display (SSD1306 I2C)</h3>
+              <pre class="excel-code">#include &lt;Adafruit_SSD1306.h&gt;
+Adafruit_SSD1306 display(128, 64, &amp;Wire);
+
+void setup() {
+  display.begin(SSD1306_SWITCHCAPVCC, 0x3C);
+  display.clearDisplay();
+  display.setTextSize(2);
+  display.setTextColor(WHITE);
+  display.setCursor(0, 10);
+  display.println("PH StudentKit");
+  display.setTextSize(1);
+  display.setCursor(0, 40);
+  display.println("Hello, BSCpE!");
+  display.display();
+}
+
+void loop() {}</pre>
+              <p style="font-size:12px;color:var(--fg-muted);margin-top:6px;">📚 Wire: SDA→A4, SCL→A5 (Uno)</p>
+            </div>
+
+            <div class="excel-card">
+              <h3>🦾 Servo Motor</h3>
+              <pre class="excel-code">#include &lt;Servo.h&gt;
+Servo myServo;
+
+void setup() {
+  myServo.attach(9);
+}
+
+void loop() {
+  myServo.write(0);    // 0 degrees
+  delay(1000);
+  myServo.write(90);   // 90 degrees
+  delay(1000);
+  myServo.write(180);  // 180 degrees
+  delay(1000);
+}</pre>
+            </div>
+
+            <div class="excel-card">
+              <h3>📶 ESP32 WiFi (Connect &amp; HTTP GET)</h3>
+              <pre class="excel-code">#include &lt;WiFi.h&gt;
+#include &lt;HTTPClient.h&gt;
+
+const char* ssid = "YourWiFi";
+const char* password = "YourPassword";
+
+void setup() {
+  Serial.begin(115200);
+  WiFi.begin(ssid, password);
+  while (WiFi.status() != WL_CONNECTED) delay(500);
+  Serial.println("Connected!");
+
+  HTTPClient http;
+  http.begin("https://ph-public-api.vercel.app/weather/cebu-city");
+  int code = http.GET();
+  if (code == 200) {
+    String payload = http.getString();
+    Serial.println(payload);
+  }
+  http.end();
+}
+
+void loop() {}</pre>
+            </div>
+
+            <div class="excel-card">
+              <h3>📤 Send Data to Google Sheets</h3>
+              <pre class="excel-code">// Setup: Make Google Apps Script web app
+// that appends to a Sheet, get URL
+
+#include &lt;WiFi.h&gt;
+#include &lt;HTTPClient.h&gt;
+
+void logToSheet(float temp, float humid) {
+  HTTPClient http;
+  String url = "https://script.google.com/macros/s/YOUR_ID/exec";
+  url += "?temp=" + String(temp);
+  url += "&amp;humid=" + String(humid);
+
+  http.begin(url);
+  http.GET();
+  http.end();
+}
+
+// Call: logToSheet(28.5, 65.0);</pre>
+              <p style="font-size:12px;color:var(--fg-muted);margin-top:6px;">⭐ Perfect for capstone data logging.</p>
+            </div>
+
+            <div class="excel-card">
+              <h3>📡 MQTT (IoT Messaging)</h3>
+              <pre class="excel-code">#include &lt;WiFi.h&gt;
+#include &lt;PubSubClient.h&gt;
+
+WiFiClient wifi;
+PubSubClient mqtt(wifi);
+
+void setup() {
+  WiFi.begin("ssid", "pass");
+  mqtt.setServer("broker.hivemq.com", 1883);
+  mqtt.connect("ph-student-001");
+  mqtt.subscribe("ph/sensors/temp");
+}
+
+void loop() {
+  mqtt.loop();
+  // Publish:
+  mqtt.publish("ph/sensors/temp", "28.5");
+  delay(5000);
+}</pre>
+              <p style="font-size:12px;color:var(--fg-muted);margin-top:6px;">Free MQTT broker: HiveMQ Cloud</p>
+            </div>
+
+            <div class="excel-card">
+              <h3>🔔 Buzzer Alarm</h3>
+              <pre class="excel-code">const int BUZZER = 8;
+
+void setup() {
+  pinMode(BUZZER, OUTPUT);
+}
+
+void loop() {
+  // Beep pattern
+  tone(BUZZER, 1000); // 1kHz
+  delay(200);
+  noTone(BUZZER);
+  delay(100);
+  tone(BUZZER, 1500); // 1.5kHz
+  delay(200);
+  noTone(BUZZER);
+  delay(1000);
+}</pre>
+            </div>
+
+            <div class="excel-card">
+              <h3>🚿 Soil Moisture Sensor</h3>
+              <pre class="excel-code">const int SOIL = A0;
+const int RELAY = 8; // Water pump
+
+void setup() {
+  pinMode(RELAY, OUTPUT);
+  Serial.begin(9600);
+}
+
+void loop() {
+  int moisture = analogRead(SOIL);
+  Serial.print("Moisture: ");
+  Serial.println(moisture);
+
+  if (moisture &gt; 600) {  // Dry
+    digitalWrite(RELAY, HIGH); // Pump ON
+    delay(3000);
+    digitalWrite(RELAY, LOW);
+  }
+  delay(60000); // Check every minute
+}</pre>
+              <p style="font-size:12px;color:var(--fg-muted);margin-top:6px;">⭐ Smart farming capstone classic!</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- SENSORS -->
+        <div class="excel-panel ard-panel" data-apanel="sensors">
+          <div class="api-grid">
+            <div class="api-card"><div class="api-card-name">🌡️ DHT11 / DHT22</div><div class="api-card-desc">Temperature + humidity. DHT22 more accurate. ₱60-150.</div><div class="api-card-tag">Climate</div></div>
+            <div class="api-card"><div class="api-card-name">🔊 HC-SR04</div><div class="api-card-desc">Ultrasonic distance 2-400cm. Parking sensor, obstacle detection. ₱60.</div><div class="api-card-tag">Distance</div></div>
+            <div class="api-card"><div class="api-card-name">💧 Soil Moisture YL-69</div><div class="api-card-desc">Detect dry/wet soil. Smart irrigation projects. ₱40.</div><div class="api-card-tag">Soil</div></div>
+            <div class="api-card"><div class="api-card-name">🔥 MQ-2 Gas</div><div class="api-card-desc">LPG, smoke, methane detection. Fire alarm projects. ₱80.</div><div class="api-card-tag">Gas</div></div>
+            <div class="api-card"><div class="api-card-name">☀️ LDR (Light Sensor)</div><div class="api-card-desc">Detect light/dark. Auto street lights. ₱5.</div><div class="api-card-tag">Light</div></div>
+            <div class="api-card"><div class="api-card-name">👋 PIR HC-SR501</div><div class="api-card-desc">Motion detection. Security systems. ₱70.</div><div class="api-card-tag">Motion</div></div>
+            <div class="api-card"><div class="api-card-name">🌧️ Rain Sensor</div><div class="api-card-desc">Detect water drops. Auto-retract clotheslines. ₱40.</div><div class="api-card-tag">Rain</div></div>
+            <div class="api-card"><div class="api-card-name">📍 GPS NEO-6M</div><div class="api-card-desc">Location tracking. Asset/pet trackers. ₱200.</div><div class="api-card-tag">GPS</div></div>
+            <div class="api-card"><div class="api-card-name">🫀 MAX30100</div><div class="api-card-desc">Heart rate + SpO2. Health monitoring. ₱150.</div><div class="api-card-tag">Health</div></div>
+            <div class="api-card"><div class="api-card-name">🔋 ACS712</div><div class="api-card-desc">Current measurement. Energy monitor projects. ₱100.</div><div class="api-card-tag">Power</div></div>
+            <div class="api-card"><div class="api-card-name">📊 MPU-6050</div><div class="api-card-desc">Accelerometer + gyroscope. Tilt, motion. ₱80.</div><div class="api-card-tag">Motion</div></div>
+            <div class="api-card"><div class="api-card-name">🆔 RC522 RFID</div><div class="api-card-desc">Read/write RFID cards. Access control, attendance. ₱80.</div><div class="api-card-tag">RFID</div></div>
+            <div class="api-card"><div class="api-card-name">📸 ESP32-CAM</div><div class="api-card-desc">WiFi camera module. Live streaming, security. ₱350.</div><div class="api-card-tag">Camera</div></div>
+            <div class="api-card"><div class="api-card-name">🔊 KY-038 Sound</div><div class="api-card-desc">Sound detection. Clap-to-on switches. ₱30.</div><div class="api-card-tag">Sound</div></div>
+            <div class="api-card"><div class="api-card-name">⚖️ HX711 Load Cell</div><div class="api-card-desc">Weight measurement. Digital scales. ₱150.</div><div class="api-card-tag">Weight</div></div>
+          </div>
+        </div>
+
+        <!-- PROJECTS -->
+        <div class="excel-panel ard-panel" data-apanel="projects">
+          <div class="excel-cards">
+            <div class="excel-card excel-card-feature">
+              <h3>🌱 Smart Irrigation (BSA/BSAgr)</h3>
+              <p>Soil moisture sensor + ESP32 + water pump. Auto-waters plants when dry, logs to web dashboard.</p>
+              <ul style="font-size:13px;color:var(--fg-muted);padding-left:18px;line-height:1.8;">
+                <li>Components: ESP32, soil sensor, relay, mini pump, jumper wires</li>
+                <li>Budget: ~₱800</li>
+                <li>Use case: rooftop garden, agricultural research</li>
+              </ul>
+            </div>
+
+            <div class="excel-card excel-card-feature">
+              <h3>🔐 RFID Attendance (BSIT/BSCpE)</h3>
+              <p>Student taps ID card → logs to Google Sheets + sends SMS to parent. Real BPO/school use case.</p>
+              <ul style="font-size:13px;color:var(--fg-muted);padding-left:18px;line-height:1.8;">
+                <li>Components: ESP32, RC522, OLED, buzzer</li>
+                <li>Budget: ~₱700</li>
+                <li>Replaces manual logbooks</li>
+              </ul>
+            </div>
+
+            <div class="excel-card excel-card-feature">
+              <h3>🚨 Smoke Alarm + SMS (BSCpE)</h3>
+              <p>MQ-2 gas sensor → ESP32 detects smoke → sends SMS via Semaphore API.</p>
+              <ul style="font-size:13px;color:var(--fg-muted);padding-left:18px;line-height:1.8;">
+                <li>Components: ESP32, MQ-2, buzzer, LED</li>
+                <li>Budget: ~₱500 + SMS load</li>
+                <li>Use case: home/store safety</li>
+              </ul>
+            </div>
+
+            <div class="excel-card">
+              <h3>🚲 Pet/Bike GPS Tracker</h3>
+              <p>NEO-6M GPS + SIM800L + battery. Sends location every 5 min to phone.</p>
+            </div>
+
+            <div class="excel-card">
+              <h3>💊 Pill Reminder Box</h3>
+              <p>RTC clock + buzzer + servo. Opens correct compartment at scheduled time.</p>
+            </div>
+
+            <div class="excel-card">
+              <h3>🅿️ Smart Parking System</h3>
+              <p>Multiple ultrasonic sensors + LED display. Shows available slots, capstone-grade.</p>
+            </div>
+
+            <div class="excel-card">
+              <h3>🌬️ Air Quality Monitor</h3>
+              <p>MQ-135 + DHT22 + ESP32. Real-time dashboard with PM2.5, CO2, temp, humidity.</p>
+            </div>
+
+            <div class="excel-card">
+              <h3>🐾 Pet Feeder (Wifi)</h3>
+              <p>Servo + ESP32 + auger. Schedule via web, dispense food. Camera optional.</p>
+            </div>
+
+            <div class="excel-card">
+              <h3>📦 Inventory Tracker</h3>
+              <p>RFID tags on items + reader at door. Auto in/out logging to database.</p>
+            </div>
+
+            <div class="excel-card">
+              <h3>🏠 Home Automation Hub</h3>
+              <p>ESP32 + relays for lights/appliances. Control via Blynk or Alexa.</p>
+            </div>
+
+            <div class="excel-card">
+              <h3>🎪 Crowd Counter</h3>
+              <p>2x ultrasonic at doors. Counts people in/out. Display total inside.</p>
+            </div>
+
+            <div class="excel-card">
+              <h3>💧 Water Level Monitor</h3>
+              <p>Ultrasonic on tank top + ESP32. Get text alert when low/full.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- LIBRARIES -->
+        <div class="excel-panel ard-panel" data-apanel="libs">
+          <p style="font-size:14px;color:var(--fg-muted);margin-bottom:var(--s4);text-align:center;">Install via Sketch → Include Library → Manage Libraries — then search.</p>
+          <div class="api-grid">
+            <a class="api-card" href="https://github.com/adafruit/DHT-sensor-library" target="_blank" rel="noopener"><div class="api-card-name">DHT sensor library</div><div class="api-card-desc">⭐ DHT11/DHT22 temperature + humidity. By Adafruit.</div><div class="api-card-tag">Sensors</div></a>
+            <a class="api-card" href="https://github.com/adafruit/Adafruit_SSD1306" target="_blank" rel="noopener"><div class="api-card-name">Adafruit SSD1306</div><div class="api-card-desc">OLED 128×64 display. Use with Adafruit GFX.</div><div class="api-card-tag">Display</div></a>
+            <a class="api-card" href="https://github.com/arduino-libraries/Servo" target="_blank" rel="noopener"><div class="api-card-name">Servo</div><div class="api-card-desc">Standard servo motor control. Built-in.</div><div class="api-card-tag">Motors</div></a>
+            <a class="api-card" href="https://github.com/PaulStoffregen/OneWire" target="_blank" rel="noopener"><div class="api-card-name">OneWire</div><div class="api-card-desc">For DS18B20 temperature sensor (waterproof).</div><div class="api-card-tag">Sensors</div></a>
+            <a class="api-card" href="https://github.com/knolleary/pubsubclient" target="_blank" rel="noopener"><div class="api-card-name">PubSubClient (MQTT)</div><div class="api-card-desc">MQTT for ESP32/ESP8266 IoT projects.</div><div class="api-card-tag">IoT</div></a>
+            <a class="api-card" href="https://github.com/bblanchon/ArduinoJson" target="_blank" rel="noopener"><div class="api-card-name">ArduinoJson</div><div class="api-card-desc">Parse JSON responses from APIs. Essential for IoT.</div><div class="api-card-tag">⭐ IoT</div></a>
+            <a class="api-card" href="https://github.com/blynkkk/blynk-library" target="_blank" rel="noopener"><div class="api-card-name">Blynk</div><div class="api-card-desc">Mobile app dashboards. Drag-drop controls.</div><div class="api-card-tag">App</div></a>
+            <a class="api-card" href="https://github.com/miguelbalboa/rfid" target="_blank" rel="noopener"><div class="api-card-name">MFRC522 (RFID)</div><div class="api-card-desc">For RC522 RFID reader. Attendance projects.</div><div class="api-card-tag">RFID</div></a>
+            <a class="api-card" href="https://github.com/mikalhart/TinyGPSPlus" target="_blank" rel="noopener"><div class="api-card-name">TinyGPSPlus</div><div class="api-card-desc">GPS parsing for NEO-6M, etc.</div><div class="api-card-tag">GPS</div></a>
+            <a class="api-card" href="https://github.com/bogde/HX711" target="_blank" rel="noopener"><div class="api-card-name">HX711</div><div class="api-card-desc">Load cell / weight sensor. Digital scale projects.</div><div class="api-card-tag">Weight</div></a>
+            <a class="api-card" href="https://github.com/FastLED/FastLED" target="_blank" rel="noopener"><div class="api-card-name">FastLED</div><div class="api-card-desc">Control WS2812B (NeoPixel) LEDs. Cool light effects.</div><div class="api-card-tag">LED</div></a>
+            <a class="api-card" href="https://github.com/me-no-dev/ESPAsyncWebServer" target="_blank" rel="noopener"><div class="api-card-name">ESPAsyncWebServer</div><div class="api-card-desc">Make web server on ESP32/ESP8266. Real apps.</div><div class="api-card-tag">⭐ Web</div></a>
+          </div>
+        </div>
+
+        <!-- LEARN -->
+        <div class="excel-panel ard-panel" data-apanel="learn">
+          <div class="api-grid">
+            <a class="api-card" href="https://www.arduino.cc/en/Tutorial/HomePage" target="_blank" rel="noopener"><div class="api-card-name">⭐ Arduino Official Tutorials</div><div class="api-card-desc">From Blink to advanced. Start here.</div><div class="api-card-tag">⭐ Start</div></a>
+            <a class="api-card" href="https://learn.adafruit.com/" target="_blank" rel="noopener"><div class="api-card-name">⭐ Adafruit Learn</div><div class="api-card-desc">Best electronics tutorials anywhere. ESP32, RPi, Arduino.</div><div class="api-card-tag">⭐ Best</div></a>
+            <a class="api-card" href="https://learn.sparkfun.com/" target="_blank" rel="noopener"><div class="api-card-name">SparkFun Learn</div><div class="api-card-desc">Massive hardware tutorial library.</div><div class="api-card-tag">Tutorials</div></a>
+            <a class="api-card" href="https://randomnerdtutorials.com/" target="_blank" rel="noopener"><div class="api-card-name">⭐ Random Nerd Tutorials</div><div class="api-card-desc">Best ESP32/ESP8266 tutorials. Step-by-step with code.</div><div class="api-card-tag">⭐ ESP32</div></a>
+            <a class="api-card" href="https://www.youtube.com/@PaulMcWhorter" target="_blank" rel="noopener"><div class="api-card-name">Paul McWhorter (YT)</div><div class="api-card-desc">Best Arduino YouTube teacher. Calm, thorough.</div><div class="api-card-tag">YouTube</div></a>
+            <a class="api-card" href="https://www.youtube.com/@DroneBotWorkshop" target="_blank" rel="noopener"><div class="api-card-name">DroneBot Workshop</div><div class="api-card-desc">Quality Arduino/RPi/IoT tutorials.</div><div class="api-card-tag">YouTube</div></a>
+            <a class="api-card" href="https://www.youtube.com/@AndreasSpiess" target="_blank" rel="noopener"><div class="api-card-name">Andreas Spiess</div><div class="api-card-desc">"Guy with Swiss accent". Advanced IoT/sensor reviews.</div><div class="api-card-tag">Advanced</div></a>
+            <a class="api-card" href="https://www.youtube.com/@TechWithMike" target="_blank" rel="noopener"><div class="api-card-name">TechWithMike</div><div class="api-card-desc">Practical Arduino projects with Filipino accent.</div><div class="api-card-tag">PH</div></a>
+            <a class="api-card" href="https://www.hackster.io/" target="_blank" rel="noopener"><div class="api-card-name">Hackster.io</div><div class="api-card-desc">Project gallery. Get capstone inspiration from real builds.</div><div class="api-card-tag">⭐ Projects</div></a>
+            <a class="api-card" href="https://www.instructables.com/circuits/" target="_blank" rel="noopener"><div class="api-card-name">Instructables</div><div class="api-card-desc">Step-by-step build guides with photos.</div><div class="api-card-tag">Tutorials</div></a>
+            <a class="api-card" href="https://www.youtube.com/playlist?list=PLA567CE235D39FA84" target="_blank" rel="noopener"><div class="api-card-name">Jeremy Blum Arduino</div><div class="api-card-desc">Classic 15-part Arduino series. Free.</div><div class="api-card-tag">Course</div></a>
+            <a class="api-card" href="https://docs.platformio.org/" target="_blank" rel="noopener"><div class="api-card-name">PlatformIO Docs</div><div class="api-card-desc">For when you outgrow Arduino IDE. Pro toolchain.</div><div class="api-card-tag">Pro</div></a>
           </div>
         </div>
       </div>
