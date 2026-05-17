@@ -15,6 +15,10 @@
     { "source": "/currency/:path*", "destination": "/api/index.js" },
     { "source": "/weather", "destination": "/api/index.js" },
     { "source": "/weather/:path*", "destination": "/api/index.js" },
+    { "source": "/trivia", "destination": "/api/index.js" },
+    { "source": "/trivia/:path*", "destination": "/api/index.js" },
+    { "source": "/free-office", "destination": "/api/index.js" },
+    { "source": "/free-office/:path*", "destination": "/api/index.js" },
     { "source": "/api", "destination": "/api/index.js" },
     { "source": "/api/:path*", "destination": "/api/index.js" }
   ],
