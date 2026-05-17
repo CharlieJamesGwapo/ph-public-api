@@ -19,12 +19,18 @@
     { "source": "/trivia/:path*", "destination": "/api/index.js" },
     { "source": "/free-office", "destination": "/api/index.js" },
     { "source": "/free-office/:path*", "destination": "/api/index.js" },
+    { "source": "/jeepney", "destination": "/api/index.js" },
+    { "source": "/jeepney/:path*", "destination": "/api/index.js" },
+    { "source": "/barangays", "destination": "/api/index.js" },
+    { "source": "/barangays/:path*", "destination": "/api/index.js" },
+    { "source": "/image", "destination": "/api/index.js" },
+    { "source": "/image/:path*", "destination": "/api/index.js" },
     { "source": "/api", "destination": "/api/index.js" },
     { "source": "/api/:path*", "destination": "/api/index.js" }
   ],
   "functions": {
     "api/index.js": {
-      "includeFiles": "data/**"
+      "includeFiles": "{data/**,scripts/data-pool.json}"
     }
   }
 }
