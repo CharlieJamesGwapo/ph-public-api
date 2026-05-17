@@ -950,6 +950,19 @@ ${d.email ? `<section class="contact"><h2>Contact</h2><p>📧 <a href="mailto:${
     .catch(() => { grid.innerHTML = '<p style="color: var(--fg-muted); text-align: center;">Failed to load.</p>'; });
 })();
 
+// ===================== Year + footer share + dynamic touches =====================
+(function setupDynamic() {
+  const y = document.getElementById('year');
+  if (y) y.textContent = new Date().getFullYear();
+
+  // Footer share trigger
+  const fs = document.getElementById('footer-share');
+  if (fs) fs.addEventListener('click', (e) => {
+    e.preventDefault();
+    document.getElementById('fab-share')?.click();
+  });
+})();
+
 // ===================== Share button =====================
 (function setupShare() {
   const btn = $('#fab-share');
