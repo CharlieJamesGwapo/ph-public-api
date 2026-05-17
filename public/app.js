@@ -1243,6 +1243,19 @@ Interpretation:,4.21-5.00 = Strongly Agree,,,,
   });
 })();
 
+// ===================== Arduino Mastery tabs =====================
+(function setupArduino() {
+  const tabs = $$('.ard-tab');
+  const panels = $$('.ard-panel');
+  if (!tabs.length) return;
+  tabs.forEach(t => t.addEventListener('click', () => {
+    tabs.forEach(x => x.classList.remove('active'));
+    panels.forEach(x => x.classList.remove('active'));
+    t.classList.add('active');
+    $(`.ard-panel[data-apanel="${t.dataset.atab}"]`)?.classList.add('active');
+  }));
+})();
+
 // ===================== Word Mastery tabs =====================
 (function setupWord() {
   const tabs = $$('.word-tab');
