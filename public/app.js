@@ -39,6 +39,139 @@ async function callAI({ question, mode = 'general', history = [] }) {
   return r.json();
 }
 
+// ===================== Language picker (i18n) =====================
+const I18N = {
+  en: {
+    'nav.start': 'Start',
+    'nav.ai': 'Kuya AI',
+    'nav.tools': 'Tools',
+    'nav.apis': 'APIs',
+    'nav.code': 'Code',
+    'nav.office': 'Office',
+    'nav.cloud': 'Cloud',
+    'nav.courses': 'Courses',
+    'hero.pill': 'Live · 5 AI tutors · 13+ APIs · 7+ tools — all free',
+    'hero.title1': 'Everything you need,',
+    'hero.title2': 'in one free platform.',
+    'hero.subtitle': '<strong>PH StudentKit</strong> — free APIs, free AI tutor (Kuya AI), free study tools (GPA, Pomodoro, currency converter), and a legal way to get Microsoft Office. Built for Filipino students working on thesis, capstone, or assignments.',
+    'hero.cta1': 'Ask Kuya AI ✨',
+    'hero.cta2': 'Try the tools',
+    'hero.cta3': 'Quick Start →',
+    'stats.apis': 'Free APIs',
+    'stats.tools': 'Free tools',
+    'stats.scholarships': 'Scholarships',
+    'stats.answers': 'Kuya AI answers',
+  },
+  tl: {
+    'nav.start': 'Simula',
+    'nav.ai': 'Kuya AI',
+    'nav.tools': 'Mga Kagamitan',
+    'nav.apis': 'Mga API',
+    'nav.code': 'Code',
+    'nav.office': 'Office',
+    'nav.cloud': 'Cloud',
+    'nav.courses': 'Mga Kurso',
+    'hero.pill': 'Buhay · 5 AI tutors · 13+ APIs · 7+ kagamitan — libre lahat',
+    'hero.title1': 'Lahat ng kailangan mo,',
+    'hero.title2': 'sa isang libreng plataporma.',
+    'hero.subtitle': '<strong>PH StudentKit</strong> — libreng API, libreng AI tutor (Kuya AI), libreng pang-aaral na kagamitan (GPA, Pomodoro, currency converter), at legal na paraan para makuha ang Microsoft Office. Ginawa para sa mga estudyanteng Pilipino na nagtatrabaho sa thesis, capstone, o mga takdang-aralin.',
+    'hero.cta1': 'Tanungin si Kuya AI ✨',
+    'hero.cta2': 'Subukan ang mga kagamitan',
+    'hero.cta3': 'Magsimula →',
+    'stats.apis': 'Libreng API',
+    'stats.tools': 'Libreng kagamitan',
+    'stats.scholarships': 'Iskolarship',
+    'stats.answers': 'Sagot ni Kuya AI',
+  },
+  ceb: {
+    'nav.start': 'Sugod',
+    'nav.ai': 'Kuya AI',
+    'nav.tools': 'Mga Galamiton',
+    'nav.apis': 'Mga API',
+    'nav.code': 'Code',
+    'nav.office': 'Office',
+    'nav.cloud': 'Cloud',
+    'nav.courses': 'Mga Kurso',
+    'hero.pill': 'Buhi · 5 AI tutors · 13+ APIs · 7+ galamiton — libre tanan',
+    'hero.title1': 'Tanan nga imong gikinahanglan,',
+    'hero.title2': 'sa usa ka libreng plataporma.',
+    'hero.subtitle': '<strong>PH StudentKit</strong> — libreng API, libreng AI tutor (Kuya AI), libreng panghimuong galamiton (GPA, Pomodoro, currency converter), ug legal nga paagi aron makuha ang Microsoft Office. Gihimo para sa mga estudyanteng Pilipino nga nagtrabaho sa ilang thesis, capstone, o mga buluhaton.',
+    'hero.cta1': 'Pangutan-a si Kuya AI ✨',
+    'hero.cta2': 'Sulayi ang mga galamiton',
+    'hero.cta3': 'Magsugod →',
+    'stats.apis': 'Libreng API',
+    'stats.tools': 'Libreng galamiton',
+    'stats.scholarships': 'Iskolarship',
+    'stats.answers': 'Tubag ni Kuya AI',
+  },
+  tag: { // Taglish (mix Tagalog + English naturally)
+    'nav.start': 'Start',
+    'nav.ai': 'Kuya AI',
+    'nav.tools': 'Tools',
+    'nav.apis': 'APIs',
+    'nav.code': 'Code',
+    'nav.office': 'Office',
+    'nav.cloud': 'Cloud',
+    'nav.courses': 'Courses',
+    'hero.pill': 'Live · 5 AI tutors · 13+ APIs · 7+ tools — lahat libre',
+    'hero.title1': 'Lahat ng kailangan mo,',
+    'hero.title2': 'in one free platform.',
+    'hero.subtitle': '<strong>PH StudentKit</strong> — free APIs, free AI tutor (Kuya AI), free study tools (GPA, Pomodoro, currency converter), at legal way para sa MS Office. Para sa mga Filipino students na may thesis, capstone, o assignment.',
+    'hero.cta1': 'I-ask si Kuya AI ✨',
+    'hero.cta2': 'I-try mga tools',
+    'hero.cta3': 'Quick Start →',
+    'stats.apis': 'Free APIs',
+    'stats.tools': 'Free tools',
+    'stats.scholarships': 'Scholarships',
+    'stats.answers': 'Sagot ni Kuya AI',
+  },
+};
+
+const LANG_LABELS = { en: 'EN', tl: 'TL', ceb: 'CEB', tag: 'TAG' };
+
+function applyLang(lang) {
+  if (!I18N[lang]) lang = 'en';
+  const dict = I18N[lang];
+  document.documentElement.setAttribute('lang', lang === 'tl' ? 'fil' : lang === 'ceb' ? 'ceb' : 'en');
+  $$('[data-i18n]').forEach(el => {
+    const key = el.dataset.i18n;
+    if (dict[key]) el.innerHTML = dict[key];
+  });
+  const cur = $('#lang-current');
+  if (cur) cur.textContent = LANG_LABELS[lang] || 'EN';
+  $$('.lang-opt').forEach(b => b.classList.toggle('active', b.dataset.lang === lang));
+  try { localStorage.setItem('lang', lang); } catch {}
+}
+
+(function setupLang() {
+  const btn = $('#lang-btn');
+  const menu = $('#lang-menu');
+  if (!btn || !menu) return;
+
+  // Restore saved or detect browser
+  let saved = null;
+  try { saved = localStorage.getItem('lang'); } catch {}
+  if (!saved) {
+    const nav = (navigator.language || 'en').toLowerCase();
+    if (nav.startsWith('fil') || nav.startsWith('tl')) saved = 'tl';
+    else if (nav.startsWith('ceb')) saved = 'ceb';
+    else saved = 'en';
+  }
+  applyLang(saved);
+
+  btn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    menu.hidden = !menu.hidden;
+  });
+  $$('.lang-opt').forEach(opt => opt.addEventListener('click', () => {
+    applyLang(opt.dataset.lang);
+    menu.hidden = true;
+  }));
+  document.addEventListener('click', (e) => {
+    if (!menu.hidden && !menu.contains(e.target) && e.target !== btn) menu.hidden = true;
+  });
+})();
+
 // ===================== Theme toggle =====================
 (function setupTheme() {
   const btn = $('#theme-toggle');

@@ -84,14 +84,26 @@
         <kbd class="search-kbd">⌘K</kbd>
       </button>
       <nav class="nav-links" aria-label="Primary">
-        <a class="nav-link" href="#start">Start</a>
-        <a class="nav-link" href="#ai">Kuya AI</a>
-        <a class="nav-link" href="#tools">Tools</a>
-        <a class="nav-link" href="#endpoints">APIs</a>
-        <a class="nav-link" href="#learn-code">Code</a>
-        <a class="nav-link" href="#office">Office</a>
-        <a class="nav-link" href="#cloud">Cloud</a>
-        <a class="nav-link" href="#by-course">Courses</a>
+        <a class="nav-link" href="#start" data-i18n="nav.start">Start</a>
+        <a class="nav-link" href="#ai" data-i18n="nav.ai">Kuya AI</a>
+        <a class="nav-link" href="#tools" data-i18n="nav.tools">Tools</a>
+        <a class="nav-link" href="#endpoints" data-i18n="nav.apis">APIs</a>
+        <a class="nav-link" href="#learn-code" data-i18n="nav.code">Code</a>
+        <a class="nav-link" href="#office" data-i18n="nav.office">Office</a>
+        <a class="nav-link" href="#cloud" data-i18n="nav.cloud">Cloud</a>
+        <a class="nav-link" href="#by-course" data-i18n="nav.courses">Courses</a>
+        <div class="lang-picker">
+          <button class="lang-btn" id="lang-btn" aria-label="Choose language" aria-haspopup="true">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+            <span id="lang-current">EN</span>
+          </button>
+          <div class="lang-menu" id="lang-menu" hidden>
+            <button class="lang-opt" data-lang="en">🇬🇧 English</button>
+            <button class="lang-opt" data-lang="tl">🇵🇭 Tagalog</button>
+            <button class="lang-opt" data-lang="ceb">🌴 Cebuano</button>
+            <button class="lang-opt" data-lang="tag">💬 Taglish</button>
+          </div>
+        </div>
         <button class="theme-toggle" id="theme-toggle" aria-label="Toggle dark mode">
           <svg class="theme-icon-moon" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
           <svg class="theme-icon-sun" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
@@ -132,13 +144,13 @@
       <div class="container">
         <div class="hero-pill">
           <span class="hero-pill-dot"></span>
-          Live · 5 AI tutors · 13+ APIs · 7+ tools — lahat libre
+          <span data-i18n="hero.pill">Live · 5 AI tutors · 13+ APIs · 7+ tools — lahat libre</span>
         </div>
         <h1 class="hero-title">
-          Lahat ng kailangan mo,
-          <span class="hero-title-accent">in one free platform.</span>
+          <span data-i18n="hero.title1">Lahat ng kailangan mo,</span>
+          <span class="hero-title-accent" data-i18n="hero.title2">in one free platform.</span>
         </h1>
-        <p class="hero-subtitle">
+        <p class="hero-subtitle" data-i18n="hero.subtitle">
           <strong>PH StudentKit</strong> — free APIs, free AI tutor (Kuya AI), free study tools (GPA, Pomodoro, currency converter), and a legal way to get Microsoft Office. Built for Filipino students working on thesis, capstone, or assignments.
         </p>
 
@@ -152,16 +164,16 @@
         </div>
 
         <div class="hero-actions">
-          <a href="#ai" class="btn btn-primary">Ask Kuya AI ✨</a>
-          <a href="#tools" class="btn btn-accent">Try the tools</a>
-          <a href="#start" class="btn btn-secondary">Quick Start →</a>
+          <a href="#ai" class="btn btn-primary" data-i18n="hero.cta1">Ask Kuya AI ✨</a>
+          <a href="#tools" class="btn btn-accent" data-i18n="hero.cta2">Try the tools</a>
+          <a href="#start" class="btn btn-secondary" data-i18n="hero.cta3">Quick Start →</a>
         </div>
 
         <div class="hero-stats" id="hero-stats">
-          <div class="stat"><div class="stat-num" data-stat="apis">13+</div><div class="stat-label">Free APIs</div></div>
-          <div class="stat"><div class="stat-num" data-stat="tools">7+</div><div class="stat-label">Free tools</div></div>
-          <div class="stat"><div class="stat-num" data-stat="scholarships">10</div><div class="stat-label">Scholarships</div></div>
-          <div class="stat"><div class="stat-num">∞</div><div class="stat-label">Kuya AI answers</div></div>
+          <div class="stat"><div class="stat-num" data-stat="apis">13+</div><div class="stat-label" data-i18n="stats.apis">Free APIs</div></div>
+          <div class="stat"><div class="stat-num" data-stat="tools">7+</div><div class="stat-label" data-i18n="stats.tools">Free tools</div></div>
+          <div class="stat"><div class="stat-num" data-stat="scholarships">10</div><div class="stat-label" data-i18n="stats.scholarships">Scholarships</div></div>
+          <div class="stat"><div class="stat-num">∞</div><div class="stat-label" data-i18n="stats.answers">Kuya AI answers</div></div>
         </div>
       </div>
     </section>
