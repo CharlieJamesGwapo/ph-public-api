@@ -39,6 +39,8 @@
         <a class="nav-link" href="#ai">Kuya AI</a>
         <a class="nav-link" href="#tools">Tools</a>
         <a class="nav-link" href="#endpoints">APIs</a>
+        <a class="nav-link" href="#learn-code">Code</a>
+        <a class="nav-link" href="#office-skills">Excel/Word</a>
         <a class="nav-link" href="#office">Office</a>
         <a class="nav-link" href="#open-ai">Open AI</a>
         <button class="theme-toggle" id="theme-toggle" aria-label="Toggle dark mode">
@@ -75,7 +77,7 @@
       <div class="container">
         <div class="hero-pill">
           <span class="hero-pill-dot"></span>
-          Live · v0.4.0 · Lahat libre, walang API key
+          Live · 5 AI tutors · 13+ APIs · 7+ tools — lahat libre
         </div>
         <h1 class="hero-title">
           Lahat ng kailangan mo,
@@ -154,38 +156,167 @@
       <div class="container">
         <div class="section-head">
           <h2 class="section-title">✨ Meet <span class="text-gradient">Kuya AI</span></h2>
-          <p class="section-subtitle">Free Filipino AI study tutor. Sumasagot sa Tagalog, English, o Taglish. Pwede mong itanong ang homework, capstone ideas, code bugs, paano gumawa ng intro, kahit study tips.</p>
+          <p class="section-subtitle">5 specialized AI tutors in one. Pick a mode — General, Coding, Research, Writing, or Math. All free, no signup, racing across providers for fastest response.</p>
         </div>
 
         <div class="ai-box">
+          <!-- MODE TABS -->
+          <div class="ai-modes" role="tablist" aria-label="AI mode">
+            <button class="ai-mode-tab active" data-mode="general" role="tab" aria-selected="true">
+              <span class="ai-mode-emoji">👋</span><span class="ai-mode-label">Kuya</span>
+            </button>
+            <button class="ai-mode-tab" data-mode="coding" role="tab">
+              <span class="ai-mode-emoji">💻</span><span class="ai-mode-label">Coder</span>
+            </button>
+            <button class="ai-mode-tab" data-mode="research" role="tab">
+              <span class="ai-mode-emoji">📚</span><span class="ai-mode-label">Research</span>
+            </button>
+            <button class="ai-mode-tab" data-mode="writing" role="tab">
+              <span class="ai-mode-emoji">✍️</span><span class="ai-mode-label">Writer</span>
+            </button>
+            <button class="ai-mode-tab" data-mode="math" role="tab">
+              <span class="ai-mode-emoji">🧮</span><span class="ai-mode-label">Math</span>
+            </button>
+            <button class="ai-mode-tab" data-mode="marketing" role="tab">
+              <span class="ai-mode-emoji">📣</span><span class="ai-mode-label">Marketing</span>
+            </button>
+            <button class="ai-mode-tab" data-mode="career" role="tab">
+              <span class="ai-mode-emoji">💼</span><span class="ai-mode-label">Career</span>
+            </button>
+          </div>
+
           <div id="ai-chat" class="ai-chat" aria-live="polite">
             <div class="ai-msg ai-msg-bot">
               <div class="ai-avatar">K</div>
-              <div class="ai-bubble"><strong>Hi! I'm Kuya AI 👋</strong>
-Ask me anything — homework, capstone ideas, coding bugs, paano mag-Excel, kahit chika lang. Try one of the example questions below or type your own.</div>
+              <div class="ai-bubble" id="ai-intro"><strong>Hi! I'm Kuya AI 👋</strong>
+Pick a mode above (Coder, Research, Writer, Math) or just ask me anything. Tagalog/English/Taglish all OK.</div>
             </div>
           </div>
 
-          <div class="ai-suggestions">
-            <button class="ai-chip" data-q="Bigyan mo ako ng 5 capstone project ideas using web development para sa tourism management.">5 capstone ideas (tourism)</button>
-            <button class="ai-chip" data-q="Explain Big O notation in simple Taglish with examples.">Explain Big O sa Taglish</button>
-            <button class="ai-chip" data-q="Paano gumawa ng research paper introduction? Step by step please.">Paano mag-write ng intro?</button>
-            <button class="ai-chip" data-q="Translate to formal English: 'Sir, pa-extend po ng deadline ng project namin kasi may sakit po ako kahapon.'">Translate Tagalog → English</button>
-            <button class="ai-chip" data-q="Generate a 5-question quiz about Philippine history for a college student.">Generate a quiz</button>
-            <button class="ai-chip" data-q="Anong difference ng thesis at capstone project?">Thesis vs capstone?</button>
+          <div class="ai-suggestions" id="ai-chips">
+            <!-- Chips populated by JS depending on mode -->
           </div>
 
           <form id="ai-form" class="ai-form">
             <input id="ai-input" type="text" placeholder="Ask anything — Tagalog, English, or Taglish OK" autocomplete="off" maxlength="500" required />
             <button type="submit" id="ai-send" class="btn btn-primary">Send</button>
           </form>
-          <p class="ai-disclaimer">Free · Powered by Google Gemini + Hack Club AI (open) · Always double-check facts</p>
+          <p class="ai-disclaimer">Free · racing across Gemini + Pollinations + HackClub for speed · Always double-check facts</p>
+        </div>
+
+        <!-- AI IMAGE GENERATOR -->
+        <div class="ai-box" style="margin-top: var(--s5);">
+          <h3 style="font-size: 18px; font-weight: 700; margin-bottom: var(--s2); display: flex; align-items: center; gap: var(--s2);">🎨 AI Image Generator</h3>
+          <p style="font-size: 13px; color: var(--fg-muted); margin-bottom: var(--s3);">Free, no key. Generate images for your slides, presentations, capstone mockups. Powered by Pollinations.ai.</p>
+          <form id="img-form" class="ai-form" style="margin-bottom: var(--s3);">
+            <input id="img-prompt" type="text" placeholder="e.g. Filipino students studying at sunset in Boracay, digital art" autocomplete="off" maxlength="300" required />
+            <button type="submit" id="img-send" class="btn btn-primary">Generate</button>
+          </form>
+          <div class="ai-suggestions">
+            <button class="ai-chip img-chip" data-p="Filipino jeepney on EDSA, watercolor painting">Jeepney watercolor</button>
+            <button class="ai-chip img-chip" data-p="Modern university campus in Cagayan de Oro, sunny day, 3d render">CDO campus</button>
+            <button class="ai-chip img-chip" data-p="Studious Filipino college student with laptop in a coffee shop, photorealistic">Study photo</button>
+            <button class="ai-chip img-chip" data-p="Philippine flag flowing in wind, dramatic, cinematic lighting">PH flag art</button>
+          </div>
+          <div id="img-output"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- BUILDERS (AI-powered) -->
+    <section id="builders" class="section section-muted">
+      <div class="container">
+        <div class="section-head">
+          <h2 class="section-title">🚀 AI Builders</h2>
+          <p class="section-subtitle">Powered by Kuya AI. Tell the AI your idea, draft your resume, or sketch your portfolio — get polished output in seconds. Download as HTML/PDF/Word. Host on Vercel free.</p>
+        </div>
+
+        <div class="builders-grid">
+
+          <!-- IDEA IMPROVER -->
+          <div class="builder-card">
+            <div class="builder-head">
+              <span class="builder-icon">💡</span>
+              <h3>Idea Improver</h3>
+            </div>
+            <p>Type your capstone, business, or project idea. AI gives you specific improvements + risks + 3 next steps.</p>
+            <textarea id="idea-input" placeholder="e.g. I want to build a mobile app for jeepney route tracking sa Cagayan de Oro..." rows="4" maxlength="800"></textarea>
+            <button class="btn btn-primary" id="idea-go" style="width: 100%; margin-top: var(--s2);">Improve my idea ✨</button>
+            <div id="idea-output" class="builder-output" hidden></div>
+          </div>
+
+          <!-- RESUME BUILDER -->
+          <div class="builder-card">
+            <div class="builder-head">
+              <span class="builder-icon">📄</span>
+              <h3>Resume Builder</h3>
+            </div>
+            <p>Fill out the form. AI polishes the wording. Download as PDF (print) or Word.</p>
+            <div class="resume-form">
+              <input type="text" id="r-name" placeholder="Full Name" />
+              <input type="text" id="r-title" placeholder="Job title or course (e.g. BS Computer Science / Fresh Grad)" />
+              <input type="email" id="r-email" placeholder="Email" />
+              <input type="text" id="r-phone" placeholder="Phone (+63...)" />
+              <input type="text" id="r-location" placeholder="Location (e.g. Cagayan de Oro, Philippines)" />
+              <input type="text" id="r-links" placeholder="GitHub / LinkedIn / Portfolio links (comma separated)" />
+              <textarea id="r-edu" placeholder="Education (e.g. BS Computer Science, USTP, 2022–2026, GPA 1.5)" rows="2"></textarea>
+              <textarea id="r-exp" placeholder="Experience or projects — describe in 1-3 sentences each. AI will polish." rows="4"></textarea>
+              <textarea id="r-skills" placeholder="Skills (comma separated: Python, JavaScript, MS Excel, Communication...)" rows="2"></textarea>
+            </div>
+            <button class="btn btn-primary" id="r-go" style="width: 100%; margin-top: var(--s2);">Generate resume ✨</button>
+            <div id="r-output" class="builder-output" hidden></div>
+            <div id="r-actions" hidden style="display: grid; grid-template-columns: 1fr 1fr; gap: var(--s2); margin-top: var(--s3);">
+              <button class="btn btn-secondary" id="r-pdf">📥 Download PDF</button>
+              <button class="btn btn-secondary" id="r-word">📥 Download Word</button>
+            </div>
+          </div>
+
+          <!-- PORTFOLIO BUILDER -->
+          <div class="builder-card">
+            <div class="builder-head">
+              <span class="builder-icon">🌐</span>
+              <h3>Portfolio Builder</h3>
+            </div>
+            <p>Generate a complete single-page portfolio website. Preview it live, then download HTML — drag-drop to Vercel for free hosting.</p>
+            <div class="resume-form">
+              <input type="text" id="p-name" placeholder="Your name" />
+              <input type="text" id="p-tagline" placeholder="One-line tagline (e.g. CS Student · Web Developer · Cagayan de Oro)" />
+              <textarea id="p-about" placeholder="About me — 2-3 sentences. AI will polish." rows="3"></textarea>
+              <textarea id="p-projects" placeholder="Projects (1 per line — name : description). E.g.&#10;PH StudentKit : Free AI tools for Filipino students&#10;Tourism App : Built with Flutter and Firebase" rows="4"></textarea>
+              <input type="text" id="p-email" placeholder="Contact email" />
+              <input type="text" id="p-links" placeholder="GitHub, LinkedIn, etc. (comma separated)" />
+              <select id="p-theme" style="padding: 10px; border-radius: var(--radius-sm); border: 1px solid var(--border-strong); background: var(--bg); color: var(--fg);">
+                <option value="ph">🇵🇭 Filipino flag accent (blue/red/yellow)</option>
+                <option value="dark">🌙 Dark / professional</option>
+                <option value="minimal">⚪ Minimal black &amp; white</option>
+                <option value="warm">🌅 Warm gradient (sunset)</option>
+              </select>
+            </div>
+            <button class="btn btn-primary" id="p-go" style="width: 100%; margin-top: var(--s2);">Generate portfolio ✨</button>
+            <div id="p-preview-wrap" hidden style="margin-top: var(--s3);">
+              <iframe id="p-preview" style="width: 100%; height: 500px; border: 1px solid var(--border); border-radius: var(--radius-md); background: white;"></iframe>
+              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: var(--s2); margin-top: var(--s3);">
+                <button class="btn btn-secondary" id="p-download">📥 Download index.html</button>
+                <a class="btn btn-accent" id="p-deploy" href="https://vercel.com/new" target="_blank" rel="noopener">🚀 Deploy to Vercel</a>
+              </div>
+              <details style="margin-top: var(--s3);">
+                <summary style="cursor: pointer; font-size: 13px; font-weight: 600; color: var(--fg-muted);">📚 How to deploy free on Vercel</summary>
+                <ol style="font-size: 13px; color: var(--fg-muted); padding-left: 24px; margin-top: var(--s2); line-height: 1.7;">
+                  <li>Click "Download index.html" above</li>
+                  <li>Go to <a href="https://vercel.com/new" target="_blank" rel="noopener">vercel.com/new</a> and sign up with GitHub (libre)</li>
+                  <li>Drag the <code>index.html</code> file into the Vercel upload zone</li>
+                  <li>Click Deploy. You get a free URL: <code>yourname.vercel.app</code></li>
+                  <li>Done! Share it with employers.</li>
+                </ol>
+              </details>
+            </div>
+          </div>
         </div>
       </div>
     </section>
 
     <!-- STUDY TOOLS -->
-    <section id="tools" class="section section-muted">
+    <section id="tools" class="section">
       <div class="container">
         <div class="section-head">
           <h2 class="section-title">Free study tools 🛠️</h2>
@@ -444,6 +575,227 @@ Ask me anything — homework, capstone ideas, coding bugs, paano mag-Excel, kahi
       </div>
     </section>
 
+    <!-- LEARN PROGRAMMING -->
+    <section id="learn-code" class="section section-muted">
+      <div class="container">
+        <div class="section-head">
+          <h2 class="section-title">💻 Learn Programming — Free</h2>
+          <p class="section-subtitle">Hand-picked free resources for every major language and skill level. From "wala pang alam" to "ready for interviews".</p>
+        </div>
+
+        <div class="lang-grid">
+          <div class="lang-card lang-card-feature">
+            <div class="lang-header"><span class="lang-icon">🐍</span><h3>Python</h3></div>
+            <p>Best beginner language. Used for AI, web, data science, automation.</p>
+            <ul class="lang-links">
+              <li><a href="https://www.python.org/about/gettingstarted/" target="_blank" rel="noopener">Official Python tutorial</a></li>
+              <li><a href="https://www.freecodecamp.org/learn/scientific-computing-with-python/" target="_blank" rel="noopener">freeCodeCamp Python course</a></li>
+              <li><a href="https://www.kaggle.com/learn/python" target="_blank" rel="noopener">Kaggle Python (free, with exercises)</a></li>
+              <li><a href="https://www.hackerrank.com/domains/python" target="_blank" rel="noopener">HackerRank Python practice</a></li>
+            </ul>
+          </div>
+
+          <div class="lang-card lang-card-feature">
+            <div class="lang-header"><span class="lang-icon">⚡</span><h3>JavaScript</h3></div>
+            <p>Required for websites. Run in any browser, no install needed.</p>
+            <ul class="lang-links">
+              <li><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide" target="_blank" rel="noopener">MDN JavaScript Guide</a></li>
+              <li><a href="https://javascript.info/" target="_blank" rel="noopener">javascript.info (deep dive)</a></li>
+              <li><a href="https://www.freecodecamp.org/learn/javascript-algorithms-and-data-structures/" target="_blank" rel="noopener">freeCodeCamp JS</a></li>
+              <li><a href="https://www.theodinproject.com/" target="_blank" rel="noopener">The Odin Project (full web dev)</a></li>
+            </ul>
+          </div>
+
+          <div class="lang-card lang-card-feature">
+            <div class="lang-header"><span class="lang-icon">🌐</span><h3>HTML &amp; CSS</h3></div>
+            <p>Start here if you want to build websites. Easy to learn, fun to make.</p>
+            <ul class="lang-links">
+              <li><a href="https://developer.mozilla.org/en-US/docs/Learn/HTML" target="_blank" rel="noopener">MDN HTML tutorial</a></li>
+              <li><a href="https://developer.mozilla.org/en-US/docs/Learn/CSS" target="_blank" rel="noopener">MDN CSS tutorial</a></li>
+              <li><a href="https://web.dev/learn/css/" target="_blank" rel="noopener">web.dev Learn CSS</a></li>
+              <li><a href="https://flexboxfroggy.com/" target="_blank" rel="noopener">Flexbox Froggy (game)</a></li>
+            </ul>
+          </div>
+
+          <div class="lang-card">
+            <div class="lang-header"><span class="lang-icon">☕</span><h3>Java</h3></div>
+            <p>Required sa marami sa PH universities (UP, USTP, MOSCAT). Object-oriented.</p>
+            <ul class="lang-links">
+              <li><a href="https://dev.java/learn/" target="_blank" rel="noopener">Official Java Tutorials</a></li>
+              <li><a href="https://www.codecademy.com/learn/learn-java" target="_blank" rel="noopener">Codecademy Java (free)</a></li>
+              <li><a href="https://hyperskill.org/tracks/1" target="_blank" rel="noopener">Hyperskill Java track</a></li>
+            </ul>
+          </div>
+
+          <div class="lang-card">
+            <div class="lang-header"><span class="lang-icon">🔵</span><h3>C / C++</h3></div>
+            <p>For data structures &amp; algorithms class. Required for embedded systems.</p>
+            <ul class="lang-links">
+              <li><a href="https://www.learncpp.com/" target="_blank" rel="noopener">LearnCpp.com (complete free book)</a></li>
+              <li><a href="https://cplusplus.com/doc/tutorial/" target="_blank" rel="noopener">cplusplus.com tutorial</a></li>
+              <li><a href="https://www.geeksforgeeks.org/c-plus-plus/" target="_blank" rel="noopener">GeeksforGeeks C++</a></li>
+            </ul>
+          </div>
+
+          <div class="lang-card">
+            <div class="lang-header"><span class="lang-icon">💎</span><h3>C# &amp; .NET</h3></div>
+            <p>For Windows apps, Unity game dev. Microsoft's main language.</p>
+            <ul class="lang-links">
+              <li><a href="https://dotnet.microsoft.com/en-us/learn/csharp" target="_blank" rel="noopener">Microsoft Learn C#</a></li>
+              <li><a href="https://learn.unity.com/" target="_blank" rel="noopener">Unity Learn (game dev)</a></li>
+              <li><a href="https://www.tutorialspoint.com/csharp/" target="_blank" rel="noopener">TutorialsPoint C#</a></li>
+            </ul>
+          </div>
+
+          <div class="lang-card">
+            <div class="lang-header"><span class="lang-icon">🐘</span><h3>PHP &amp; MySQL</h3></div>
+            <p>Used by many PH school enrollment systems. Easy backend.</p>
+            <ul class="lang-links">
+              <li><a href="https://www.php.net/manual/en/tutorial.php" target="_blank" rel="noopener">Official PHP Tutorial</a></li>
+              <li><a href="https://www.w3schools.com/php/" target="_blank" rel="noopener">W3Schools PHP</a></li>
+              <li><a href="https://laracasts.com/series/laravel-from-scratch-2022" target="_blank" rel="noopener">Laravel from Scratch (free)</a></li>
+            </ul>
+          </div>
+
+          <div class="lang-card">
+            <div class="lang-header"><span class="lang-icon">📱</span><h3>Mobile: Swift &amp; Kotlin</h3></div>
+            <p>Swift for iOS, Kotlin for Android. Both have great free courses.</p>
+            <ul class="lang-links">
+              <li><a href="https://developer.apple.com/tutorials/swiftui" target="_blank" rel="noopener">Apple SwiftUI Tutorials</a></li>
+              <li><a href="https://developer.android.com/courses/android-basics-compose/course" target="_blank" rel="noopener">Google Android Basics (Kotlin)</a></li>
+              <li><a href="https://www.hackingwithswift.com/100" target="_blank" rel="noopener">100 Days of Swift (free)</a></li>
+            </ul>
+          </div>
+
+          <div class="lang-card">
+            <div class="lang-header"><span class="lang-icon">🗃️</span><h3>SQL &amp; Databases</h3></div>
+            <p>Required for almost every backend job. Learn SELECT, JOIN, INSERT.</p>
+            <ul class="lang-links">
+              <li><a href="https://sqlbolt.com/" target="_blank" rel="noopener">SQLBolt (interactive)</a></li>
+              <li><a href="https://mode.com/sql-tutorial/" target="_blank" rel="noopener">Mode SQL Tutorial</a></li>
+              <li><a href="https://www.w3schools.com/sql/" target="_blank" rel="noopener">W3Schools SQL</a></li>
+              <li><a href="https://www.hackerrank.com/domains/sql" target="_blank" rel="noopener">HackerRank SQL practice</a></li>
+            </ul>
+          </div>
+
+          <div class="lang-card">
+            <div class="lang-header"><span class="lang-icon">⚛️</span><h3>React &amp; Next.js</h3></div>
+            <p>Modern frontend. Used by FB, Netflix, most startup PH companies.</p>
+            <ul class="lang-links">
+              <li><a href="https://react.dev/learn" target="_blank" rel="noopener">React Official Docs</a></li>
+              <li><a href="https://nextjs.org/learn" target="_blank" rel="noopener">Next.js Learn Course</a></li>
+              <li><a href="https://www.fullstackopen.com/en/" target="_blank" rel="noopener">Full Stack Open (University of Helsinki, FREE)</a></li>
+            </ul>
+          </div>
+
+          <div class="lang-card">
+            <div class="lang-header"><span class="lang-icon">🦀</span><h3>Rust &amp; Go</h3></div>
+            <p>Modern languages — fast, safe, well-paid. Worth learning sa thesis.</p>
+            <ul class="lang-links">
+              <li><a href="https://doc.rust-lang.org/book/" target="_blank" rel="noopener">The Rust Book (free)</a></li>
+              <li><a href="https://go.dev/tour/" target="_blank" rel="noopener">A Tour of Go</a></li>
+              <li><a href="https://gobyexample.com/" target="_blank" rel="noopener">Go by Example</a></li>
+            </ul>
+          </div>
+
+          <div class="lang-card">
+            <div class="lang-header"><span class="lang-icon">🎓</span><h3>CS Fundamentals</h3></div>
+            <p>The foundation for everything. Take time, no shortcut.</p>
+            <ul class="lang-links">
+              <li><a href="https://cs50.harvard.edu/x/2024/" target="_blank" rel="noopener">Harvard CS50 (free, world-class)</a></li>
+              <li><a href="https://teachyourselfcs.com/" target="_blank" rel="noopener">Teach Yourself CS (curriculum)</a></li>
+              <li><a href="https://missing.csail.mit.edu/" target="_blank" rel="noopener">MIT Missing Semester</a></li>
+              <li><a href="https://www.coursera.org/learn/algorithms-part1" target="_blank" rel="noopener">Princeton Algorithms (Coursera audit free)</a></li>
+            </ul>
+          </div>
+        </div>
+
+        <div style="margin-top: var(--s6); text-align: center;">
+          <p style="font-size: 14px; color: var(--fg-muted); margin-bottom: var(--s3);"><strong>Free tools to write code:</strong></p>
+          <div class="api-grid" style="max-width: 1000px; margin: 0 auto;">
+            <a class="api-card" href="https://code.visualstudio.com/" target="_blank" rel="noopener"><div class="api-card-name">VS Code</div><div class="api-card-desc">Best free code editor. Works for all languages. By Microsoft.</div><div class="api-card-tag">Editor</div></a>
+            <a class="api-card" href="https://replit.com/" target="_blank" rel="noopener"><div class="api-card-name">Replit</div><div class="api-card-desc">Code in 50+ languages directly in browser. No install needed.</div><div class="api-card-tag">Cloud IDE</div></a>
+            <a class="api-card" href="https://codesandbox.io/" target="_blank" rel="noopener"><div class="api-card-name">CodeSandbox</div><div class="api-card-desc">Browser-based dev environment. Great for React/Vue projects.</div><div class="api-card-tag">Cloud IDE</div></a>
+            <a class="api-card" href="https://github.com/" target="_blank" rel="noopener"><div class="api-card-name">GitHub</div><div class="api-card-desc">Store your code, work with classmates. Free for students.</div><div class="api-card-tag">Hosting</div></a>
+            <a class="api-card" href="https://github.com/education" target="_blank" rel="noopener"><div class="api-card-name">GitHub Student Pack</div><div class="api-card-desc">200+ paid tools FREE for verified students (Copilot, DigitalOcean, JetBrains).</div><div class="api-card-tag">⭐ Free pack</div></a>
+            <a class="api-card" href="https://www.jetbrains.com/community/education/" target="_blank" rel="noopener"><div class="api-card-name">JetBrains Edu</div><div class="api-card-desc">Free IntelliJ, PyCharm, WebStorm for students with .edu email.</div><div class="api-card-tag">⭐ Free for students</div></a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- OFFICE SKILLS -->
+    <section id="office-skills" class="section">
+      <div class="container">
+        <div class="section-head">
+          <h2 class="section-title">📊 Excel · Word · PowerPoint — Free Tutorials</h2>
+          <p class="section-subtitle">Master the apps you'll actually use for school work and your future job. All resources 100% free.</p>
+        </div>
+
+        <div class="office-skills-grid">
+          <div class="skill-card">
+            <div class="skill-icon" style="background: #2B7A2B;">📊</div>
+            <h3>Excel</h3>
+            <p>For data analysis, thesis tables, budget tracking, statistical analysis.</p>
+            <h4>Free tutorials:</h4>
+            <ul class="lang-links">
+              <li><a href="https://support.microsoft.com/en-us/excel" target="_blank" rel="noopener">Official Microsoft Excel help</a></li>
+              <li><a href="https://exceljet.net/" target="_blank" rel="noopener">ExcelJet — formulas &amp; shortcuts</a></li>
+              <li><a href="https://edu.gcfglobal.org/en/excel/" target="_blank" rel="noopener">GCFGlobal Excel (beginner→advanced)</a></li>
+              <li><a href="https://www.youtube.com/@ExcelCampus" target="_blank" rel="noopener">Excel Campus (YouTube)</a></li>
+              <li><a href="https://www.youtube.com/@LeilaGharani" target="_blank" rel="noopener">Leila Gharani (YouTube — best)</a></li>
+              <li><a href="https://learn.microsoft.com/en-us/training/paths/excel-fundamentals/" target="_blank" rel="noopener">Microsoft Learn Excel Path</a></li>
+            </ul>
+            <h4>Must-learn formulas:</h4>
+            <p style="font-family: var(--font-mono); font-size: 12px; background: var(--bg-subtle); padding: var(--s3); border-radius: var(--radius-sm);">SUM, AVERAGE, COUNTIF, VLOOKUP, IF, INDEX/MATCH, CONCAT, TEXT, NOW, IFERROR, SUMIFS, COUNTIFS, RANK</p>
+          </div>
+
+          <div class="skill-card">
+            <div class="skill-icon" style="background: #1B5BBF;">📝</div>
+            <h3>Word</h3>
+            <p>For thesis formatting, research papers, reports, letters.</p>
+            <h4>Free tutorials:</h4>
+            <ul class="lang-links">
+              <li><a href="https://support.microsoft.com/en-us/word" target="_blank" rel="noopener">Official Microsoft Word help</a></li>
+              <li><a href="https://edu.gcfglobal.org/en/word/" target="_blank" rel="noopener">GCFGlobal Word tutorials</a></li>
+              <li><a href="https://learn.microsoft.com/en-us/training/paths/m365-word-essentials/" target="_blank" rel="noopener">Microsoft Learn Word Path</a></li>
+              <li><a href="https://www.youtube.com/@Simontsechnology" target="_blank" rel="noopener">Simon Sez IT — Word (YouTube)</a></li>
+            </ul>
+            <h4>Must-learn for thesis:</h4>
+            <ul style="font-size: 13px; color: var(--fg-muted); padding-left: 20px; line-height: 1.8;">
+              <li>Styles (Heading 1/2/3) for auto Table of Contents</li>
+              <li>References tab — auto APA citations</li>
+              <li>Page numbers + section breaks</li>
+              <li>Track changes + Comments (for adviser feedback)</li>
+              <li>Insert Captions for figures/tables</li>
+            </ul>
+          </div>
+
+          <div class="skill-card">
+            <div class="skill-icon" style="background: #B7472A;">📈</div>
+            <h3>PowerPoint</h3>
+            <p>For thesis defense, capstone presentation, class reports.</p>
+            <h4>Free tutorials:</h4>
+            <ul class="lang-links">
+              <li><a href="https://support.microsoft.com/en-us/powerpoint" target="_blank" rel="noopener">Official Microsoft PowerPoint help</a></li>
+              <li><a href="https://edu.gcfglobal.org/en/powerpoint/" target="_blank" rel="noopener">GCFGlobal PowerPoint</a></li>
+              <li><a href="https://learn.microsoft.com/en-us/training/paths/m365-powerpoint-associate/" target="_blank" rel="noopener">Microsoft Learn PowerPoint</a></li>
+              <li><a href="https://www.youtube.com/@OneCoolTip" target="_blank" rel="noopener">One Cool Tip PowerPoint</a></li>
+              <li><a href="https://slidesgo.com/" target="_blank" rel="noopener">Slidesgo (free templates)</a></li>
+              <li><a href="https://www.canva.com/templates/?query=presentation" target="_blank" rel="noopener">Canva templates (free tier)</a></li>
+            </ul>
+            <h4>Defense slide tips:</h4>
+            <ul style="font-size: 13px; color: var(--fg-muted); padding-left: 20px; line-height: 1.8;">
+              <li>Max 6 lines per slide. Use bullet points, not paragraphs.</li>
+              <li>Title slide + intro + RRL + methodology + results + conclusion</li>
+              <li>Use Slide Master for consistent fonts &amp; colors</li>
+              <li>Practice with Speaker Notes view</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <!-- OPEN SOURCE AI -->
     <section id="open-ai" class="section section-muted">
       <div class="container">
@@ -564,29 +916,125 @@ Ask me anything — homework, capstone ideas, coding bugs, paano mag-Excel, kahi
     <section id="free-apis" class="section section-muted">
       <div class="container">
         <div class="section-head">
-          <h2 class="section-title">Other 100% free APIs students can use</h2>
-          <p class="section-subtitle">Hand-picked free APIs — no credit card, no API key (or generous free tiers). For your capstone, side project, or learning.</p>
+          <h2 class="section-title">60+ Free APIs for students</h2>
+          <p class="section-subtitle">Organized by category. All free, all useful for thesis, capstone, side projects. Hand-picked, no fluff.</p>
         </div>
 
+        <h3 class="api-cat-head">🗺️ Maps & Geocoding</h3>
         <div class="api-grid">
-          <a class="api-card" href="https://open-meteo.com/" target="_blank" rel="noopener"><div class="api-card-name">Open-Meteo</div><div class="api-card-desc">Free weather forecast API. No key, no rate limit for non-commercial use.</div><div class="api-card-tag">Weather</div></a>
-          <a class="api-card" href="https://www.exchangerate-api.com/" target="_blank" rel="noopener"><div class="api-card-name">ExchangeRate-API</div><div class="api-card-desc">Live currency exchange rates. Free open endpoint, 161 currencies.</div><div class="api-card-tag">Finance</div></a>
-          <a class="api-card" href="https://restcountries.com/" target="_blank" rel="noopener"><div class="api-card-name">REST Countries</div><div class="api-card-desc">Info about every country — population, capitals, flags, currencies.</div><div class="api-card-tag">Geography</div></a>
-          <a class="api-card" href="https://dictionaryapi.dev/" target="_blank" rel="noopener"><div class="api-card-name">Free Dictionary API</div><div class="api-card-desc">English word definitions, phonetics, synonyms. No key needed.</div><div class="api-card-tag">Education</div></a>
+          <a class="api-card" href="https://www.openstreetmap.org/" target="_blank" rel="noopener"><div class="api-card-name">OpenStreetMap</div><div class="api-card-desc">Free, open-source map data. Use directly with Leaflet.js or Mapbox GL.</div><div class="api-card-tag">Maps</div></a>
+          <a class="api-card" href="https://leafletjs.com/" target="_blank" rel="noopener"><div class="api-card-name">Leaflet.js</div><div class="api-card-desc">100% free, open-source maps. No API key. Use with OSM tiles. Best free map.</div><div class="api-card-tag">⭐ Best free</div></a>
+          <a class="api-card" href="https://www.mapbox.com/" target="_blank" rel="noopener"><div class="api-card-name">Mapbox</div><div class="api-card-desc">50,000 map loads/month free. Beautiful styled maps. Great for thesis.</div><div class="api-card-tag">Free tier</div></a>
+          <a class="api-card" href="https://nominatim.org/release-docs/develop/api/Overview/" target="_blank" rel="noopener"><div class="api-card-name">Nominatim (OSM)</div><div class="api-card-desc">Free geocoding — addresses ↔ lat/lng. No key for low usage.</div><div class="api-card-tag">Geocoding</div></a>
+          <a class="api-card" href="https://www.geoapify.com/" target="_blank" rel="noopener"><div class="api-card-name">Geoapify</div><div class="api-card-desc">3,000 requests/day free. Geocoding, routing, POIs, isolines.</div><div class="api-card-tag">Free tier</div></a>
+          <a class="api-card" href="https://openrouteservice.org/" target="_blank" rel="noopener"><div class="api-card-name">OpenRouteService</div><div class="api-card-desc">Free directions API. Driving, cycling, walking. 2000 reqs/day.</div><div class="api-card-tag">Routing</div></a>
+          <a class="api-card" href="https://api.maptiler.com/" target="_blank" rel="noopener"><div class="api-card-name">MapTiler</div><div class="api-card-desc">100,000 free tile requests/month. Multiple map styles.</div><div class="api-card-tag">Free tier</div></a>
+          <a class="api-card" href="https://overpass-turbo.eu/" target="_blank" rel="noopener"><div class="api-card-name">Overpass API</div><div class="api-card-desc">Query OpenStreetMap data. Get all gas stations, hospitals, etc. in PH.</div><div class="api-card-tag">OSM Data</div></a>
+        </div>
+
+        <h3 class="api-cat-head">⛽ Fuel & Transportation</h3>
+        <div class="api-grid">
+          <a class="api-card" href="https://www.doe.gov.ph/price-watch/oil" target="_blank" rel="noopener"><div class="api-card-name">DOE PH Oil Monitor</div><div class="api-card-desc">Official PH gasoline/diesel prices. Scrape or use as reference.</div><div class="api-card-tag">⭐ PH Official</div></a>
+          <a class="api-card" href="https://api.collectapi.com/gasPrice/" target="_blank" rel="noopener"><div class="api-card-name">CollectAPI Gas</div><div class="api-card-desc">Global gasoline prices. Free tier 100 reqs/month.</div><div class="api-card-tag">Free tier</div></a>
+          <a class="api-card" href="https://www.eia.gov/opendata/" target="_blank" rel="noopener"><div class="api-card-name">US Energy Info (EIA)</div><div class="api-card-desc">Free, comprehensive energy & fuel price data. Historical too.</div><div class="api-card-tag">Free</div></a>
+          <a class="api-card" href="https://openchargemap.org/site/develop/api" target="_blank" rel="noopener"><div class="api-card-name">Open Charge Map</div><div class="api-card-desc">EV charging stations worldwide. Free, no key needed.</div><div class="api-card-tag">EV</div></a>
+          <a class="api-card" href="https://transit.land/documentation" target="_blank" rel="noopener"><div class="api-card-name">Transit.land</div><div class="api-card-desc">Public transit data globally including parts of PH. Free with key.</div><div class="api-card-tag">Transit</div></a>
+        </div>
+
+        <h3 class="api-cat-head">🌦️ Weather & Climate</h3>
+        <div class="api-grid">
+          <a class="api-card" href="https://open-meteo.com/" target="_blank" rel="noopener"><div class="api-card-name">Open-Meteo</div><div class="api-card-desc">Free weather forecast API. No key, no rate limit for non-commercial.</div><div class="api-card-tag">⭐ Best</div></a>
+          <a class="api-card" href="https://wttr.in/" target="_blank" rel="noopener"><div class="api-card-name">wttr.in</div><div class="api-card-desc">Console-friendly weather. curl wttr.in/Manila — no signup.</div><div class="api-card-tag">No setup</div></a>
+          <a class="api-card" href="https://openweathermap.org/api" target="_blank" rel="noopener"><div class="api-card-name">OpenWeatherMap</div><div class="api-card-desc">60 calls/min free. Current weather, 5-day forecast, air quality.</div><div class="api-card-tag">Free tier</div></a>
+          <a class="api-card" href="https://www.weatherapi.com/" target="_blank" rel="noopener"><div class="api-card-name">WeatherAPI.com</div><div class="api-card-desc">1M calls/month free. 14-day forecast, history, marine.</div><div class="api-card-tag">Free tier</div></a>
+          <a class="api-card" href="https://www.pagasa.dost.gov.ph/" target="_blank" rel="noopener"><div class="api-card-name">PAGASA</div><div class="api-card-desc">Official PH weather/typhoon agency. Scrape or watch their feeds.</div><div class="api-card-tag">⭐ PH Official</div></a>
+          <a class="api-card" href="https://earthquake.usgs.gov/fdsnws/event/1/" target="_blank" rel="noopener"><div class="api-card-name">USGS Earthquakes</div><div class="api-card-desc">Live worldwide earthquake data. Free, no key.</div><div class="api-card-tag">Free</div></a>
+        </div>
+
+        <h3 class="api-cat-head">⏰ Time, Calendar, Holidays</h3>
+        <div class="api-grid">
+          <a class="api-card" href="https://worldtimeapi.org/" target="_blank" rel="noopener"><div class="api-card-name">WorldTimeAPI</div><div class="api-card-desc">Get time in any timezone. Free, no key. Perfect for clocks.</div><div class="api-card-tag">No key</div></a>
+          <a class="api-card" href="https://timeapi.io/" target="_blank" rel="noopener"><div class="api-card-name">TimeAPI.io</div><div class="api-card-desc">Time, timezone, day-of-year, conversions. Free, no key.</div><div class="api-card-tag">No key</div></a>
+          <a class="api-card" href="https://date.nager.at/" target="_blank" rel="noopener"><div class="api-card-name">Nager.Date</div><div class="api-card-desc">Public holidays for 100+ countries including PH.</div><div class="api-card-tag">No key</div></a>
+          <a class="api-card" href="https://www.calendarific.com/" target="_blank" rel="noopener"><div class="api-card-name">Calendarific</div><div class="api-card-desc">1000 calls/month free. Holidays + observances worldwide.</div><div class="api-card-tag">Free tier</div></a>
+          <a class="api-card" href="https://www.7timer.info/doc.php" target="_blank" rel="noopener"><div class="api-card-name">7Timer</div><div class="api-card-desc">Astronomical and weather forecast. Free, no key, no limit.</div><div class="api-card-tag">No key</div></a>
+        </div>
+
+        <h3 class="api-cat-head">💰 Finance & Crypto</h3>
+        <div class="api-grid">
+          <a class="api-card" href="https://www.exchangerate-api.com/" target="_blank" rel="noopener"><div class="api-card-name">ExchangeRate-API</div><div class="api-card-desc">161 currencies, daily updates. Free open endpoint.</div><div class="api-card-tag">No key</div></a>
+          <a class="api-card" href="https://www.frankfurter.app/" target="_blank" rel="noopener"><div class="api-card-name">Frankfurter</div><div class="api-card-desc">European Central Bank rates. Free, no key, historical too.</div><div class="api-card-tag">No key</div></a>
+          <a class="api-card" href="https://www.coingecko.com/en/api" target="_blank" rel="noopener"><div class="api-card-name">CoinGecko</div><div class="api-card-desc">Crypto prices, market caps. 10-50 calls/min free.</div><div class="api-card-tag">Free</div></a>
+          <a class="api-card" href="https://www.alphavantage.co/" target="_blank" rel="noopener"><div class="api-card-name">Alpha Vantage</div><div class="api-card-desc">Stock market data including PSE. 25 calls/day free.</div><div class="api-card-tag">Free tier</div></a>
+          <a class="api-card" href="https://www.bsp.gov.ph/" target="_blank" rel="noopener"><div class="api-card-name">BSP (PH Central Bank)</div><div class="api-card-desc">Official PHP rates, inflation data. Scrape or download CSV.</div><div class="api-card-tag">⭐ PH Official</div></a>
+        </div>
+
+        <h3 class="api-cat-head">🤖 Arduino & IoT (Embedded)</h3>
+        <div class="api-grid">
+          <a class="api-card" href="https://www.arduino.cc/en/Tutorial/HomePage" target="_blank" rel="noopener"><div class="api-card-name">Arduino Tutorials</div><div class="api-card-desc">Official Arduino tutorials. From blink LED to advanced IoT.</div><div class="api-card-tag">⭐ Start here</div></a>
+          <a class="api-card" href="https://www.arduino.cc/reference/en/libraries/" target="_blank" rel="noopener"><div class="api-card-name">Arduino Libraries</div><div class="api-card-desc">7,000+ official libraries. WiFi, sensors, displays, motors.</div><div class="api-card-tag">Libraries</div></a>
+          <a class="api-card" href="https://www.tinkercad.com/circuits" target="_blank" rel="noopener"><div class="api-card-name">Tinkercad Circuits</div><div class="api-card-desc">Simulate Arduino in browser. Free. No hardware needed!</div><div class="api-card-tag">Simulator</div></a>
+          <a class="api-card" href="https://wokwi.com/" target="_blank" rel="noopener"><div class="api-card-name">Wokwi</div><div class="api-card-desc">Online Arduino + ESP32 + Raspberry Pi Pico simulator.</div><div class="api-card-tag">Simulator</div></a>
+          <a class="api-card" href="https://platformio.org/" target="_blank" rel="noopener"><div class="api-card-name">PlatformIO</div><div class="api-card-desc">Pro IDE for Arduino, ESP32, Raspberry Pi. Free, open source.</div><div class="api-card-tag">IDE</div></a>
+          <a class="api-card" href="https://docs.particle.io/" target="_blank" rel="noopener"><div class="api-card-name">Particle Cloud</div><div class="api-card-desc">IoT device platform. Free tier for personal devices.</div><div class="api-card-tag">IoT Cloud</div></a>
+          <a class="api-card" href="https://thingspeak.com/" target="_blank" rel="noopener"><div class="api-card-name">ThingSpeak</div><div class="api-card-desc">Free IoT data platform by MathWorks. Store sensor data online.</div><div class="api-card-tag">⭐ IoT</div></a>
+          <a class="api-card" href="https://www.adafruit.io/" target="_blank" rel="noopener"><div class="api-card-name">Adafruit IO</div><div class="api-card-desc">Free IoT cloud. MQTT, dashboards, triggers. Great tutorials.</div><div class="api-card-tag">IoT</div></a>
+          <a class="api-card" href="https://blynk.io/" target="_blank" rel="noopener"><div class="api-card-name">Blynk</div><div class="api-card-desc">Mobile app for Arduino/ESP32 control. Free tier available.</div><div class="api-card-tag">IoT App</div></a>
+          <a class="api-card" href="https://learn.sparkfun.com/" target="_blank" rel="noopener"><div class="api-card-name">SparkFun Learn</div><div class="api-card-desc">Massive free hardware tutorial library. Arduino, sensors, more.</div><div class="api-card-tag">Tutorials</div></a>
+          <a class="api-card" href="https://learn.adafruit.com/" target="_blank" rel="noopener"><div class="api-card-name">Adafruit Learn</div><div class="api-card-desc">Best free embedded electronics tutorials anywhere. ESP32, RPi, more.</div><div class="api-card-tag">⭐ Best</div></a>
+          <a class="api-card" href="https://random-d.uk/api" target="_blank" rel="noopener"><div class="api-card-name">DuckEngine</div><div class="api-card-desc">Sample IoT-style API for testing your sensor dashboards.</div><div class="api-card-tag">Testing</div></a>
+        </div>
+
+        <h3 class="api-cat-head">📚 Thesis Helpers (Research)</h3>
+        <div class="api-grid">
+          <a class="api-card" href="https://scholar.google.com/" target="_blank" rel="noopener"><div class="api-card-name">Google Scholar</div><div class="api-card-desc">Find academic papers. Use 'Cite' button for APA format.</div><div class="api-card-tag">⭐ Required</div></a>
+          <a class="api-card" href="https://www.zotero.org/" target="_blank" rel="noopener"><div class="api-card-name">Zotero</div><div class="api-card-desc">Free reference manager. Auto-saves citations. Required for thesis.</div><div class="api-card-tag">⭐ Free tool</div></a>
+          <a class="api-card" href="https://www.semanticscholar.org/" target="_blank" rel="noopener"><div class="api-card-name">Semantic Scholar</div><div class="api-card-desc">Free AI-powered paper search. Has free API for thesis tools.</div><div class="api-card-tag">⭐ With API</div></a>
+          <a class="api-card" href="https://api.openalex.org/" target="_blank" rel="noopener"><div class="api-card-name">OpenAlex API</div><div class="api-card-desc">Free open scholarly API. 240M+ papers indexed. No key.</div><div class="api-card-tag">No key</div></a>
+          <a class="api-card" href="https://api.crossref.org/" target="_blank" rel="noopener"><div class="api-card-name">CrossRef API</div><div class="api-card-desc">Lookup DOIs, citation metadata. Free, no key needed.</div><div class="api-card-tag">No key</div></a>
+          <a class="api-card" href="https://arxiv.org/help/api" target="_blank" rel="noopener"><div class="api-card-name">arXiv API</div><div class="api-card-desc">Open access to 2M+ science papers. Computer science, physics, math.</div><div class="api-card-tag">Open</div></a>
           <a class="api-card" href="https://openlibrary.org/developers/api" target="_blank" rel="noopener"><div class="api-card-name">Open Library</div><div class="api-card-desc">Book metadata, ISBN lookups, cover images. Free, no key.</div><div class="api-card-tag">Books</div></a>
-          <a class="api-card" href="https://numbersapi.com/" target="_blank" rel="noopener"><div class="api-card-name">Numbers API</div><div class="api-card-desc">Trivia, math facts, year facts about any number.</div><div class="api-card-tag">Trivia</div></a>
-          <a class="api-card" href="https://nominatim.org/release-docs/develop/api/Overview/" target="_blank" rel="noopener"><div class="api-card-name">Nominatim (OSM)</div><div class="api-card-desc">Free geocoding — addresses to lat/lng and back.</div><div class="api-card-tag">Maps</div></a>
-          <a class="api-card" href="https://www.themealdb.com/api.php" target="_blank" rel="noopener"><div class="api-card-name">TheMealDB</div><div class="api-card-desc">Recipe API including Filipino dishes. Free, no key for test endpoints.</div><div class="api-card-tag">Food</div></a>
-          <a class="api-card" href="https://api.nasa.gov/" target="_blank" rel="noopener"><div class="api-card-name">NASA APIs</div><div class="api-card-desc">Astronomy Picture of the Day, Mars rover photos. Free key.</div><div class="api-card-tag">Science</div></a>
+          <a class="api-card" href="https://www.grammarly.com/" target="_blank" rel="noopener"><div class="api-card-name">Grammarly</div><div class="api-card-desc">Free grammar/spell checker. Browser plugin works in Word/Docs.</div><div class="api-card-tag">⭐ Required</div></a>
+          <a class="api-card" href="https://www.quetext.com/" target="_blank" rel="noopener"><div class="api-card-name">Quetext</div><div class="api-card-desc">Free plagiarism check (limited words/month). Try before submission!</div><div class="api-card-tag">Plagiarism</div></a>
+          <a class="api-card" href="https://www.zoterobib.org/" target="_blank" rel="noopener"><div class="api-card-name">ZoteroBib</div><div class="api-card-desc">Generate APA/MLA/Chicago citations instantly. No signup.</div><div class="api-card-tag">⭐ No signup</div></a>
+          <a class="api-card" href="https://www.connectedpapers.com/" target="_blank" rel="noopener"><div class="api-card-name">Connected Papers</div><div class="api-card-desc">Visual map of related papers. Great for RRL section.</div><div class="api-card-tag">Visualization</div></a>
+          <a class="api-card" href="https://chat.openai.com/" target="_blank" rel="noopener"><div class="api-card-name">ChatGPT (free tier)</div><div class="api-card-desc">Free AI chat for research questions. Use Research Kuya here too!</div><div class="api-card-tag">AI</div></a>
+        </div>
+
+        <h3 class="api-cat-head">📖 Education & Reference</h3>
+        <div class="api-grid">
+          <a class="api-card" href="https://dictionaryapi.dev/" target="_blank" rel="noopener"><div class="api-card-name">Free Dictionary API</div><div class="api-card-desc">English definitions, phonetics, synonyms. No key needed.</div><div class="api-card-tag">No key</div></a>
+          <a class="api-card" href="https://api.datamuse.com/" target="_blank" rel="noopener"><div class="api-card-name">Datamuse</div><div class="api-card-desc">Word finder. Synonyms, rhymes, related words. Free, no key.</div><div class="api-card-tag">No key</div></a>
+          <a class="api-card" href="https://www.wikidata.org/wiki/Wikidata:Data_access" target="_blank" rel="noopener"><div class="api-card-name">Wikidata API</div><div class="api-card-desc">Structured knowledge for any topic. Free, no key, vast.</div><div class="api-card-tag">No key</div></a>
+          <a class="api-card" href="https://en.wikipedia.org/api/rest_v1/" target="_blank" rel="noopener"><div class="api-card-name">Wikipedia API</div><div class="api-card-desc">Full Wikipedia content programmatically. Free.</div><div class="api-card-tag">No key</div></a>
+          <a class="api-card" href="https://restcountries.com/" target="_blank" rel="noopener"><div class="api-card-name">REST Countries</div><div class="api-card-desc">Population, capitals, flags, currencies for every country.</div><div class="api-card-tag">No key</div></a>
+          <a class="api-card" href="https://api.api-ninjas.com/" target="_blank" rel="noopener"><div class="api-card-name">API Ninjas</div><div class="api-card-desc">100+ free APIs — facts, math, exercise, motivation. 100k/mo free.</div><div class="api-card-tag">Free tier</div></a>
+        </div>
+
+        <h3 class="api-cat-head">🛠️ Utility & Generation</h3>
+        <div class="api-grid">
+          <a class="api-card" href="https://goqr.me/api/" target="_blank" rel="noopener"><div class="api-card-name">QR Server</div><div class="api-card-desc">Free QR code generator. Pure HTTP GET, no key.</div><div class="api-card-tag">No key</div></a>
+          <a class="api-card" href="https://barcode.tec-it.com/" target="_blank" rel="noopener"><div class="api-card-name">TEC-IT Barcode</div><div class="api-card-desc">Barcode generation API. Free for non-commercial.</div><div class="api-card-tag">Free</div></a>
+          <a class="api-card" href="https://www.uuidtools.com/" target="_blank" rel="noopener"><div class="api-card-name">UUID Tools</div><div class="api-card-desc">Generate UUIDs via API. Free, no key.</div><div class="api-card-tag">No key</div></a>
+          <a class="api-card" href="https://emailvalidation.io/" target="_blank" rel="noopener"><div class="api-card-name">Email Validation</div><div class="api-card-desc">Validate emails. 100 reqs/month free.</div><div class="api-card-tag">Free tier</div></a>
+          <a class="api-card" href="https://ipapi.co/" target="_blank" rel="noopener"><div class="api-card-name">ipapi.co</div><div class="api-card-desc">IP geolocation. 1000 reqs/day free, no key.</div><div class="api-card-tag">Free tier</div></a>
+          <a class="api-card" href="https://www.unsplash.com/developers" target="_blank" rel="noopener"><div class="api-card-name">Unsplash</div><div class="api-card-desc">Free high-res stock photos. 50 reqs/hour free.</div><div class="api-card-tag">Photos</div></a>
+          <a class="api-card" href="https://pixabay.com/api/docs/" target="_blank" rel="noopener"><div class="api-card-name">Pixabay</div><div class="api-card-desc">Free stock photos &amp; videos. 5000 calls/hour free.</div><div class="api-card-tag">Photos</div></a>
+          <a class="api-card" href="https://favicon.im/" target="_blank" rel="noopener"><div class="api-card-name">favicon.im</div><div class="api-card-desc">Get any website's favicon as image. Free, no key.</div><div class="api-card-tag">No key</div></a>
+          <a class="api-card" href="https://placehold.co/" target="_blank" rel="noopener"><div class="api-card-name">Placehold.co</div><div class="api-card-desc">Placeholder images instantly. Custom size/color. No key.</div><div class="api-card-tag">No key</div></a>
+        </div>
+
+        <h3 class="api-cat-head">🎮 Fun & Testing</h3>
+        <div class="api-grid">
           <a class="api-card" href="https://jsonplaceholder.typicode.com/" target="_blank" rel="noopener"><div class="api-card-name">JSONPlaceholder</div><div class="api-card-desc">Fake REST API for testing/practice. No setup needed.</div><div class="api-card-tag">Testing</div></a>
-          <a class="api-card" href="https://goqr.me/api/" target="_blank" rel="noopener"><div class="api-card-name">QR Server</div><div class="api-card-desc">Free QR code generator. Pure HTTP GET, no key.</div><div class="api-card-tag">Utility</div></a>
-          <a class="api-card" href="https://wttr.in/" target="_blank" rel="noopener"><div class="api-card-name">wttr.in</div><div class="api-card-desc">Console-friendly weather. curl wttr.in/Manila.</div><div class="api-card-tag">Weather</div></a>
-          <a class="api-card" href="https://github.com/AdvaitaJassal/Tagalog-Dictionary" target="_blank" rel="noopener"><div class="api-card-name">Tagalog Dictionary</div><div class="api-card-desc">Open-source PH language data. Useful for Filipino NLP capstones.</div><div class="api-card-tag">Language</div></a>
-          <a class="api-card" href="https://date.nager.at/" target="_blank" rel="noopener"><div class="api-card-name">Nager.Date</div><div class="api-card-desc">Public holidays for 100+ countries. Includes Philippines.</div><div class="api-card-tag">Calendar</div></a>
-          <a class="api-card" href="https://disease.sh/" target="_blank" rel="noopener"><div class="api-card-name">disease.sh</div><div class="api-card-desc">Live COVID-19, flu, and disease stats by country. Free, no key.</div><div class="api-card-tag">Health</div></a>
-          <a class="api-card" href="https://api.quotable.io/" target="_blank" rel="noopener"><div class="api-card-name">Quotable</div><div class="api-card-desc">Random famous quotes. Filter by author, tag. Free, no key.</div><div class="api-card-tag">Content</div></a>
-          <a class="api-card" href="https://pokeapi.co/" target="_blank" rel="noopener"><div class="api-card-name">PokeAPI</div><div class="api-card-desc">Complete Pokemon data. Classic for learning API consumption.</div><div class="api-card-tag">Fun</div></a>
           <a class="api-card" href="https://randomuser.me/" target="_blank" rel="noopener"><div class="api-card-name">RandomUser</div><div class="api-card-desc">Generate fake user data for prototyping. Free, no key.</div><div class="api-card-tag">Testing</div></a>
+          <a class="api-card" href="https://pokeapi.co/" target="_blank" rel="noopener"><div class="api-card-name">PokeAPI</div><div class="api-card-desc">Complete Pokemon data. Classic for learning APIs.</div><div class="api-card-tag">Fun</div></a>
+          <a class="api-card" href="https://api.api-ninjas.com/api/jokes" target="_blank" rel="noopener"><div class="api-card-name">Jokes API</div><div class="api-card-desc">Random jokes. Make your project fun.</div><div class="api-card-tag">Fun</div></a>
+          <a class="api-card" href="https://api.quotable.io/" target="_blank" rel="noopener"><div class="api-card-name">Quotable</div><div class="api-card-desc">Random famous quotes. Filter by author/tag. No key.</div><div class="api-card-tag">No key</div></a>
+          <a class="api-card" href="https://numbersapi.com/" target="_blank" rel="noopener"><div class="api-card-name">Numbers API</div><div class="api-card-desc">Trivia, math facts, year facts about any number.</div><div class="api-card-tag">No key</div></a>
+          <a class="api-card" href="https://disease.sh/" target="_blank" rel="noopener"><div class="api-card-name">disease.sh</div><div class="api-card-desc">Live COVID-19, flu, and disease stats. Free, no key.</div><div class="api-card-tag">Health</div></a>
+          <a class="api-card" href="https://api.nasa.gov/" target="_blank" rel="noopener"><div class="api-card-name">NASA APIs</div><div class="api-card-desc">Astronomy Picture of the Day, Mars photos. Free key.</div><div class="api-card-tag">Free</div></a>
+          <a class="api-card" href="https://www.themealdb.com/api.php" target="_blank" rel="noopener"><div class="api-card-name">TheMealDB</div><div class="api-card-desc">Recipes including Filipino dishes. Free, no key.</div><div class="api-card-tag">Food</div></a>
         </div>
       </div>
     </section>
