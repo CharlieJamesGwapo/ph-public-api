@@ -312,28 +312,88 @@ async function callAI({ question, mode = 'general', history = [] }) {
   });
 })();
 
-// ===================== Resume Builder =====================
+// ===================== Resume Builder (4 templates) =====================
 (function setupResumeBuilder() {
   const btn = $('#r-go');
-  const out = $('#r-output');
+  const wrap = $('#r-preview-wrap');
+  const iframe = $('#r-preview');
   const actions = $('#r-actions');
-  if (!btn || !out) return;
+  if (!btn || !iframe) return;
 
-  let lastHtml = '';
+  let template = 'modern';
+  let lastFullDoc = '';
 
-  function renderResume(text) {
-    // Convert plain-text resume to styled HTML
+  // Template picker
+  $$('[data-rtpl]').forEach(opt => opt.addEventListener('click', () => {
+    $$('[data-rtpl]').forEach(o => { o.classList.remove('active'); o.setAttribute('aria-checked', 'false'); });
+    opt.classList.add('active');
+    opt.setAttribute('aria-checked', 'true');
+    template = opt.dataset.rtpl;
+  }));
+
+  function parseMarkdown(text) {
     const lines = text.split('\n').filter(l => l.trim());
-    const safe = (s) => s.replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+    const safe = (s) => s.replace(/[&<>]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[c]));
     let html = '';
+    let inList = false;
     for (const line of lines) {
       const t = line.trim();
-      if (/^#\s+/.test(t)) html += `<h1>${safe(t.replace(/^#\s+/, ''))}</h1>`;
-      else if (/^##\s+/.test(t)) html += `<h2>${safe(t.replace(/^##\s+/, ''))}</h2>`;
-      else if (/^[-*•]\s+/.test(t)) html += `<p>• ${safe(t.replace(/^[-*•]\s+/, ''))}</p>`;
-      else html += `<p>${safe(t)}</p>`;
+      if (/^#\s+/.test(t)) { if (inList) { html += '</ul>'; inList = false; } html += `<h1>${safe(t.replace(/^#\s+/, ''))}</h1>`; }
+      else if (/^##\s+/.test(t)) { if (inList) { html += '</ul>'; inList = false; } html += `<h2>${safe(t.replace(/^##\s+/, ''))}</h2>`; }
+      else if (/^[-*•]\s+/.test(t)) { if (!inList) { html += '<ul>'; inList = true; } html += `<li>${safe(t.replace(/^[-*•]\s+/, ''))}</li>`; }
+      else { if (inList) { html += '</ul>'; inList = false; } html += `<p>${safe(t)}</p>`; }
     }
+    if (inList) html += '</ul>';
     return html;
+  }
+
+  function buildResumeDoc(template, contentHtml) {
+    const styles = {
+      modern: `
+        body { font-family: 'Inter', -apple-system, sans-serif; max-width: 800px; margin: 40px auto; padding: 40px; color: #0F172A; line-height: 1.55; }
+        h1 { font-size: 32px; font-weight: 800; margin-bottom: 4px; letter-spacing: -0.02em; }
+        h2 { font-size: 13px; text-transform: uppercase; letter-spacing: 0.08em; color: #0038A8; margin-top: 24px; margin-bottom: 10px; padding-bottom: 4px; border-bottom: 2px solid #0038A8; font-weight: 700; }
+        p { margin-bottom: 6px; }
+        ul { margin-left: 20px; margin-bottom: 8px; }
+        li { margin-bottom: 4px; }
+      `,
+      classic: `
+        body { font-family: 'Georgia', 'Times New Roman', serif; max-width: 760px; margin: 40px auto; padding: 40px; color: #1a1a1a; line-height: 1.55; }
+        h1 { font-size: 28px; font-weight: 700; text-align: center; margin-bottom: 4px; letter-spacing: 0.02em; }
+        h1 + p { text-align: center; color: #555; font-size: 13px; margin-bottom: 24px; }
+        h2 { font-size: 15px; text-transform: uppercase; letter-spacing: 0.15em; margin-top: 24px; margin-bottom: 12px; padding-bottom: 6px; border-bottom: 1px solid #000; font-weight: 700; }
+        p { margin-bottom: 6px; font-size: 14px; }
+        ul { margin-left: 24px; margin-bottom: 8px; }
+        li { margin-bottom: 4px; font-size: 14px; }
+      `,
+      creative: `
+        body { font-family: 'Inter', sans-serif; max-width: 900px; margin: 40px auto; padding: 0; color: #0F172A; line-height: 1.55; display: grid; grid-template-columns: 240px 1fr; min-height: 90vh; background: #fff; }
+        .side { background: linear-gradient(180deg, #1e293b, #0f172a); color: #f1f5f9; padding: 40px 24px; }
+        .main { padding: 40px; }
+        h1 { font-size: 26px; font-weight: 800; margin-bottom: 4px; color: #fff; }
+        h1 + p { color: #94a3b8; font-size: 13px; margin-bottom: 24px; }
+        h2 { font-size: 12px; text-transform: uppercase; letter-spacing: 0.1em; color: #fcd116; margin-top: 24px; margin-bottom: 10px; font-weight: 700; }
+        .main h2 { color: #0038A8; border-bottom: 2px solid #0038A8; padding-bottom: 4px; }
+        p { margin-bottom: 6px; font-size: 14px; }
+        .side p { color: #cbd5e1; font-size: 13px; }
+        ul { margin-left: 20px; margin-bottom: 8px; }
+        li { margin-bottom: 4px; font-size: 14px; }
+      `,
+      minimal: `
+        body { font-family: 'Inter', sans-serif; max-width: 800px; margin: 40px auto; padding: 40px; color: #0F172A; line-height: 1.45; }
+        h1 { font-size: 24px; font-weight: 600; margin-bottom: 2px; }
+        h2 { font-size: 11px; text-transform: uppercase; letter-spacing: 0.12em; color: #525252; margin-top: 20px; margin-bottom: 8px; font-weight: 600; }
+        p { margin-bottom: 4px; font-size: 13px; }
+        ul { margin-left: 18px; margin-bottom: 6px; }
+        li { margin-bottom: 3px; font-size: 13px; }
+      `,
+    };
+
+    if (template === 'creative') {
+      // Split content into side+main heuristic: first h1+p go to side, contact goes to side, rest in main
+      return `<!DOCTYPE html><html><head><meta charset="utf-8"><title>Resume</title><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet"><style>${styles[template]}@media print{body{margin:0;padding:0;}}@media (max-width:640px){body{grid-template-columns:1fr!important;}.side{padding:24px;}.main{padding:24px;}}</style></head><body><div class="side">${contentHtml.split('</h2>').slice(0, 2).join('</h2>')}</div><div class="main">${contentHtml.split('</h2>').slice(2).join('</h2>')}</div></body></html>`;
+    }
+    return `<!DOCTYPE html><html><head><meta charset="utf-8"><title>Resume</title><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Georgia&display=swap" rel="stylesheet"><style>${styles[template]}@media print{body{margin:0;padding:24px;}}</style></head><body>${contentHtml}</body></html>`;
   }
 
   btn.addEventListener('click', async () => {
@@ -347,51 +407,47 @@ async function callAI({ question, mode = 'general', history = [] }) {
     const exp = $('#r-exp').value.trim();
     const skills = $('#r-skills').value.trim();
 
-    if (!name || !exp) { toast('At minimum: name + experience/projects'); return; }
+    if (!exp && !edu) { toast('Add education or experience first'); return; }
 
     btn.disabled = true;
-    btn.textContent = 'AI polishing... (15-20s)';
+    btn.textContent = 'AI polishing... (10-20s)';
 
-    const prompt = `Format this person's information into a polished, ATS-friendly one-page resume using markdown.
-Output FORMAT (use these exact section markers):
+    const contactLine = [email, phone, location, links].filter(Boolean).join(' · ');
+    const prompt = `Format this person into a polished one-page resume using markdown.
+
+USE EXACTLY this format (these section markers):
 # ${name}
-${title ? title : ''}
-[contact line: email · phone · location · links]
+${title}
+${contactLine}
 
 ## SUMMARY
-[2-sentence professional summary highlighting strongest aspects]
+[2-sentence professional summary]
 
 ## EDUCATION
-[education in clean bullet form]
+- [education in clean bullets]
 
 ## EXPERIENCE
-[Each role as 2-4 bullets using STAR method. Quantify when possible. Rewrite weak bullets to be strong action-oriented.]
+- [Each role as 2-4 strong action-oriented bullets, STAR method, quantify when possible]
 
 ## SKILLS
 [Grouped skills, comma-separated]
 
-Use bullet points starting with "-" for items. Keep it formal English.
-
 INPUT:
-Name: ${name}
-Title/Course: ${title}
-Email: ${email}, Phone: ${phone}, Location: ${location}
-Links: ${links}
 Education: ${edu}
 Experience/Projects: ${exp}
 Skills: ${skills}`;
 
     const json = await callAI({ question: prompt, mode: 'career' });
     if (json.ok && json.text) {
-      out.hidden = false;
-      out.className = 'builder-output resume-rendered';
-      out.innerHTML = renderResume(json.text);
-      lastHtml = out.innerHTML;
+      const contentHtml = parseMarkdown(json.text);
+      lastFullDoc = buildResumeDoc(template, contentHtml);
+      iframe.srcdoc = lastFullDoc;
+      wrap.hidden = false;
       actions.hidden = false;
       actions.style.display = 'grid';
+      toast('Resume generated! Preview below.');
     } else {
-      out.hidden = false;
-      out.textContent = json.error || 'AI unavailable. Try again.';
+      toast('AI unavailable. Try again.');
     }
     btn.disabled = false;
     btn.textContent = 'Generate resume ✨';
@@ -399,117 +455,318 @@ Skills: ${skills}`;
 
   $('#r-pdf')?.addEventListener('click', () => {
     const w = window.open('', '_blank');
-    w.document.write(`<!DOCTYPE html><html><head><title>Resume</title><style>
-      body { font-family: Inter, -apple-system, sans-serif; max-width: 800px; margin: 40px auto; padding: 40px; color: #0F172A; }
-      h1 { font-size: 28px; margin-bottom: 4px; }
-      h2 { font-size: 14px; text-transform: uppercase; letter-spacing: 0.05em; color: #0038A8; margin-top: 20px; margin-bottom: 8px; padding-bottom: 4px; border-bottom: 2px solid #0038A8; }
-      p { margin-bottom: 4px; line-height: 1.5; }
-      @media print { body { margin: 0; padding: 20px; } }
-    </style></head><body>${lastHtml}<script>setTimeout(()=>window.print(),500);<\/script></body></html>`);
+    w.document.write(lastFullDoc.replace('</body>', '<script>setTimeout(()=>window.print(),500);<\/script></body>'));
   });
 
   $('#r-word')?.addEventListener('click', () => {
-    const html = `<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word" xmlns="http://www.w3.org/TR/REC-html40"><head><meta charset="utf-8"><title>Resume</title><style>
-      body { font-family: Calibri, sans-serif; }
-      h1 { font-size: 22pt; margin-bottom: 4pt; }
-      h2 { font-size: 12pt; text-transform: uppercase; color: #0038A8; margin-top: 14pt; margin-bottom: 6pt; padding-bottom: 2pt; border-bottom: 1.5pt solid #0038A8; }
-      p { margin-bottom: 4pt; line-height: 1.4; }
-    </style></head><body>${lastHtml}</body></html>`;
-    const blob = new Blob([html], { type: 'application/msword' });
+    const blob = new Blob([lastFullDoc], { type: 'application/msword' });
     const a = document.createElement('a');
     a.href = URL.createObjectURL(blob);
     a.download = 'resume.doc';
     a.click();
     URL.revokeObjectURL(a.href);
+    toast('Downloaded resume.doc');
   });
 })();
 
-// ===================== Portfolio Builder =====================
+// ===================== Portfolio Builder (4 templates incl. dark-glow) =====================
 (function setupPortfolioBuilder() {
   const btn = $('#p-go');
   const wrap = $('#p-preview-wrap');
   const iframe = $('#p-preview');
   if (!btn || !iframe) return;
 
+  let tpl = 'dark-glow';
   let lastDoc = '';
 
-  const THEMES = {
-    ph: { primary: '#0038A8', accent: '#CE1126', highlight: '#FCD116', bg: '#fff', fg: '#0F172A' },
-    dark: { primary: '#60A5FA', accent: '#A78BFA', highlight: '#FBBF24', bg: '#0F172A', fg: '#F1F5F9' },
-    minimal: { primary: '#000', accent: '#444', highlight: '#000', bg: '#FAFAFA', fg: '#171717' },
-    warm: { primary: '#F97316', accent: '#DC2626', highlight: '#FBBF24', bg: '#FFF7ED', fg: '#1C1917' },
-  };
+  $$('[data-tpl]').forEach(opt => opt.addEventListener('click', () => {
+    $$('[data-tpl]').forEach(o => { o.classList.remove('active'); o.setAttribute('aria-checked', 'false'); });
+    opt.classList.add('active');
+    opt.setAttribute('aria-checked', 'true');
+    tpl = opt.dataset.tpl;
+  }));
 
-  function buildHtml(name, tagline, about, projects, email, links, themeKey) {
-    const t = THEMES[themeKey] || THEMES.ph;
-    const proj = projects.split('\n').filter(l => l.trim()).map(l => {
-      const [n, d] = l.split(':').map(s => (s || '').trim());
-      return `<div class="proj"><h3>${n || 'Project'}</h3><p>${d || ''}</p></div>`;
-    }).join('');
-    const linkArr = links.split(',').map(l => l.trim()).filter(Boolean);
-    const linksHtml = linkArr.map(l => `<a href="${l.startsWith('http') ? l : 'https://' + l}" target="_blank">${l.replace(/^https?:\/\//, '')}</a>`).join(' · ');
-    return `<!DOCTYPE html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${name} — Portfolio</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+  function escapeHtml(s) {
+    return (s || '').replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+  }
+  function parseProjects(text) {
+    return text.split('\n').filter(l => l.trim()).map(l => {
+      const parts = l.split(':').map(s => (s || '').trim());
+      return { name: parts[0] || 'Project', desc: parts[1] || '', tech: parts[2] || '' };
+    });
+  }
+  function normalizeLinks(links) {
+    return links.split(',').map(l => l.trim()).filter(Boolean).map(l => ({
+      url: l.startsWith('http') ? l : 'https://' + l,
+      label: l.replace(/^https?:\/\//, '').replace(/\/$/, ''),
+    }));
+  }
+  function iconForLink(label) {
+    const l = label.toLowerCase();
+    if (l.includes('github')) return '<svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 .5C5.65.5.5 5.65.5 12c0 5.08 3.29 9.39 7.86 10.91.58.11.79-.25.79-.55 0-.27-.01-1.16-.02-2.1-3.2.7-3.87-1.36-3.87-1.36-.52-1.34-1.27-1.69-1.27-1.69-1.04-.71.08-.7.08-.7 1.15.08 1.76 1.18 1.76 1.18 1.02 1.75 2.69 1.25 3.34.96.1-.74.4-1.25.72-1.54-2.55-.29-5.23-1.27-5.23-5.66 0-1.25.45-2.27 1.18-3.07-.12-.29-.51-1.46.11-3.05 0 0 .96-.31 3.15 1.17.91-.25 1.89-.38 2.86-.39.97.01 1.95.13 2.86.39 2.19-1.48 3.15-1.17 3.15-1.17.62 1.59.23 2.76.11 3.05.73.8 1.18 1.82 1.18 3.07 0 4.4-2.69 5.37-5.25 5.65.41.35.78 1.05.78 2.12 0 1.53-.01 2.77-.01 3.15 0 .31.21.67.8.55 4.57-1.52 7.85-5.83 7.85-10.91C23.5 5.65 18.35.5 12 .5z"/></svg>';
+    if (l.includes('linkedin')) return '<svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>';
+    return '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71"/></svg>';
+  }
+
+  function buildDarkGlow(d) {
+    const projHtml = d.projects.map(p => `<div class="proj"><div class="proj-glow"></div><h3>${escapeHtml(p.name)}</h3>${p.desc ? `<p>${escapeHtml(p.desc)}</p>` : ''}${p.tech ? `<div class="proj-tech">${escapeHtml(p.tech)}</div>` : ''}</div>`).join('');
+    const skillsHtml = d.skills.length ? d.skills.map(s => `<span class="skill-pill">${escapeHtml(s)}</span>`).join('') : '';
+    const linksHtml = d.links.map(l => `<a href="${escapeHtml(l.url)}" target="_blank" rel="noopener" title="${escapeHtml(l.label)}">${iconForLink(l.label)}</a>`).join('');
+    const contactHtml = [
+      d.phone ? `<div class="cb">📞 ${escapeHtml(d.phone)}</div>` : '',
+      d.email ? `<div class="cb">✉ <a href="mailto:${escapeHtml(d.email)}">${escapeHtml(d.email)}</a></div>` : '',
+      d.location ? `<div class="cb">📍 ${escapeHtml(d.location)}</div>` : '',
+    ].join('');
+
+    return `<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${escapeHtml(d.name)} — Portfolio</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 <style>
-  :root { --p: ${t.primary}; --a: ${t.accent}; --h: ${t.highlight}; --bg: ${t.bg}; --fg: ${t.fg}; }
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-  body { font-family: Inter, -apple-system, sans-serif; background: var(--bg); color: var(--fg); line-height: 1.6; }
-  .container { max-width: 900px; margin: 0 auto; padding: 60px 24px; }
-  header { padding: 40px 0; border-bottom: 1px solid color-mix(in srgb, var(--fg) 12%, transparent); margin-bottom: 60px; }
-  h1 { font-size: 56px; font-weight: 800; letter-spacing: -0.03em; background: linear-gradient(120deg, var(--p), var(--a), var(--h)); -webkit-background-clip: text; background-clip: text; color: transparent; line-height: 1.1; }
-  .tagline { font-size: 19px; color: color-mix(in srgb, var(--fg) 70%, transparent); margin-top: 12px; }
-  section { margin-bottom: 60px; }
-  h2 { font-size: 14px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--p); margin-bottom: 20px; font-weight: 700; }
-  .about { font-size: 18px; line-height: 1.7; }
-  .projects { display: grid; gap: 20px; }
-  @media (min-width: 640px) { .projects { grid-template-columns: 1fr 1fr; } }
-  .proj { padding: 24px; border: 1px solid color-mix(in srgb, var(--fg) 14%, transparent); border-radius: 12px; transition: transform 200ms ease, border-color 200ms ease; }
-  .proj:hover { transform: translateY(-2px); border-color: var(--p); }
-  .proj h3 { font-size: 18px; font-weight: 700; margin-bottom: 8px; }
-  .proj p { font-size: 14px; color: color-mix(in srgb, var(--fg) 70%, transparent); }
-  footer { padding-top: 40px; border-top: 1px solid color-mix(in srgb, var(--fg) 12%, transparent); font-size: 14px; }
-  footer a { color: var(--p); margin: 0 4px; }
-  .contact { font-size: 16px; }
-  .contact a { color: var(--p); font-weight: 600; }
+:root { --bg: #050816; --fg: #f1f5f9; --muted: #94a3b8; --p1: #06b6d4; --p2: #8b5cf6; --p3: #ec4899; --accent: #fbbf24; }
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--fg); line-height: 1.6; overflow-x: hidden; }
+body::before { content: ''; position: fixed; inset: 0; background:
+  radial-gradient(circle at 20% 30%, rgba(139,92,246,0.15), transparent 50%),
+  radial-gradient(circle at 80% 20%, rgba(6,182,212,0.12), transparent 50%),
+  radial-gradient(circle at 50% 80%, rgba(236,72,153,0.10), transparent 50%); z-index: -1; pointer-events: none; }
+.container { max-width: 1100px; margin: 0 auto; padding: 0 24px; }
+header.top { padding: 24px 0; display: flex; justify-content: space-between; align-items: center; }
+.brand { font-weight: 800; font-size: 20px; background: linear-gradient(120deg, var(--p1), var(--p2)); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.nav { display: flex; gap: 8px; }
+.nav a { padding: 8px 16px; border-radius: 999px; color: var(--muted); font-weight: 500; font-size: 14px; transition: all 200ms ease; }
+.nav a:hover { color: var(--fg); background: rgba(255,255,255,0.05); }
+.nav a.active { background: linear-gradient(135deg, var(--p2), var(--p3)); color: white; }
+@media (max-width: 768px) { .nav { display: none; } }
+.hero { padding: 60px 0 80px; display: grid; grid-template-columns: 1fr; gap: 60px; align-items: center; }
+@media (min-width: 900px) { .hero { grid-template-columns: 1fr auto; gap: 80px; } }
+.status { display: inline-flex; align-items: center; gap: 8px; padding: 8px 18px; border-radius: 999px; background: rgba(34,197,94,0.10); border: 1px solid rgba(34,197,94,0.30); color: #4ade80; font-size: 14px; font-weight: 500; margin-bottom: 24px; }
+.status::before { content: ''; width: 8px; height: 8px; border-radius: 50%; background: #4ade80; box-shadow: 0 0 12px #4ade80; }
+h1 { font-size: clamp(40px, 6vw, 64px); font-weight: 800; line-height: 1.05; letter-spacing: -0.03em; margin-bottom: 16px; }
+h1 .grad { background: linear-gradient(120deg, var(--p1), var(--p2), var(--p3)); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.role { font-size: clamp(20px, 2.5vw, 28px); font-weight: 600; color: var(--p1); margin-bottom: 24px; }
+.about { font-size: 16px; color: var(--muted); margin-bottom: 32px; max-width: 540px; line-height: 1.7; }
+.stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 40px; max-width: 540px; }
+.stat { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 16px; backdrop-filter: blur(10px); }
+.stat-num { font-size: 28px; font-weight: 800; color: var(--p1); background: linear-gradient(135deg, var(--p1), var(--p2)); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.stat-label { font-size: 12px; color: var(--muted); margin-top: 4px; }
+.ctas { display: flex; flex-wrap: wrap; gap: 12px; margin-bottom: 32px; }
+.btn { display: inline-flex; align-items: center; gap: 8px; padding: 14px 28px; border-radius: 999px; font-weight: 600; font-size: 15px; text-decoration: none; transition: all 200ms ease; }
+.btn-primary { background: linear-gradient(135deg, var(--p2), var(--p3)); color: white; box-shadow: 0 0 30px rgba(139,92,246,0.4); }
+.btn-primary:hover { transform: translateY(-2px); box-shadow: 0 0 40px rgba(139,92,246,0.6); }
+.btn-secondary { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.15); color: var(--fg); }
+.btn-secondary:hover { background: rgba(255,255,255,0.10); }
+.contact-row { display: flex; flex-wrap: wrap; gap: 24px; font-size: 14px; color: var(--muted); }
+.cb a { color: var(--p1); }
+.photo-wrap { position: relative; width: 280px; height: 280px; justify-self: center; }
+@media (min-width: 1024px) { .photo-wrap { width: 360px; height: 360px; } }
+.photo-wrap::before { content: ''; position: absolute; inset: -8px; border-radius: 50%; background: linear-gradient(135deg, var(--p1), var(--p2), var(--p3)); opacity: 0.6; filter: blur(20px); z-index: 0; animation: spin 8s linear infinite; }
+@keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+.photo { position: relative; width: 100%; height: 100%; border-radius: 50%; overflow: hidden; border: 4px solid rgba(255,255,255,0.1); z-index: 1; background: linear-gradient(135deg, var(--p2), var(--p3)); display: flex; align-items: center; justify-content: center; font-size: 80px; font-weight: 800; color: white; }
+.photo img { width: 100%; height: 100%; object-fit: cover; }
+.socials { position: absolute; bottom: -20px; left: 50%; transform: translateX(-50%); display: flex; gap: 8px; z-index: 2; }
+.socials a { width: 44px; height: 44px; border-radius: 50%; background: rgba(15,23,42,0.95); border: 1px solid rgba(255,255,255,0.15); display: flex; align-items: center; justify-content: center; color: var(--fg); backdrop-filter: blur(10px); transition: all 200ms ease; }
+.socials a:hover { background: var(--p2); transform: translateY(-2px); }
+section.s { padding: 60px 0; }
+section.s h2 { font-size: 14px; text-transform: uppercase; letter-spacing: 0.15em; color: var(--p1); margin-bottom: 8px; font-weight: 700; }
+section.s .h2-big { font-size: clamp(28px, 4vw, 40px); font-weight: 800; margin-bottom: 32px; letter-spacing: -0.02em; }
+.projects { display: grid; gap: 20px; grid-template-columns: 1fr; }
+@media (min-width: 640px) { .projects { grid-template-columns: 1fr 1fr; } }
+.proj { position: relative; padding: 28px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-radius: 16px; backdrop-filter: blur(10px); transition: all 200ms ease; overflow: hidden; }
+.proj:hover { transform: translateY(-4px); border-color: var(--p2); }
+.proj-glow { position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: radial-gradient(circle, rgba(139,92,246,0.15) 0%, transparent 50%); opacity: 0; transition: opacity 300ms ease; }
+.proj:hover .proj-glow { opacity: 1; }
+.proj h3 { font-size: 18px; font-weight: 700; margin-bottom: 8px; color: var(--fg); position: relative; }
+.proj p { color: var(--muted); font-size: 14px; line-height: 1.6; position: relative; }
+.proj-tech { margin-top: 12px; font-family: monospace; font-size: 12px; color: var(--p1); position: relative; }
+.skills { display: flex; flex-wrap: wrap; gap: 8px; }
+.skill-pill { padding: 8px 16px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.10); border-radius: 999px; font-size: 13px; font-weight: 500; color: var(--fg); transition: all 200ms ease; }
+.skill-pill:hover { background: var(--p2); border-color: var(--p2); }
+footer { padding: 40px 0; border-top: 1px solid rgba(255,255,255,0.05); text-align: center; color: var(--muted); font-size: 13px; }
+</style></head><body>
+<div class="container">
+<header class="top">
+  <div class="brand">${escapeHtml(d.name.split(' ').map(s => s[0]).join(''))} ${escapeHtml(d.name.split(' ').slice(-1)[0])}</div>
+  <nav class="nav">
+    <a href="#home" class="active">Home</a>
+    <a href="#about">About</a>
+    ${d.projects.length ? '<a href="#projects">Projects</a>' : ''}
+    ${d.skills.length ? '<a href="#skills">Skills</a>' : ''}
+    <a href="#contact">Contact</a>
+  </nav>
+</header>
+
+<section class="hero" id="home">
+  <div>
+    ${d.status ? `<div class="status">${escapeHtml(d.status)}</div>` : ''}
+    <h1>Hi, I'm <span class="grad">${escapeHtml(d.name)}</span></h1>
+    <div class="role">${escapeHtml(d.role)}</div>
+    ${d.about ? `<p class="about">${escapeHtml(d.about)}</p>` : ''}
+    ${d.stats.length ? `<div class="stats">${d.stats.map(s => `<div class="stat"><div class="stat-num">${escapeHtml(s.num)}</div><div class="stat-label">${escapeHtml(s.label)}</div></div>`).join('')}</div>` : ''}
+    <div class="ctas">
+      ${d.email ? `<a href="mailto:${escapeHtml(d.email)}" class="btn btn-primary">✉ Hire Me</a>` : ''}
+      ${d.projects.length ? `<a href="#projects" class="btn btn-secondary">📁 View Projects</a>` : ''}
+    </div>
+    <div class="contact-row">${contactHtml}</div>
+  </div>
+  <div class="photo-wrap">
+    <div class="photo">${d.photo ? `<img src="${escapeHtml(d.photo)}" alt="${escapeHtml(d.name)}" />` : escapeHtml(d.name.split(' ').map(s => s[0]).join('').slice(0, 2))}</div>
+    ${linksHtml ? `<div class="socials">${linksHtml}</div>` : ''}
+  </div>
+</section>
+
+${d.about ? `<section class="s" id="about"><div class="container"><h2>About</h2><h3 class="h2-big">A bit about me</h3><p style="font-size:17px;color:var(--muted);max-width:720px;line-height:1.8;">${escapeHtml(d.about)}</p></div></section>` : ''}
+
+${d.projects.length ? `<section class="s" id="projects"><h2>Portfolio</h2><h3 class="h2-big">Recent projects</h3><div class="projects">${projHtml}</div></section>` : ''}
+
+${d.skills.length ? `<section class="s" id="skills"><h2>Skills</h2><h3 class="h2-big">What I work with</h3><div class="skills">${skillsHtml}</div></section>` : ''}
+
+<section class="s" id="contact"><h2>Get in touch</h2><h3 class="h2-big">Let's build something together</h3>
+<div class="contact-row">${contactHtml}</div>
+${d.email ? `<div style="margin-top:24px;"><a href="mailto:${escapeHtml(d.email)}" class="btn btn-primary">✉ Send an email</a></div>` : ''}
+</section>
+
+<footer>© ${new Date().getFullYear()} ${escapeHtml(d.name)} · Hosted free on Vercel · Built with PH StudentKit</footer>
+</div></body></html>`;
+  }
+
+  function buildPhPride(d) {
+    const projHtml = d.projects.map(p => `<div class="proj"><h3>${escapeHtml(p.name)}</h3>${p.desc ? `<p>${escapeHtml(p.desc)}</p>` : ''}${p.tech ? `<div class="tech">${escapeHtml(p.tech)}</div>` : ''}</div>`).join('');
+    const linksHtml = d.links.map(l => `<a href="${escapeHtml(l.url)}" target="_blank">${escapeHtml(l.label)}</a>`).join(' · ');
+    return `<!DOCTYPE html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${escapeHtml(d.name)} — Portfolio</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: 'Inter', sans-serif; background: #fff; color: #0f172a; line-height: 1.6; }
+.container { max-width: 900px; margin: 0 auto; padding: 24px; }
+.stripes { display: flex; height: 6px; margin-bottom: 40px; }
+.stripes div { flex: 1; }
+.s1 { background: #0038A8; } .s2 { background: #CE1126; } .s3 { background: #FCD116; }
+header { padding: 40px 0; }
+h1 { font-size: clamp(36px, 6vw, 56px); font-weight: 900; line-height: 1.05; letter-spacing: -0.03em; }
+h1 .grad { background: linear-gradient(120deg, #0038A8, #CE1126, #FCD116); -webkit-background-clip: text; color: transparent; }
+.role { font-size: 20px; color: #475569; margin-top: 12px; }
+section { margin-bottom: 48px; }
+h2 { font-size: 13px; text-transform: uppercase; letter-spacing: 0.1em; color: #0038A8; margin-bottom: 16px; font-weight: 700; padding-bottom: 6px; border-bottom: 3px solid #0038A8; display: inline-block; }
+.about { font-size: 17px; color: #475569; line-height: 1.7; max-width: 700px; }
+.projects { display: grid; gap: 16px; }
+@media (min-width: 640px) { .projects { grid-template-columns: 1fr 1fr; } }
+.proj { padding: 20px; border-radius: 8px; border: 1px solid #e2e8f0; border-left: 4px solid #CE1126; }
+.proj:nth-child(3n+1) { border-left-color: #0038A8; }
+.proj:nth-child(3n+2) { border-left-color: #CE1126; }
+.proj:nth-child(3n+3) { border-left-color: #FCD116; }
+.proj h3 { font-size: 17px; font-weight: 700; margin-bottom: 4px; }
+.proj p { font-size: 14px; color: #475569; }
+.tech { margin-top: 8px; font-family: monospace; font-size: 12px; color: #0038A8; }
+footer { padding: 32px 0; border-top: 1px solid #e2e8f0; font-size: 14px; color: #64748b; }
+footer a { color: #0038A8; font-weight: 600; }
+</style></head><body>
+<div class="stripes"><div class="s1"></div><div class="s2"></div><div class="s3"></div></div>
+<div class="container">
+<header><h1>Hi, I'm <span class="grad">${escapeHtml(d.name)}</span></h1><p class="role">${escapeHtml(d.role)}</p></header>
+${d.about ? `<section><h2>About</h2><p class="about">${escapeHtml(d.about)}</p></section>` : ''}
+${d.projects.length ? `<section><h2>Projects</h2><div class="projects">${projHtml}</div></section>` : ''}
+${d.skills.length ? `<section><h2>Skills</h2><p>${d.skills.map(escapeHtml).join(' · ')}</p></section>` : ''}
+${d.email ? `<section><h2>Contact</h2><p>📧 <a href="mailto:${escapeHtml(d.email)}" style="color:#0038A8;font-weight:600;">${escapeHtml(d.email)}</a></p></section>` : ''}
+<footer>${linksHtml || ''} · © ${new Date().getFullYear()} ${escapeHtml(d.name)}</footer>
+</div></body></html>`;
+  }
+
+  function buildMinimal(d) {
+    const projHtml = d.projects.map(p => `<div class="proj"><h3>${escapeHtml(p.name)}</h3>${p.desc ? `<p>${escapeHtml(p.desc)}</p>` : ''}</div>`).join('');
+    return `<!DOCTYPE html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${escapeHtml(d.name)}</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: 'Inter', sans-serif; background: #FAFAFA; color: #171717; line-height: 1.7; }
+.container { max-width: 680px; margin: 0 auto; padding: 80px 24px; }
+h1 { font-size: clamp(32px, 5vw, 44px); font-weight: 700; margin-bottom: 4px; }
+.role { color: #525252; margin-bottom: 32px; font-size: 16px; }
+.about { font-size: 17px; margin-bottom: 48px; max-width: 600px; }
+section { margin-bottom: 48px; }
+h2 { font-size: 13px; text-transform: uppercase; letter-spacing: 0.1em; color: #525252; margin-bottom: 16px; font-weight: 600; }
+.proj { padding: 16px 0; border-bottom: 1px solid #e5e5e5; }
+.proj h3 { font-size: 16px; font-weight: 600; margin-bottom: 2px; }
+.proj p { font-size: 14px; color: #525252; }
+.contact a { color: #171717; font-weight: 500; border-bottom: 1px solid #171717; }
 </style></head><body><div class="container">
-<header><h1>${name || 'Your Name'}</h1><p class="tagline">${tagline || ''}</p></header>
-${about ? `<section><h2>About</h2><div class="about">${about}</div></section>` : ''}
-${proj ? `<section><h2>Projects</h2><div class="projects">${proj}</div></section>` : ''}
-${email ? `<section><h2>Contact</h2><div class="contact">📧 <a href="mailto:${email}">${email}</a></div></section>` : ''}
-<footer>${linksHtml || ''} · Hosted free on Vercel</footer>
+<h1>${escapeHtml(d.name)}</h1>
+<p class="role">${escapeHtml(d.role)}</p>
+${d.about ? `<p class="about">${escapeHtml(d.about)}</p>` : ''}
+${d.projects.length ? `<section><h2>Work</h2>${projHtml}</section>` : ''}
+${d.skills.length ? `<section><h2>Skills</h2><p>${d.skills.map(escapeHtml).join(', ')}</p></section>` : ''}
+${d.email ? `<section class="contact"><h2>Contact</h2><p><a href="mailto:${escapeHtml(d.email)}">${escapeHtml(d.email)}</a></p></section>` : ''}
+</div></body></html>`;
+  }
+
+  function buildSunset(d) {
+    const projHtml = d.projects.map(p => `<div class="proj"><h3>${escapeHtml(p.name)}</h3>${p.desc ? `<p>${escapeHtml(p.desc)}</p>` : ''}</div>`).join('');
+    return `<!DOCTYPE html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${escapeHtml(d.name)}</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: 'Inter', sans-serif; min-height: 100vh; background: linear-gradient(135deg, #FFF7ED 0%, #FED7AA 40%, #FCA5A5 100%); color: #1c1917; line-height: 1.6; }
+.container { max-width: 900px; margin: 0 auto; padding: 60px 24px; }
+header { padding: 40px 0; }
+h1 { font-size: clamp(40px, 6vw, 60px); font-weight: 800; letter-spacing: -0.03em; line-height: 1.05; }
+.role { font-size: 22px; color: #9a3412; margin-top: 12px; font-weight: 600; }
+section { margin-bottom: 40px; }
+h2 { font-size: 14px; text-transform: uppercase; letter-spacing: 0.1em; color: #9a3412; margin-bottom: 16px; font-weight: 700; }
+.about { font-size: 17px; color: #44403c; max-width: 700px; }
+.projects { display: grid; gap: 16px; }
+@media (min-width: 640px) { .projects { grid-template-columns: 1fr 1fr; } }
+.proj { padding: 24px; background: rgba(255,255,255,0.5); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.8); border-radius: 16px; }
+.proj h3 { font-size: 17px; font-weight: 700; margin-bottom: 6px; }
+.proj p { font-size: 14px; color: #57534e; }
+.contact a { color: #DC2626; font-weight: 600; }
+</style></head><body><div class="container">
+<header><h1>Hi, I'm ${escapeHtml(d.name)}</h1><p class="role">${escapeHtml(d.role)}</p></header>
+${d.about ? `<section><h2>About</h2><p class="about">${escapeHtml(d.about)}</p></section>` : ''}
+${d.projects.length ? `<section><h2>Projects</h2><div class="projects">${projHtml}</div></section>` : ''}
+${d.skills.length ? `<section><h2>Skills</h2><p>${d.skills.map(escapeHtml).join(' · ')}</p></section>` : ''}
+${d.email ? `<section class="contact"><h2>Contact</h2><p>📧 <a href="mailto:${escapeHtml(d.email)}">${escapeHtml(d.email)}</a></p></section>` : ''}
 </div></body></html>`;
   }
 
   btn.addEventListener('click', async () => {
-    const name = $('#p-name').value.trim();
-    const tagline = $('#p-tagline').value.trim();
-    let about = $('#p-about').value.trim();
-    const projects = $('#p-projects').value.trim();
-    const email = $('#p-email').value.trim();
-    const links = $('#p-links').value.trim();
-    const theme = $('#p-theme').value;
+    const data = {
+      name: $('#p-name').value.trim() || 'Your Name',
+      role: $('#p-role').value.trim() || 'Your Role',
+      status: $('#p-status').value.trim(),
+      about: $('#p-about').value.trim(),
+      stats: [
+        { num: $('#p-stat1').value.trim(), label: $('#p-stat1l').value.trim() },
+        { num: $('#p-stat2').value.trim(), label: $('#p-stat2l').value.trim() },
+        { num: $('#p-stat3').value.trim(), label: $('#p-stat3l').value.trim() },
+      ].filter(s => s.num && s.label),
+      projects: parseProjects($('#p-projects').value),
+      skills: $('#p-skills').value.split(',').map(s => s.trim()).filter(Boolean),
+      email: $('#p-email').value.trim(),
+      phone: $('#p-phone').value.trim(),
+      location: $('#p-location').value.trim(),
+      links: normalizeLinks($('#p-links').value),
+      photo: $('#p-photo').value.trim(),
+    };
 
-    if (!name) { toast('Add your name first'); return; }
+    if (!data.name) { toast('Add your name first'); return; }
 
     btn.disabled = true;
     btn.textContent = 'AI polishing About... (10s)';
 
-    // Improve About section with AI
-    if (about) {
+    // Improve About section
+    if (data.about) {
       const json = await callAI({
-        question: `Rewrite this About Me section for a portfolio website. Make it confident, specific, and 2-3 sentences max. Keep my voice. Output only the rewritten paragraph, nothing else.\n\nOriginal: "${about}"`,
+        question: `Rewrite this About Me for a portfolio. Make it confident, specific, 2-3 sentences. Keep author's voice. Output ONLY the rewritten paragraph (no quotes, no preamble, no markdown).\n\nOriginal: ${data.about}`,
         mode: 'career',
       });
-      if (json.ok && json.text) about = json.text.replace(/^["']|["']$/g, '').trim();
+      if (json.ok && json.text) data.about = json.text.replace(/^["'\s]+|["'\s]+$/g, '').replace(/^Here.*?:\s*/i, '').trim();
     }
 
-    const doc = buildHtml(name, tagline, about, projects, email, links, theme);
-    lastDoc = doc;
-    iframe.srcdoc = doc;
+    const builders = { 'dark-glow': buildDarkGlow, 'ph-pride': buildPhPride, 'minimal': buildMinimal, 'sunset': buildSunset };
+    lastDoc = (builders[tpl] || buildDarkGlow)(data);
+    iframe.srcdoc = lastDoc;
     wrap.hidden = false;
     btn.disabled = false;
     btn.textContent = 'Regenerate ✨';
-    toast('Portfolio generated. Scroll down to preview.');
+    toast('Portfolio generated! Preview below.');
   });
 
   $('#p-download')?.addEventListener('click', () => {
@@ -519,7 +776,7 @@ ${email ? `<section><h2>Contact</h2><div class="contact">📧 <a href="mailto:${
     a.download = 'index.html';
     a.click();
     URL.revokeObjectURL(a.href);
-    toast('Downloaded! Now upload to vercel.com/new');
+    toast('Downloaded! Upload to vercel.com/new');
   });
 })();
 
