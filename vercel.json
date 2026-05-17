@@ -1,9 +1,19 @@
 {
-  "version": 2,
-  "builds": [
-    { "src": "api/index.js", "use": "@vercel/node", "config": { "includeFiles": "data/**" } }
-  ],
   "rewrites": [
-    { "source": "/(.*)", "destination": "/api/index.js" }
-  ]
+    { "source": "/regions", "destination": "/api/index.js" },
+    { "source": "/regions/:path*", "destination": "/api/index.js" },
+    { "source": "/holidays", "destination": "/api/index.js" },
+    { "source": "/holidays/:path*", "destination": "/api/index.js" },
+    { "source": "/cities", "destination": "/api/index.js" },
+    { "source": "/cities/:path*", "destination": "/api/index.js" },
+    { "source": "/schools", "destination": "/api/index.js" },
+    { "source": "/schools/:path*", "destination": "/api/index.js" },
+    { "source": "/api", "destination": "/api/index.js" },
+    { "source": "/api/:path*", "destination": "/api/index.js" }
+  ],
+  "functions": {
+    "api/index.js": {
+      "includeFiles": "data/**"
+    }
+  }
 }
