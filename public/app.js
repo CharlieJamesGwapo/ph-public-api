@@ -956,11 +956,21 @@ ${d.email ? `<section class="contact"><h2>Contact</h2><p>📧 <a href="mailto:${
   const panels = $$('.excel-panel');
   if (!tabs.length) return;
 
-  tabs.forEach(t => t.addEventListener('click', () => {
+  function activateTab(tabName) {
     tabs.forEach(x => x.classList.remove('active'));
     panels.forEach(x => x.classList.remove('active'));
-    t.classList.add('active');
-    $(`.excel-panel[data-expanel="${t.dataset.extab}"]`)?.classList.add('active');
+    const target = tabs.find(t => t.dataset.extab === tabName);
+    target?.classList.add('active');
+    $(`.excel-panel[data-expanel="${tabName}"]`)?.classList.add('active');
+  }
+
+  tabs.forEach(t => t.addEventListener('click', () => activateTab(t.dataset.extab)));
+
+  // Roadmap quadrant links jump to specific tabs
+  $$('.quad-link[data-jumpto]').forEach(a => a.addEventListener('click', (e) => {
+    e.preventDefault();
+    activateTab(a.dataset.jumpto);
+    $('.excel-tabs')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }));
 
   // === FORMULAS DATA ===

@@ -1466,6 +1466,179 @@ section { overflow-x: clip; }
   text-shadow: 0 1px 2px rgba(0,0,0,0.2);
 }
 
+/* === Skills Roadmap (4-quadrant overview) === */
+.skills-roadmap {
+  background: linear-gradient(180deg, #fff 0%, #f0fdf4 100%);
+  border: 1px solid #21A366;
+  border-radius: var(--radius-lg);
+  padding: var(--s5);
+  margin-bottom: var(--s6);
+  position: relative;
+  overflow: hidden;
+}
+[data-theme="dark"] .skills-roadmap {
+  background: linear-gradient(180deg, var(--bg-elevated) 0%, rgba(33,163,102,0.08) 100%);
+  border-color: #21A366;
+}
+.skills-roadmap::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    radial-gradient(circle at 12% 18%, rgba(33,163,102,0.08) 2px, transparent 3px),
+    radial-gradient(circle at 88% 82%, rgba(24,92,55,0.06) 2px, transparent 3px);
+  background-size: 30px 30px;
+  pointer-events: none;
+  opacity: 0.6;
+}
+
+.roadmap-header {
+  display: flex;
+  align-items: center;
+  gap: var(--s4);
+  padding-bottom: var(--s4);
+  margin-bottom: var(--s4);
+  border-bottom: 2px solid #21A366;
+  position: relative;
+}
+.roadmap-logo { flex-shrink: 0; }
+.excel-logo-box {
+  width: 60px; height: 60px;
+  background: linear-gradient(135deg, #185C37, #21A366);
+  color: white;
+  border-radius: 10px;
+  display: flex;
+  align-items: center; justify-content: center;
+  font-size: 36px; font-weight: 800;
+  font-family: 'Segoe UI', sans-serif;
+  box-shadow: 0 4px 12px rgba(24,92,55,0.3);
+}
+.roadmap-title {
+  font-size: clamp(22px, 4vw, 36px);
+  font-weight: 900;
+  letter-spacing: -0.02em;
+  color: #185C37;
+  line-height: 1;
+  margin-bottom: 4px;
+}
+[data-theme="dark"] .roadmap-title { color: #4ADE80; }
+.roadmap-sub {
+  font-size: 13px;
+  color: var(--fg-muted);
+  margin: 0;
+}
+.roadmap-chart {
+  margin-left: auto;
+  display: flex; align-items: flex-end; gap: 4px;
+  flex-shrink: 0;
+}
+.roadmap-chart .bar {
+  width: 12px; background: #21A366;
+  border-radius: 2px 2px 0 0;
+  display: inline-block;
+}
+.roadmap-chart .b1 { height: 22px; background: #4ADE80; }
+.roadmap-chart .b2 { height: 32px; background: #22C55E; }
+.roadmap-chart .b3 { height: 44px; background: #16A34A; }
+.roadmap-chart .arrow {
+  color: #16A34A; font-size: 24px; font-weight: 700;
+  margin-left: 4px; align-self: flex-start;
+}
+@media (max-width: 640px) {
+  .roadmap-chart { display: none; }
+  .roadmap-title { font-size: 20px; }
+}
+
+.roadmap-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--s3);
+  position: relative;
+}
+@media (min-width: 768px) { .roadmap-grid { grid-template-columns: 1fr 1fr; gap: var(--s4); } }
+
+.roadmap-quad {
+  background: var(--bg-elevated);
+  border: 1px solid #d1fae5;
+  border-radius: var(--radius-md);
+  padding: var(--s4);
+  position: relative;
+  transition: transform 200ms ease, box-shadow 200ms ease, border-color 200ms ease;
+}
+[data-theme="dark"] .roadmap-quad { border-color: rgba(33,163,102,0.3); }
+.roadmap-quad:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(24,92,55,0.12);
+  border-color: #21A366;
+}
+.quad-num {
+  position: absolute;
+  top: -14px; left: var(--s4);
+  width: 36px; height: 36px;
+  background: linear-gradient(135deg, #185C37, #21A366);
+  color: white;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 800; font-size: 16px;
+  box-shadow: 0 2px 8px rgba(24,92,55,0.3);
+}
+.roadmap-quad h4 {
+  font-size: 18px; font-weight: 800;
+  color: #185C37;
+  background: linear-gradient(90deg, #185C37, #21A366);
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+  padding-left: 44px;
+  margin-bottom: var(--s3);
+  padding-top: 4px;
+  margin-top: 4px;
+}
+[data-theme="dark"] .roadmap-quad h4 {
+  background: linear-gradient(90deg, #4ADE80, #22C55E);
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+}
+.roadmap-quad ul {
+  list-style: none;
+  padding: 0;
+  margin-bottom: var(--s3);
+}
+.roadmap-quad li {
+  display: flex; align-items: center; gap: var(--s2);
+  padding: 6px 0;
+  font-size: 14px;
+  color: var(--fg);
+  border-bottom: 1px dashed var(--border);
+}
+.roadmap-quad li:last-child { border-bottom: none; }
+.quad-icon {
+  display: inline-flex;
+  align-items: center; justify-content: center;
+  width: 26px; height: 26px;
+  background: #d1fae5;
+  color: #185C37;
+  border-radius: 6px;
+  font-size: 12px; font-weight: 700;
+  flex-shrink: 0;
+}
+[data-theme="dark"] .quad-icon { background: rgba(33,163,102,0.2); color: #4ADE80; }
+.quad-link {
+  display: inline-block;
+  font-size: 13px; font-weight: 600;
+  color: #185C37;
+  margin-top: var(--s2);
+  transition: opacity 150ms ease;
+}
+[data-theme="dark"] .quad-link { color: #4ADE80; }
+.quad-link:hover { opacity: 0.7; }
+.roadmap-cta {
+  text-align: center;
+  padding: var(--s4) 0 0;
+  margin-top: var(--s4);
+  border-top: 2px solid #21A366;
+  font-size: 14px;
+  color: #185C37;
+}
+[data-theme="dark"] .roadmap-cta { color: #4ADE80; }
+
 /* === Excel Mastery === */
 .excel-tabs {
   display: flex;
