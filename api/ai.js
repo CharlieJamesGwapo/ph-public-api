@@ -29,18 +29,25 @@ async function callGemini(question, history, mode) {
     contents.push({ role: turn.role === 'assistant' ? 'model' : 'user', parts: [{ text: turn.content }] });
   }
   contents.push({ role: 'user', parts: [{ text: question }] });
-  const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${key}`;
+  const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-latest:generateContent`;
   const body = {
     systemInstruction: { parts: [{ text: hint(mode) }] },
     contents,
     generationConfig: { temperature: 0.7, maxOutputTokens: 800 },
   };
-  const r = await fetch(url, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
-  if (!r.ok) throw new Error(`Gemini ${r.status}`);
+  const r = await fetch(url, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', 'X-goog-api-key': key },
+    body: JSON.stringify(body),
+  });
+  if (!r.ok) {
+    const txt = await r.text();
+    throw new Error(`Gemini ${r.status}: ${txt.slice(0, 100)}`);
+  }
   const json = await r.json();
   const text = json?.candidates?.[0]?.content?.parts?.map((p) => p.text).join('') || '';
   if (!text) throw new Error('Gemini empty');
-  return { provider: 'gemini-2.0-flash', text };
+  return { provider: 'gemini-flash', text };
 }
 
 async function callPollinationsGet(question, history, mode) {
