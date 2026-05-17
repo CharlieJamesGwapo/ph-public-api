@@ -145,7 +145,7 @@ async function callGemini(question, history, mode) {
   return { provider: 'gemini-flash', text };
 }
 
-// === PROVIDER 2: Pollinations openai (gpt-oss-20b, unlimited, no key) ===
+// === PROVIDER 2: Pollinations /openai (gpt-oss-20b, OpenAI-compatible, unlimited, no key) ===
 async function callPollinationsOpenAI(question, history, mode) {
   const m = getMode(mode);
   const messages = [{ role: 'system', content: m.prompt }];
@@ -158,41 +158,31 @@ async function callPollinationsOpenAI(question, history, mode) {
     body: JSON.stringify({ model: 'openai', messages, stream: false }),
   });
   if (!r.ok) throw new Error(`pollinations-openai-${r.status}`);
-  const text = (await r.text()).trim();
-  if (!text || text.length < 3) throw new Error('pollinations-empty');
-  // Sometimes it returns JSON
-  try {
-    const parsed = JSON.parse(text);
-    const content = parsed?.choices?.[0]?.message?.content;
-    if (content) return { provider: 'gpt-oss-20b', text: content };
-  } catch {}
-  return { provider: 'gpt-oss-20b', text };
+  const json = await r.json();
+  const content = json?.choices?.[0]?.message?.content;
+  if (!content || content.length < 2) throw new Error('pollinations-openai-empty');
+  return { provider: 'gpt-oss-20b', text: content };
 }
 
-// === PROVIDER 3: Pollinations llama (very capable backup) ===
-async function callPollinationsLlama(question, history, mode) {
+// === PROVIDER 3: Pollinations / (text endpoint, plain text response) ===
+async function callPollinationsText(question, history, mode) {
   const m = getMode(mode);
   const messages = [{ role: 'system', content: m.prompt }];
   for (const turn of history.slice(-6)) messages.push({ role: turn.role, content: turn.content });
   messages.push({ role: 'user', content: question });
 
-  const r = await fetch('https://text.pollinations.ai/openai', {
+  const r = await fetch('https://text.pollinations.ai/', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ model: 'llama', messages, stream: false }),
+    body: JSON.stringify({ model: 'openai', messages, private: true }),
   });
-  if (!r.ok) throw new Error(`llama-${r.status}`);
+  if (!r.ok) throw new Error(`pollinations-text-${r.status}`);
   const text = (await r.text()).trim();
-  if (!text || text.length < 3) throw new Error('llama-empty');
-  try {
-    const parsed = JSON.parse(text);
-    const content = parsed?.choices?.[0]?.message?.content;
-    if (content) return { provider: 'llama-3', text: content };
-  } catch {}
-  return { provider: 'llama-3', text };
+  if (!text || text.length < 3) throw new Error('pollinations-text-empty');
+  return { provider: 'gpt-oss-text', text };
 }
 
-// === PROVIDER 4: Pollinations simple GET (last resort) ===
+// === PROVIDER 4: Pollinations simple GET (last resort, very basic) ===
 async function callPollinationsGet(question, history, mode) {
   const m = getMode(mode);
   let prompt = m.prompt + '\n\n';
@@ -202,7 +192,7 @@ async function callPollinationsGet(question, history, mode) {
     }
   }
   prompt += `Student: ${question}\nKuya AI:`;
-  const url = `https://text.pollinations.ai/${encodeURIComponent(prompt)}?model=openai`;
+  const url = `https://text.pollinations.ai/${encodeURIComponent(prompt.slice(0, 6000))}?model=openai`;
   const r = await fetch(url);
   if (!r.ok) throw new Error(`get-${r.status}`);
   const text = (await r.text()).trim();
@@ -232,9 +222,9 @@ module.exports = async (req, res) => {
     if (process.env.GOOGLE_API_KEY) {
       providers.push(['gemini', () => withTimeout(callGemini(question, history, mode), 20000, 'gemini')]);
     }
-    providers.push(['gpt-oss', () => withTimeout(callPollinationsOpenAI(question, history, mode), 25000, 'gpt-oss')]);
-    providers.push(['llama', () => withTimeout(callPollinationsLlama(question, history, mode), 25000, 'llama')]);
-    providers.push(['get', () => withTimeout(callPollinationsGet(question, history, mode), 22000, 'get')]);
+    providers.push(['gpt-oss', () => withTimeout(callPollinationsOpenAI(question, history, mode), 18000, 'gpt-oss')]);
+    providers.push(['text', () => withTimeout(callPollinationsText(question, history, mode), 22000, 'text')]);
+    providers.push(['get', () => withTimeout(callPollinationsGet(question, history, mode), 24000, 'get')]);
 
     const errors = [];
     async function race() {
