@@ -950,6 +950,375 @@ ${d.email ? `<section class="contact"><h2>Contact</h2><p>📧 <a href="mailto:${
     .catch(() => { grid.innerHTML = '<p style="color: var(--fg-muted); text-align: center;">Failed to load.</p>'; });
 })();
 
+// ===================== Code Playground =====================
+(function setupPlayground() {
+  const tabs = $$('.pg-tab');
+  const editors = $$('.pg-editor');
+  const preview = $('#pg-preview');
+  const runBtn = $('#pg-run');
+  const resetBtn = $('#pg-reset');
+  if (!tabs.length || !preview) return;
+
+  const STORAGE_KEY = 'pg-code-v1';
+  const DEFAULTS = {
+    html: editors.find(e => e.dataset.pgEdit === 'html').value,
+    css: editors.find(e => e.dataset.pgEdit === 'css').value,
+    js: editors.find(e => e.dataset.pgEdit === 'js').value,
+  };
+
+  function load() {
+    try {
+      const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || 'null');
+      if (saved) editors.forEach(e => { if (saved[e.dataset.pgEdit]) e.value = saved[e.dataset.pgEdit]; });
+    } catch {}
+  }
+  function save() {
+    const data = {};
+    editors.forEach(e => { data[e.dataset.pgEdit] = e.value; });
+    try { localStorage.setItem(STORAGE_KEY, JSON.stringify(data)); } catch {}
+  }
+  function run() {
+    const data = {};
+    editors.forEach(e => { data[e.dataset.pgEdit] = e.value; });
+    const doc = `<!DOCTYPE html><html><head><meta charset="utf-8"><style>${data.css || ''}</style></head><body>${data.html || ''}<script>try{${data.js || ''}}catch(e){document.body.insertAdjacentHTML('beforeend','<pre style=\\'color:red;padding:8px;font-family:monospace\\'>JS error: '+e.message+'</pre>')}<\/script></body></html>`;
+    preview.srcdoc = doc;
+    save();
+  }
+
+  tabs.forEach(t => t.addEventListener('click', () => {
+    tabs.forEach(x => x.classList.remove('active'));
+    editors.forEach(x => x.classList.remove('active'));
+    t.classList.add('active');
+    editors.find(e => e.dataset.pgEdit === t.dataset.pg).classList.add('active');
+  }));
+  editors.forEach(e => e.addEventListener('input', () => { clearTimeout(setupPlayground._t); setupPlayground._t = setTimeout(save, 500); }));
+  runBtn.addEventListener('click', run);
+  resetBtn.addEventListener('click', () => {
+    if (!confirm('Reset code to default?')) return;
+    editors.forEach(e => { e.value = DEFAULTS[e.dataset.pgEdit]; });
+    save();
+    run();
+  });
+
+  load();
+  run();
+})();
+
+// ===================== AI Capstone Project Generator =====================
+(function setupCapstone() {
+  const btn = $('#cap-go');
+  const out = $('#cap-output');
+  const actions = $('#cap-actions');
+  if (!btn || !out) return;
+
+  let lastText = '';
+
+  btn.addEventListener('click', async () => {
+    const course = $('#cap-course').value;
+    const domain = $('#cap-domain').value.trim();
+    const users = $('#cap-users').value.trim();
+    const tech = $('#cap-tech').value;
+    const notes = $('#cap-notes').value.trim();
+
+    if (!domain) { toast('Add a problem domain'); return; }
+
+    btn.disabled = true;
+    btn.textContent = 'Generating... (15-25s)';
+    out.hidden = false;
+    out.textContent = 'AI is drafting your proposal...';
+
+    const prompt = `Generate a complete capstone/thesis proposal for a Filipino college student.
+
+Student details:
+- Course: ${course}
+- Problem domain: ${domain}
+- Target users: ${users || 'general PH users'}
+- Tech preference: ${tech}
+${notes ? '- Additional notes: ' + notes : ''}
+
+Output the proposal with these EXACT sections (use markdown):
+
+## 📌 Proposed Title
+[A specific, compelling thesis title with location/context]
+
+## 📝 Background
+[2-paragraph background, Philippine context]
+
+## ❓ Statement of the Problem
+[Main problem in 1 sentence, then 3-4 specific sub-problems as numbered list]
+
+## 🎯 Objectives
+[1 general objective + 4 specific objectives, action verbs]
+
+## 🌟 Significance of the Study
+[3-4 stakeholders and how they benefit, bullet form]
+
+## 🔬 Scope and Delimitation
+[What it includes, what it excludes]
+
+## ⚙️ Methodology
+[Research design + system development methodology if applicable. Be specific.]
+
+## 📅 12-Week Schedule
+[Week-by-week breakdown table format]
+
+## 📚 Suggested References (Topics to Search)
+[5 specific search queries for Google Scholar]
+
+Keep it formal, specific to Philippine context, and use Taglish only in informal notes if any.`;
+
+    const json = await callAI({ question: prompt, mode: 'research' });
+    if (json.ok && json.text) {
+      lastText = json.text;
+      out.innerHTML = json.text.split('\n').map(line => {
+        if (/^##\s/.test(line)) return `<h3 style="font-size:15px;font-weight:700;color:var(--ph-blue);margin-top:18px;margin-bottom:8px;">${line.replace(/^##\s/, '')}</h3>`;
+        if (/^###\s/.test(line)) return `<h4 style="font-size:13px;font-weight:600;margin-top:12px;">${line.replace(/^###\s/, '')}</h4>`;
+        if (/^[-*]\s/.test(line)) return `<li>${line.replace(/^[-*]\s/, '')}</li>`;
+        if (/^\d+\.\s/.test(line)) return `<li>${line.replace(/^\d+\.\s/, '')}</li>`;
+        if (!line.trim()) return '<br>';
+        return `<p>${line}</p>`;
+      }).join('');
+      actions.hidden = false;
+      actions.style.display = 'grid';
+      toast('Proposal generated!');
+    } else {
+      out.textContent = json.error || 'AI is busy. Try again in 10 seconds.';
+    }
+    btn.disabled = false;
+    btn.textContent = 'Generate proposal ✨';
+  });
+
+  $('#cap-copy')?.addEventListener('click', async () => {
+    try { await navigator.clipboard.writeText(lastText); toast('Copied!'); } catch {}
+  });
+  $('#cap-word')?.addEventListener('click', () => {
+    const html = `<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word" xmlns="http://www.w3.org/TR/REC-html40"><head><meta charset="utf-8"><title>Capstone Proposal</title><style>body{font-family:Calibri,sans-serif;line-height:1.6;max-width:800px;margin:40px auto;padding:40px;}h1,h2,h3{color:#0038A8;}h2{font-size:18pt;border-bottom:2pt solid #0038A8;padding-bottom:4pt;}</style></head><body>${out.innerHTML}</body></html>`;
+    const blob = new Blob([html], { type: 'application/msword' });
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = 'capstone-proposal.doc';
+    a.click();
+    URL.revokeObjectURL(a.href);
+  });
+})();
+
+// ===================== AI Thesis Section Writer =====================
+(function setupThesis() {
+  const btn = $('#thes-go');
+  const out = $('#thes-output');
+  const actions = $('#thes-actions');
+  if (!btn || !out) return;
+
+  const SECTION_KEY = 'thesis-section-cache-v1';
+  const cache = JSON.parse(localStorage.getItem(SECTION_KEY) || '{}');
+
+  // Restore last edits
+  $('#thes-section').addEventListener('change', () => {
+    const s = $('#thes-section').value;
+    if (cache[s]) { out.innerHTML = cache[s]; out.hidden = false; actions.hidden = false; actions.style.display = 'grid'; }
+  });
+
+  out.addEventListener('input', () => {
+    const s = $('#thes-section').value;
+    cache[s] = out.innerHTML;
+    try { localStorage.setItem(SECTION_KEY, JSON.stringify(cache)); } catch {}
+  });
+
+  btn.addEventListener('click', async () => {
+    const section = $('#thes-section').value;
+    const title = $('#thes-title').value.trim();
+    const context = $('#thes-context').value.trim();
+    const style = $('#thes-style').value;
+
+    if (!context) { toast('Add brief context'); return; }
+
+    btn.disabled = true;
+    btn.textContent = 'Drafting... (15s)';
+    out.hidden = false;
+    out.textContent = 'AI is writing...';
+
+    const sectionGuide = {
+      introduction: 'Draft a Chapter 1 Introduction (300 words). Hook + context + problem importance + what the study will do.',
+      background: 'Write the Background of the Study section (250 words). Establish global → national → local context.',
+      problem: 'Write a Statement of the Problem with 1 main question + 3-4 sub-questions, plus a 2-sentence rationale.',
+      objectives: 'Draft 1 general objective + 4-5 specific objectives, using strong action verbs (analyze, design, develop, evaluate, determine).',
+      significance: 'Write Significance of the Study, list 3-4 stakeholder groups + specific benefits for each.',
+      scope: 'Write Scope and Delimitation: what is included, what is excluded, time/place/respondent limits.',
+      rrl: 'Draft a Review of Related Literature outline with 4-5 thematic sections. Suggest 3-5 source search queries for each.',
+      methodology: `Draft a ${style} research methodology section: design, respondents, sampling, instruments, data collection procedure, statistical/thematic treatment.`,
+      instruments: 'Draft a Research Instruments section: type of instrument, structure, scoring (e.g. Likert scale), validation process.',
+      'data-analysis': `Draft Data Analysis Plan for ${style} approach. Include specific stat tools (frequency, weighted mean, t-test, ANOVA, etc.) or coding methods.`,
+      'results-template': 'Draft an outline + sample placeholder text for Chapter 4 (Results & Discussion). Include 2-3 sample table/figure captions.',
+      conclusion: 'Draft Chapter 5 Conclusion + Recommendations. 3-4 conclusion points tied to objectives + 4-5 recommendations.',
+      abstract: 'Draft a 250-word Abstract: background, purpose, methods, key findings (placeholders OK), conclusion. 4 keywords at end.',
+    };
+
+    const prompt = `You are helping a Filipino college student with their ${style} thesis titled: "${title || 'Untitled'}"
+
+Context: ${context}
+
+Task: ${sectionGuide[section] || 'Draft this thesis section.'}
+
+Output in markdown. Use clear academic English. Don't fabricate data or specific statistics. Use [bracketed placeholders] for things the student must fill in themselves.`;
+
+    const json = await callAI({ question: prompt, mode: 'research' });
+    if (json.ok && json.text) {
+      const html = json.text.split('\n').map(line => {
+        if (/^##\s/.test(line)) return `<h3 style="font-size:15px;font-weight:700;color:var(--ph-blue);margin-top:18px;margin-bottom:8px;">${line.replace(/^##\s/, '')}</h3>`;
+        if (/^###\s/.test(line)) return `<h4 style="font-size:13px;font-weight:600;margin-top:12px;">${line.replace(/^###\s/, '')}</h4>`;
+        if (/^[-*]\s/.test(line)) return `<li>${line.replace(/^[-*]\s/, '')}</li>`;
+        if (/^\d+\.\s/.test(line)) return `<li>${line.replace(/^\d+\.\s/, '')}</li>`;
+        if (!line.trim()) return '<br>';
+        return `<p>${line}</p>`;
+      }).join('');
+      out.innerHTML = html;
+      cache[section] = html;
+      try { localStorage.setItem(SECTION_KEY, JSON.stringify(cache)); } catch {}
+      actions.hidden = false;
+      actions.style.display = 'grid';
+      toast('Section drafted! Edit directly above.');
+    } else {
+      out.textContent = json.error || 'AI busy. Try again.';
+    }
+    btn.disabled = false;
+    btn.textContent = 'Draft this section ✨';
+  });
+
+  $('#thes-copy')?.addEventListener('click', async () => {
+    try { await navigator.clipboard.writeText(out.innerText); toast('Copied!'); } catch {}
+  });
+  $('#thes-word')?.addEventListener('click', () => {
+    const section = $('#thes-section').selectedOptions[0].text;
+    const html = `<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns="http://www.w3.org/TR/REC-html40"><head><meta charset="utf-8"><title>${section}</title><style>body{font-family:Calibri,sans-serif;line-height:1.6;max-width:800px;margin:40px auto;padding:40px;}h3{color:#0038A8;}</style></head><body><h2>${section}</h2>${out.innerHTML}</body></html>`;
+    const blob = new Blob([html], { type: 'application/msword' });
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = section.toLowerCase().replace(/[^a-z]+/g, '-') + '.doc';
+    a.click();
+    URL.revokeObjectURL(a.href);
+  });
+})();
+
+// ===================== 12-Week Capstone Tracker =====================
+(function setupTracker() {
+  const container = $('#tracker-weeks');
+  const fill = $('#tracker-fill');
+  const doneEl = $('#tracker-done');
+  const totalEl = $('#tracker-total');
+  const pctEl = $('#tracker-percent');
+  const resetBtn = $('#tracker-reset');
+  if (!container) return;
+
+  const STORAGE = 'tracker-progress-v1';
+  const WEEKS = [
+    ['Week 1 — Topic & Pre-Proposal', [
+      'Brainstorm 3 topic ideas with team',
+      'Check existing literature (avoid duplicates)',
+      'Pick a single topic and write a 1-paragraph pitch',
+      'Get adviser feedback on pitch',
+    ]],
+    ['Week 2 — Proposal Draft', [
+      'Write Statement of the Problem',
+      'Write Objectives (general + specific)',
+      'Draft Scope and Delimitation',
+      'Schedule proposal defense',
+    ]],
+    ['Week 3 — Proposal Defense', [
+      'Create defense slides (max 15)',
+      'Practice defense 3 times',
+      'Defend proposal',
+      'Apply panel revisions',
+    ]],
+    ['Week 4-5 — RRL', [
+      'Search 15+ academic sources',
+      'Group sources by theme',
+      'Write thematic RRL (~10 pages)',
+      'Adviser review of RRL',
+    ]],
+    ['Week 6 — Methodology', [
+      'Finalize research design (qualitative/quantitative)',
+      'Build research instrument (survey/interview guide)',
+      'Validate instrument with experts',
+      'Get ethics clearance if needed',
+    ]],
+    ['Week 7-8 — Data Collection / Development', [
+      'Collect data OR start system development',
+      'Track issues / version control',
+      'Document progress weekly',
+      'Weekly adviser sync',
+    ]],
+    ['Week 9 — Analysis / Testing', [
+      'Run data analysis (stats / coding)',
+      'OR conduct user acceptance testing',
+      'Document findings + create tables/figures',
+      'Adviser review of results',
+    ]],
+    ['Week 10 — Chapter 4 & 5', [
+      'Write Chapter 4 (Results & Discussion)',
+      'Write Chapter 5 (Conclusion & Recommendations)',
+      'Write Abstract',
+      'Full manuscript review',
+    ]],
+    ['Week 11 — Pre-Defense Prep', [
+      'Finalize manuscript with proper formatting',
+      'Create defense slides (under 20)',
+      'Practice defense Q&A',
+      'Mock defense with adviser',
+    ]],
+    ['Week 12 — Defense & Revisions', [
+      'Final defense',
+      'Apply panel revisions',
+      'Get adviser + dean signatures',
+      'Submit final bound copy',
+    ]],
+  ];
+
+  let state = {};
+  try { state = JSON.parse(localStorage.getItem(STORAGE) || '{}'); } catch {}
+
+  let totalTasks = 0;
+  WEEKS.forEach(([_, tasks]) => totalTasks += tasks.length);
+
+  function render() {
+    container.innerHTML = '';
+    let done = 0;
+    WEEKS.forEach(([title, tasks], wi) => {
+      const week = document.createElement('div');
+      week.className = 'tracker-week';
+      week.innerHTML = `<div class="tracker-week-head">${title}</div>`;
+      tasks.forEach((task, ti) => {
+        const key = `w${wi}t${ti}`;
+        const checked = state[key];
+        if (checked) done++;
+        const taskEl = document.createElement('div');
+        taskEl.className = 'tracker-task' + (checked ? ' done' : '');
+        taskEl.innerHTML = `<input type="checkbox" id="${key}" ${checked ? 'checked' : ''} /><label for="${key}">${task}</label>`;
+        taskEl.querySelector('input').addEventListener('change', (e) => {
+          state[key] = e.target.checked;
+          try { localStorage.setItem(STORAGE, JSON.stringify(state)); } catch {}
+          render();
+        });
+        week.appendChild(taskEl);
+      });
+      container.appendChild(week);
+    });
+    totalEl.textContent = totalTasks;
+    doneEl.textContent = done;
+    const pct = Math.round((done / totalTasks) * 100);
+    pctEl.textContent = pct;
+    fill.style.width = pct + '%';
+  }
+
+  resetBtn.addEventListener('click', () => {
+    if (!confirm('Reset all progress?')) return;
+    state = {};
+    try { localStorage.removeItem(STORAGE); } catch {}
+    render();
+  });
+
+  render();
+})();
+
 // ===================== Year + footer share + dynamic touches =====================
 (function setupDynamic() {
   const y = document.getElementById('year');
