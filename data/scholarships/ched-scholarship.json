@@ -1,0 +1,11 @@
+{
+  "code": "CHED-SP",
+  "name": "CHED Scholarship Program",
+  "agency": "Commission on Higher Education",
+  "for": "Filipino students entering or enrolled in college",
+  "amount_php_per_year": 60000,
+  "covers": ["Tuition", "Stipend", "Book allowance"],
+  "level": "Undergraduate",
+  "url": "https://ched.gov.ph/scholarships/",
+  "deadline_window": "April-May annually"
+}

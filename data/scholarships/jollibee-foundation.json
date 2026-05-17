@@ -1,0 +1,11 @@
+{
+  "code": "JOLLIBEE-FOUNDATION",
+  "name": "Jollibee Group Foundation Scholarship",
+  "agency": "Jollibee Group Foundation",
+  "for": "Filipino students taking courses in food technology, hotel/restaurant management, business",
+  "amount_php_per_year": 35000,
+  "covers": ["Tuition", "Allowance", "Mentorship"],
+  "level": "Undergraduate",
+  "url": "https://www.jollibeegroupfoundation.org/",
+  "deadline_window": "May-July annually"
+}

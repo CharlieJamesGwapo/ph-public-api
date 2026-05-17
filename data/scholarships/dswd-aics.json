@@ -1,0 +1,11 @@
+{
+  "code": "DSWD-AICS-EDU",
+  "name": "DSWD Educational Assistance (AICS)",
+  "agency": "Department of Social Welfare and Development",
+  "for": "Indigent Filipino students in any educational level",
+  "amount_php_per_year": "Variable per case (up to PHP 10,000 one-time)",
+  "covers": ["Educational expenses", "School supplies"],
+  "level": "Elementary / Secondary / Tertiary",
+  "url": "https://www.dswd.gov.ph/assistance-to-individuals-in-crisis-situation-aics/",
+  "deadline_window": "Year-round at DSWD field offices"
+}

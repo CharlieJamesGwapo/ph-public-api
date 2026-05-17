@@ -1,0 +1,11 @@
+{
+  "code": "GSIS",
+  "name": "GSIS Scholarship Program",
+  "agency": "Government Service Insurance System",
+  "for": "Dependents of active GSIS members",
+  "amount_php_per_year": 40000,
+  "covers": ["Tuition", "Book allowance", "Monthly stipend"],
+  "level": "Undergraduate",
+  "url": "https://www.gsis.gov.ph/active-members/scholarship-program/",
+  "deadline_window": "March-April annually"
+}

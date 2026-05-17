@@ -1,0 +1,11 @@
+{
+  "code": "UP-STFAP",
+  "name": "UP Socialized Tuition and Financial Assistance Program (STFAP)",
+  "agency": "University of the Philippines",
+  "for": "UP students based on family income bracket",
+  "amount_php_per_year": "Variable (up to free tuition + stipend)",
+  "covers": ["Free or discounted tuition", "Monthly stipend (for brackets E1-E2)"],
+  "level": "Undergraduate",
+  "url": "https://osss.up.edu.ph/services/stfap/",
+  "deadline_window": "Year-round application"
+}

@@ -1,0 +1,11 @@
+{
+  "code": "DOST-SEI",
+  "name": "DOST-SEI Undergraduate Scholarship",
+  "agency": "Department of Science and Technology - Science Education Institute",
+  "for": "Students pursuing science, technology, engineering, mathematics (STEM)",
+  "amount_php_per_year": 60000,
+  "covers": ["Full tuition", "Monthly stipend", "Book allowance", "Transportation", "Thesis allowance"],
+  "level": "Undergraduate",
+  "url": "https://sei.dost.gov.ph/index.php/programs-and-projects/scholarships",
+  "deadline_window": "August-October annually"
+}

@@ -1,0 +1,11 @@
+{
+  "code": "ISKOLAR-NG-BAYAN",
+  "name": "Iskolar ng Bayan Program (Free Higher Education)",
+  "agency": "Government of the Philippines (RA 10931)",
+  "for": "All Filipino students enrolled in State Universities and Colleges (SUCs) and Local Universities and Colleges (LUCs)",
+  "amount_php_per_year": "Full tuition",
+  "covers": ["Free tuition", "Free miscellaneous fees"],
+  "level": "Undergraduate",
+  "url": "https://unifast.gov.ph/free-higher-education.html",
+  "deadline_window": "Automatic for SUC/LUC students"
+}

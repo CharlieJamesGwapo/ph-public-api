@@ -1,0 +1,11 @@
+{
+  "code": "MEGAWORLD-FOUNDATION",
+  "name": "Megaworld Foundation Scholarship",
+  "agency": "Megaworld Foundation",
+  "for": "Top-performing high school graduates pursuing IT, engineering, business",
+  "amount_php_per_year": 50000,
+  "covers": ["Full tuition", "Allowance", "Internship at Megaworld"],
+  "level": "Undergraduate",
+  "url": "https://megaworldfoundation.com/scholarship-program/",
+  "deadline_window": "March-April annually"
+}

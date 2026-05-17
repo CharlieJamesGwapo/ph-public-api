@@ -1,0 +1,11 @@
+{
+  "code": "SM-FOUNDATION",
+  "name": "SM Foundation College Scholarship",
+  "agency": "SM Foundation, Inc.",
+  "for": "Talented and deserving college students from low-income families",
+  "amount_php_per_year": 20000,
+  "covers": ["Tuition", "Allowance", "Internship at SM"],
+  "level": "Undergraduate",
+  "url": "https://www.sm-foundation.org/education/",
+  "deadline_window": "March-May annually"
+}

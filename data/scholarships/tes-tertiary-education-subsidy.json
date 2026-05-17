@@ -1,0 +1,11 @@
+{
+  "code": "TES",
+  "name": "Tertiary Education Subsidy",
+  "agency": "UniFAST - Unified Student Financial Assistance System for Tertiary Education",
+  "for": "Filipino students in private and public colleges who need financial assistance",
+  "amount_php_per_year": 40000,
+  "covers": ["Tuition", "Books", "Transportation", "Disability allowance (PWD)"],
+  "level": "Undergraduate",
+  "url": "https://unifast.gov.ph/tertiary-education-subsidy.html",
+  "deadline_window": "Per school year, check with university"
+}
