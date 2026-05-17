@@ -40,9 +40,9 @@
         <a class="nav-link" href="#tools">Tools</a>
         <a class="nav-link" href="#endpoints">APIs</a>
         <a class="nav-link" href="#learn-code">Code</a>
-        <a class="nav-link" href="#office-skills">Excel/Word</a>
         <a class="nav-link" href="#office">Office</a>
-        <a class="nav-link" href="#open-ai">Open AI</a>
+        <a class="nav-link" href="#cloud">Cloud</a>
+        <a class="nav-link" href="#by-course">Courses</a>
         <button class="theme-toggle" id="theme-toggle" aria-label="Toggle dark mode">
           <svg class="theme-icon-moon" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
           <svg class="theme-icon-sun" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
@@ -58,13 +58,19 @@
     </div>
     <div class="mobile-menu" id="mobile-menu">
       <a href="#start">Quick Start</a>
-      <a href="#ai">Kuya AI Tutor</a>
+      <a href="#ai">Kuya AI Tutor (7 modes)</a>
+      <a href="#builders">AI Builders</a>
       <a href="#tools">Study Tools</a>
       <a href="#endpoints">All APIs</a>
-      <a href="#try">Try it</a>
+      <a href="#try">Try API live</a>
+      <a href="#learn-code">Learn Programming</a>
+      <a href="#office-skills">Excel / Word / PPT</a>
       <a href="#office">Free Office</a>
+      <a href="#cloud">Free Cloud + DB</a>
+      <a href="#by-course">By Course (BSBA, Eng, etc)</a>
+      <a href="#ai-skills">AI Coding Tools</a>
       <a href="#open-ai">Open Source AI</a>
-      <a href="#free-apis">Other Free APIs</a>
+      <a href="#free-apis">60+ Free APIs</a>
       <a href="#students">For Students</a>
       <a href="https://github.com/CharlieJamesGwapo/ph-public-api" target="_blank" rel="noopener">GitHub →</a>
     </div>
@@ -251,7 +257,48 @@ Pick a mode above (Coder, Research, Writer, Math) or just ask me anything. Tagal
               <span class="builder-icon">📄</span>
               <h3>Resume Builder</h3>
             </div>
-            <p>Fill out the form. AI polishes the wording. Download as PDF (print) or Word.</p>
+            <p>Pick a template, fill the form, AI polishes the wording. Download as PDF or Word.</p>
+
+            <!-- TEMPLATE PICKER -->
+            <div class="tpl-picker" role="radiogroup" aria-label="Resume template">
+              <button class="tpl-option active" data-rtpl="modern" role="radio" aria-checked="true">
+                <div class="tpl-preview tpl-preview-r-modern">
+                  <div class="rp-bar"></div>
+                  <div class="rp-name">Name</div>
+                  <div class="rp-head"></div>
+                  <div class="rp-line"></div><div class="rp-line"></div>
+                </div>
+                <div class="tpl-name">Modern</div>
+                <div class="tpl-desc">Blue accent, ATS-friendly</div>
+              </button>
+              <button class="tpl-option" data-rtpl="classic" role="radio" aria-checked="false">
+                <div class="tpl-preview tpl-preview-r-classic">
+                  <div class="rp-name center">Name</div>
+                  <div class="rp-rule"></div>
+                  <div class="rp-line"></div><div class="rp-line"></div>
+                </div>
+                <div class="tpl-name">Classic</div>
+                <div class="tpl-desc">Traditional, formal</div>
+              </button>
+              <button class="tpl-option" data-rtpl="creative" role="radio" aria-checked="false">
+                <div class="tpl-preview tpl-preview-r-creative">
+                  <div class="rp-side"></div>
+                  <div class="rp-name shifted">Name</div>
+                  <div class="rp-line shifted"></div>
+                </div>
+                <div class="tpl-name">Creative</div>
+                <div class="tpl-desc">Sidebar layout</div>
+              </button>
+              <button class="tpl-option" data-rtpl="minimal" role="radio" aria-checked="false">
+                <div class="tpl-preview tpl-preview-r-minimal">
+                  <div class="rp-name small">Name</div>
+                  <div class="rp-line"></div><div class="rp-line"></div><div class="rp-line short"></div>
+                </div>
+                <div class="tpl-name">Minimal</div>
+                <div class="tpl-desc">Maximum content, no fluff</div>
+              </button>
+            </div>
+
             <div class="resume-form">
               <input type="text" id="r-name" placeholder="Full Name" />
               <input type="text" id="r-title" placeholder="Job title or course (e.g. BS Computer Science / Fresh Grad)" />
@@ -264,7 +311,9 @@ Pick a mode above (Coder, Research, Writer, Math) or just ask me anything. Tagal
               <textarea id="r-skills" placeholder="Skills (comma separated: Python, JavaScript, MS Excel, Communication...)" rows="2"></textarea>
             </div>
             <button class="btn btn-primary" id="r-go" style="width: 100%; margin-top: var(--s2);">Generate resume ✨</button>
-            <div id="r-output" class="builder-output" hidden></div>
+            <div id="r-preview-wrap" hidden style="margin-top: var(--s3);">
+              <iframe id="r-preview" style="width: 100%; height: 600px; border: 1px solid var(--border); border-radius: var(--radius-md); background: white;"></iframe>
+            </div>
             <div id="r-actions" hidden style="display: grid; grid-template-columns: 1fr 1fr; gap: var(--s2); margin-top: var(--s3);">
               <button class="btn btn-secondary" id="r-pdf">📥 Download PDF</button>
               <button class="btn btn-secondary" id="r-word">📥 Download Word</button>
@@ -272,41 +321,93 @@ Pick a mode above (Coder, Research, Writer, Math) or just ask me anything. Tagal
           </div>
 
           <!-- PORTFOLIO BUILDER -->
-          <div class="builder-card">
+          <div class="builder-card builder-card-wide">
             <div class="builder-head">
               <span class="builder-icon">🌐</span>
               <h3>Portfolio Builder</h3>
             </div>
-            <p>Generate a complete single-page portfolio website. Preview it live, then download HTML — drag-drop to Vercel for free hosting.</p>
+            <p>Pick a template, fill the form, get a complete portfolio website. Preview it live, then download HTML — drag-drop to Vercel for free hosting.</p>
+
+            <!-- TEMPLATE PICKER -->
+            <div class="tpl-picker" role="radiogroup" aria-label="Portfolio template">
+              <button class="tpl-option active" data-tpl="dark-glow" role="radio" aria-checked="true">
+                <div class="tpl-preview tpl-preview-dark-glow">
+                  <div class="tp-orb"></div>
+                  <div class="tp-name">Name</div>
+                  <div class="tp-line"></div><div class="tp-line short"></div>
+                </div>
+                <div class="tpl-name">Dark Glow ⭐</div>
+                <div class="tpl-desc">Like portfoliobboy</div>
+              </button>
+              <button class="tpl-option" data-tpl="ph-pride" role="radio" aria-checked="false">
+                <div class="tpl-preview tpl-preview-ph-pride">
+                  <div class="tp-stripe tp-blue"></div>
+                  <div class="tp-stripe tp-red"></div>
+                  <div class="tp-stripe tp-yellow"></div>
+                  <div class="tp-name">Name</div>
+                  <div class="tp-line"></div>
+                </div>
+                <div class="tpl-name">🇵🇭 PH Pride</div>
+                <div class="tpl-desc">Filipino flag accent</div>
+              </button>
+              <button class="tpl-option" data-tpl="minimal" role="radio" aria-checked="false">
+                <div class="tpl-preview tpl-preview-minimal">
+                  <div class="tp-name">Name</div>
+                  <div class="tp-line"></div><div class="tp-line"></div><div class="tp-line short"></div>
+                </div>
+                <div class="tpl-name">Minimal</div>
+                <div class="tpl-desc">Clean black &amp; white</div>
+              </button>
+              <button class="tpl-option" data-tpl="sunset" role="radio" aria-checked="false">
+                <div class="tpl-preview tpl-preview-sunset">
+                  <div class="tp-orb"></div>
+                  <div class="tp-name">Name</div>
+                  <div class="tp-line"></div>
+                </div>
+                <div class="tpl-name">Sunset</div>
+                <div class="tpl-desc">Warm gradient</div>
+              </button>
+            </div>
+
             <div class="resume-form">
-              <input type="text" id="p-name" placeholder="Your name" />
-              <input type="text" id="p-tagline" placeholder="One-line tagline (e.g. CS Student · Web Developer · Cagayan de Oro)" />
-              <textarea id="p-about" placeholder="About me — 2-3 sentences. AI will polish." rows="3"></textarea>
-              <textarea id="p-projects" placeholder="Projects (1 per line — name : description). E.g.&#10;PH StudentKit : Free AI tools for Filipino students&#10;Tourism App : Built with Flutter and Firebase" rows="4"></textarea>
+              <input type="text" id="p-name" placeholder="Your name (e.g. Charlie James Abejo)" />
+              <input type="text" id="p-role" placeholder="Role / title (e.g. Backend Engineer · Full Stack Dev · CS Student)" />
+              <input type="text" id="p-status" placeholder="Status pill (e.g. Open to Remote Opportunities)" value="Open to Remote Opportunities" />
+              <textarea id="p-about" placeholder="About — 2-3 sentences. AI will polish.&#10;e.g. Full Stack Developer with professional experience building fintech platforms, serverless APIs, and scalable web applications using Go, .NET, Node.js, React." rows="3"></textarea>
+              <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: var(--s2);">
+                <input type="text" id="p-stat1" placeholder="Stat 1 (e.g. 12+)" value="12+" />
+                <input type="text" id="p-stat2" placeholder="Stat 2 (e.g. 2+)" value="2+" />
+                <input type="text" id="p-stat3" placeholder="Stat 3 (e.g. 10+)" value="10+" />
+              </div>
+              <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: var(--s2);">
+                <input type="text" id="p-stat1l" placeholder="Label 1" value="Projects" />
+                <input type="text" id="p-stat2l" placeholder="Label 2" value="Years Experience" />
+                <input type="text" id="p-stat3l" placeholder="Label 3" value="Certifications" />
+              </div>
+              <textarea id="p-projects" placeholder="Projects (1 per line — name : description : tech). E.g.&#10;PH StudentKit : Free AI tools for Filipino students : Node.js, Vercel&#10;Tourism App : Capstone for MisOr tourism : Flutter, Firebase" rows="4"></textarea>
+              <textarea id="p-skills" placeholder="Skills (comma separated: Python, JavaScript, React, Node.js, SQL, Excel, Communication...)" rows="2"></textarea>
               <input type="text" id="p-email" placeholder="Contact email" />
-              <input type="text" id="p-links" placeholder="GitHub, LinkedIn, etc. (comma separated)" />
-              <select id="p-theme" style="padding: 10px; border-radius: var(--radius-sm); border: 1px solid var(--border-strong); background: var(--bg); color: var(--fg);">
-                <option value="ph">🇵🇭 Filipino flag accent (blue/red/yellow)</option>
-                <option value="dark">🌙 Dark / professional</option>
-                <option value="minimal">⚪ Minimal black &amp; white</option>
-                <option value="warm">🌅 Warm gradient (sunset)</option>
-              </select>
+              <input type="text" id="p-phone" placeholder="Phone number (optional)" />
+              <input type="text" id="p-location" placeholder="Location (e.g. Cagayan de Oro, Philippines)" />
+              <input type="text" id="p-links" placeholder="GitHub URL, LinkedIn URL (comma separated)" />
+              <input type="url" id="p-photo" placeholder="Photo URL (optional, square image works best)" />
             </div>
             <button class="btn btn-primary" id="p-go" style="width: 100%; margin-top: var(--s2);">Generate portfolio ✨</button>
             <div id="p-preview-wrap" hidden style="margin-top: var(--s3);">
-              <iframe id="p-preview" style="width: 100%; height: 500px; border: 1px solid var(--border); border-radius: var(--radius-md); background: white;"></iframe>
+              <iframe id="p-preview" style="width: 100%; height: 600px; border: 1px solid var(--border); border-radius: var(--radius-md); background: white;"></iframe>
               <div style="display: grid; grid-template-columns: 1fr 1fr; gap: var(--s2); margin-top: var(--s3);">
                 <button class="btn btn-secondary" id="p-download">📥 Download index.html</button>
                 <a class="btn btn-accent" id="p-deploy" href="https://vercel.com/new" target="_blank" rel="noopener">🚀 Deploy to Vercel</a>
               </div>
               <details style="margin-top: var(--s3);">
-                <summary style="cursor: pointer; font-size: 13px; font-weight: 600; color: var(--fg-muted);">📚 How to deploy free on Vercel</summary>
+                <summary style="cursor: pointer; font-size: 13px; font-weight: 600; color: var(--fg-muted);">📚 How to deploy free on Vercel (3 minutes)</summary>
                 <ol style="font-size: 13px; color: var(--fg-muted); padding-left: 24px; margin-top: var(--s2); line-height: 1.7;">
                   <li>Click "Download index.html" above</li>
-                  <li>Go to <a href="https://vercel.com/new" target="_blank" rel="noopener">vercel.com/new</a> and sign up with GitHub (libre)</li>
-                  <li>Drag the <code>index.html</code> file into the Vercel upload zone</li>
-                  <li>Click Deploy. You get a free URL: <code>yourname.vercel.app</code></li>
-                  <li>Done! Share it with employers.</li>
+                  <li>Go to <a href="https://vercel.com/new" target="_blank" rel="noopener">vercel.com/new</a> and sign in with GitHub (free)</li>
+                  <li>Click "Import Project" → "Browse all templates" then scroll to bottom → "Other"</li>
+                  <li>OR: create a new GitHub repo, drag in index.html, then import that repo to Vercel</li>
+                  <li>Click Deploy. You get free URL: <code>yourname.vercel.app</code></li>
+                  <li>Done! Share with employers/professors.</li>
                 </ol>
               </details>
             </div>
@@ -792,6 +893,235 @@ Pick a mode above (Coder, Research, Writer, Math) or just ask me anything. Tagal
               <li>Practice with Speaker Notes view</li>
             </ul>
           </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FREE CLOUD DEPLOYMENT -->
+    <section id="cloud" class="section">
+      <div class="container">
+        <div class="section-head">
+          <h2 class="section-title">☁️ Free Cloud Hosting & Databases</h2>
+          <p class="section-subtitle">Deploy your capstone, thesis, or side project online — 100% free. Real production-grade platforms used by real companies.</p>
+        </div>
+
+        <h3 class="api-cat-head">🚀 App / Web Deployment</h3>
+        <div class="api-grid">
+          <a class="api-card" href="https://vercel.com/" target="_blank" rel="noopener"><div class="api-card-name">Vercel</div><div class="api-card-desc">Free hosting for Next.js, React, Vue, plain HTML. Custom domain libre. Used here.</div><div class="api-card-tag">⭐ Best for web</div></a>
+          <a class="api-card" href="https://www.netlify.com/" target="_blank" rel="noopener"><div class="api-card-name">Netlify</div><div class="api-card-desc">100 GB/month bandwidth free. JAMstack hosting, forms, edge functions.</div><div class="api-card-tag">Free tier</div></a>
+          <a class="api-card" href="https://render.com/" target="_blank" rel="noopener"><div class="api-card-name">Render</div><div class="api-card-desc">Free for static sites + web services (sleeps after 15 min idle). Good for school projects.</div><div class="api-card-tag">Free tier</div></a>
+          <a class="api-card" href="https://railway.app/" target="_blank" rel="noopener"><div class="api-card-name">Railway</div><div class="api-card-desc">$5 free credit/month. Easy backend deployment from GitHub.</div><div class="api-card-tag">Trial credit</div></a>
+          <a class="api-card" href="https://fly.io/" target="_blank" rel="noopener"><div class="api-card-name">Fly.io</div><div class="api-card-desc">Free tier with VMs in 30+ cities. Run Docker apps globally.</div><div class="api-card-tag">Free tier</div></a>
+          <a class="api-card" href="https://pages.cloudflare.com/" target="_blank" rel="noopener"><div class="api-card-name">Cloudflare Pages</div><div class="api-card-desc">Unlimited bandwidth FREE. Best for static sites. Fast worldwide CDN.</div><div class="api-card-tag">⭐ Unlimited</div></a>
+          <a class="api-card" href="https://pages.github.com/" target="_blank" rel="noopener"><div class="api-card-name">GitHub Pages</div><div class="api-card-desc">Free static hosting from GitHub repo. Custom domain libre. Classic.</div><div class="api-card-tag">Free</div></a>
+          <a class="api-card" href="https://surge.sh/" target="_blank" rel="noopener"><div class="api-card-name">Surge.sh</div><div class="api-card-desc">CLI-based instant static deployment. <code>surge ./folder</code> done.</div><div class="api-card-tag">Free</div></a>
+          <a class="api-card" href="https://www.koyeb.com/" target="_blank" rel="noopener"><div class="api-card-name">Koyeb</div><div class="api-card-desc">Free for 1 web service. Run Docker/Node/Python apps with auto-scaling.</div><div class="api-card-tag">Free tier</div></a>
+          <a class="api-card" href="https://deno.com/deploy" target="_blank" rel="noopener"><div class="api-card-name">Deno Deploy</div><div class="api-card-desc">Free serverless TypeScript/JS at the edge. 100k requests/day.</div><div class="api-card-tag">Free tier</div></a>
+          <a class="api-card" href="https://workers.cloudflare.com/" target="_blank" rel="noopener"><div class="api-card-name">Cloudflare Workers</div><div class="api-card-desc">100k requests/day FREE forever. Edge functions worldwide.</div><div class="api-card-tag">⭐ Free forever</div></a>
+          <a class="api-card" href="https://glitch.com/" target="_blank" rel="noopener"><div class="api-card-name">Glitch</div><div class="api-card-desc">Free in-browser Node hosting. Apps sleep after 5 min — good for prototyping.</div><div class="api-card-tag">Free</div></a>
+        </div>
+
+        <h3 class="api-cat-head">🗄️ Free Databases</h3>
+        <div class="api-grid">
+          <a class="api-card" href="https://neon.tech/" target="_blank" rel="noopener"><div class="api-card-name">Neon</div><div class="api-card-desc">Serverless Postgres. 0.5GB storage, branch databases like git. Best free Postgres.</div><div class="api-card-tag">⭐ Best Postgres</div></a>
+          <a class="api-card" href="https://www.mongodb.com/atlas" target="_blank" rel="noopener"><div class="api-card-name">MongoDB Atlas</div><div class="api-card-desc">512MB free forever cluster. Most popular NoSQL DB. Hosted free.</div><div class="api-card-tag">⭐ NoSQL</div></a>
+          <a class="api-card" href="https://supabase.com/" target="_blank" rel="noopener"><div class="api-card-name">Supabase</div><div class="api-card-desc">Free Postgres + Auth + Storage + realtime. Firebase alternative, open source.</div><div class="api-card-tag">⭐ Full backend</div></a>
+          <a class="api-card" href="https://firebase.google.com/" target="_blank" rel="noopener"><div class="api-card-name">Firebase</div><div class="api-card-desc">Google's free tier: Firestore (1GB), Auth, Hosting, Functions. Marami sa PH apps using it.</div><div class="api-card-tag">Google</div></a>
+          <a class="api-card" href="https://planetscale.com/" target="_blank" rel="noopener"><div class="api-card-name">PlanetScale</div><div class="api-card-desc">Serverless MySQL with branching. 1 free database for hobby use.</div><div class="api-card-tag">MySQL</div></a>
+          <a class="api-card" href="https://upstash.com/" target="_blank" rel="noopener"><div class="api-card-name">Upstash</div><div class="api-card-desc">Free serverless Redis + Kafka. 10k commands/day free.</div><div class="api-card-tag">Redis</div></a>
+          <a class="api-card" href="https://www.cockroachlabs.com/lp/serverless/" target="_blank" rel="noopener"><div class="api-card-name">CockroachDB</div><div class="api-card-desc">Distributed SQL. 5GB free serverless tier. Postgres-compatible.</div><div class="api-card-tag">SQL</div></a>
+          <a class="api-card" href="https://turso.tech/" target="_blank" rel="noopener"><div class="api-card-name">Turso</div><div class="api-card-desc">Free SQLite at the edge. 500 databases, 9GB total storage on free tier.</div><div class="api-card-tag">SQLite</div></a>
+          <a class="api-card" href="https://www.elephantsql.com/" target="_blank" rel="noopener"><div class="api-card-name">ElephantSQL</div><div class="api-card-desc">Free Postgres up to 20MB. Quick setup for class projects.</div><div class="api-card-tag">Postgres</div></a>
+          <a class="api-card" href="https://www.notion.so/" target="_blank" rel="noopener"><div class="api-card-name">Notion (as DB)</div><div class="api-card-desc">Use Notion API as a free database. Easy admin UI, free tier.</div><div class="api-card-tag">Creative</div></a>
+          <a class="api-card" href="https://airtable.com/" target="_blank" rel="noopener"><div class="api-card-name">Airtable</div><div class="api-card-desc">Spreadsheet-like DB with REST API. Great for school projects.</div><div class="api-card-tag">Spreadsheet</div></a>
+          <a class="api-card" href="https://appwrite.io/" target="_blank" rel="noopener"><div class="api-card-name">Appwrite Cloud</div><div class="api-card-desc">Open-source Firebase alternative. Auth, DB, storage, functions free.</div><div class="api-card-tag">Open source</div></a>
+        </div>
+
+        <h3 class="api-cat-head">🔐 Free Auth & Email</h3>
+        <div class="api-grid">
+          <a class="api-card" href="https://clerk.com/" target="_blank" rel="noopener"><div class="api-card-name">Clerk</div><div class="api-card-desc">Drop-in auth UI. 10k monthly active users free. Best DX.</div><div class="api-card-tag">⭐ Auth</div></a>
+          <a class="api-card" href="https://authjs.dev/" target="_blank" rel="noopener"><div class="api-card-name">Auth.js (NextAuth)</div><div class="api-card-desc">Free open-source auth for Next.js. Self-host, 70+ providers.</div><div class="api-card-tag">Open source</div></a>
+          <a class="api-card" href="https://www.resend.com/" target="_blank" rel="noopener"><div class="api-card-name">Resend</div><div class="api-card-desc">Free transactional email API. 3000 emails/month free.</div><div class="api-card-tag">Email</div></a>
+          <a class="api-card" href="https://www.emailjs.com/" target="_blank" rel="noopener"><div class="api-card-name">EmailJS</div><div class="api-card-desc">Send emails from frontend, no backend. 200 emails/month free.</div><div class="api-card-tag">No backend</div></a>
+          <a class="api-card" href="https://formspree.io/" target="_blank" rel="noopener"><div class="api-card-name">Formspree</div><div class="api-card-desc">Free form-to-email backend. Drop-in form handler, 50/month free.</div><div class="api-card-tag">Forms</div></a>
+        </div>
+      </div>
+    </section>
+
+    <!-- RESOURCES BY COURSE -->
+    <section id="by-course" class="section section-muted">
+      <div class="container">
+        <div class="section-head">
+          <h2 class="section-title">📚 Free Resources by Course</h2>
+          <p class="section-subtitle">Hindi lang for IT/CS — for every Filipino student. Lahat free, curated.</p>
+        </div>
+
+        <div class="lang-grid">
+
+          <div class="lang-card lang-card-feature">
+            <div class="lang-header"><span class="lang-icon">🏛️</span><h3>Civil Service Exam Prep</h3></div>
+            <p>For careers in government. Both Professional and Subprofessional levels.</p>
+            <ul class="lang-links">
+              <li><a href="https://www.csc.gov.ph/career/civil-service-examination" target="_blank" rel="noopener">CSC Official Exam Info</a></li>
+              <li><a href="https://www.facebook.com/CivilServiceCommission" target="_blank" rel="noopener">CSC Official FB (announcements)</a></li>
+              <li><a href="https://www.youtube.com/@CSCExamReviewer" target="_blank" rel="noopener">CSC Reviewer (YouTube)</a></li>
+              <li><a href="https://www.civilserviceexamphilippines.org/" target="_blank" rel="noopener">CSE-PH Free Reviewer</a></li>
+              <li><a href="https://reviewer.ph/" target="_blank" rel="noopener">Reviewer.ph (free PH exams)</a></li>
+            </ul>
+          </div>
+
+          <div class="lang-card">
+            <div class="lang-header"><span class="lang-icon">📊</span><h3>Business (BSBA, BSA)</h3></div>
+            <p>Accounting, marketing, management, finance, economics.</p>
+            <ul class="lang-links">
+              <li><a href="https://www.coursera.org/browse/business" target="_blank" rel="noopener">Coursera Business (audit free)</a></li>
+              <li><a href="https://www.edx.org/learn/business" target="_blank" rel="noopener">edX Business Courses</a></li>
+              <li><a href="https://www.khanacademy.org/economics-finance-domain" target="_blank" rel="noopener">Khan Academy Economics</a></li>
+              <li><a href="https://hbsp.harvard.edu/inspiring-minds/" target="_blank" rel="noopener">Harvard Business Insights</a></li>
+              <li><a href="https://www.accountingcoach.com/" target="_blank" rel="noopener">AccountingCoach (free)</a></li>
+              <li><a href="https://corporatefinanceinstitute.com/resources/" target="_blank" rel="noopener">CFI Free Library</a></li>
+            </ul>
+          </div>
+
+          <div class="lang-card">
+            <div class="lang-header"><span class="lang-icon">⚙️</span><h3>Engineering (Civil, Mech, EE)</h3></div>
+            <p>Math, physics, structural, mechanical, electrical resources.</p>
+            <ul class="lang-links">
+              <li><a href="https://ocw.mit.edu/" target="_blank" rel="noopener">MIT OpenCourseWare (free)</a></li>
+              <li><a href="https://www.khanacademy.org/science/physics" target="_blank" rel="noopener">Khan Academy Physics</a></li>
+              <li><a href="https://www.engineeringtoolbox.com/" target="_blank" rel="noopener">Engineering Toolbox</a></li>
+              <li><a href="https://nptel.ac.in/" target="_blank" rel="noopener">NPTEL India (free engineering)</a></li>
+              <li><a href="https://www.youtube.com/@EngineerStuart" target="_blank" rel="noopener">Engineer4Free (YouTube)</a></li>
+              <li><a href="https://www.youtube.com/@TheOrganicChemistryTutor" target="_blank" rel="noopener">Organic Chem Tutor (math/physics)</a></li>
+            </ul>
+          </div>
+
+          <div class="lang-card">
+            <div class="lang-header"><span class="lang-icon">🩺</span><h3>Nursing & Med Tech</h3></div>
+            <p>NCLEX-RN, BLS, pharmacology, anatomy.</p>
+            <ul class="lang-links">
+              <li><a href="https://www.osmosis.org/learn" target="_blank" rel="noopener">Osmosis (free trial)</a></li>
+              <li><a href="https://www.registerednursern.com/" target="_blank" rel="noopener">RegisteredNurseRN (YouTube)</a></li>
+              <li><a href="https://www.simplenursing.com/" target="_blank" rel="noopener">Simple Nursing (free vids)</a></li>
+              <li><a href="https://www.kenhub.com/" target="_blank" rel="noopener">Kenhub Anatomy</a></li>
+              <li><a href="https://www.youtube.com/@NinjaNerdLectures" target="_blank" rel="noopener">Ninja Nerd Lectures</a></li>
+            </ul>
+          </div>
+
+          <div class="lang-card">
+            <div class="lang-header"><span class="lang-icon">🎓</span><h3>Education (BSEd, BEEd)</h3></div>
+            <p>LET review, lesson planning, child psych, pedagogy.</p>
+            <ul class="lang-links">
+              <li><a href="https://www.deped.gov.ph/" target="_blank" rel="noopener">DepEd Resources</a></li>
+              <li><a href="https://www.teacherph.com/" target="_blank" rel="noopener">TeacherPH</a></li>
+              <li><a href="https://www.depedtambayan.net/" target="_blank" rel="noopener">DepEd Tambayan (free DLLs/MELCs)</a></li>
+              <li><a href="https://www.coursera.org/browse/social-sciences/education" target="_blank" rel="noopener">Coursera Education</a></li>
+              <li><a href="https://www.edutopia.org/" target="_blank" rel="noopener">Edutopia (best practices)</a></li>
+            </ul>
+          </div>
+
+          <div class="lang-card">
+            <div class="lang-header"><span class="lang-icon">⚖️</span><h3>Law / Pre-Law</h3></div>
+            <p>Constitutional law, jurisprudence, Bar exam prep.</p>
+            <ul class="lang-links">
+              <li><a href="https://lawphil.net/" target="_blank" rel="noopener">LawPhil (free PH laws)</a></li>
+              <li><a href="https://www.officialgazette.gov.ph/" target="_blank" rel="noopener">Official Gazette PH</a></li>
+              <li><a href="https://www.chanrobles.com/legal11.htm" target="_blank" rel="noopener">ChanRobles Law Library</a></li>
+              <li><a href="https://www.coursera.org/browse/social-sciences/law" target="_blank" rel="noopener">Coursera Law (audit free)</a></li>
+            </ul>
+          </div>
+
+          <div class="lang-card">
+            <div class="lang-header"><span class="lang-icon">🏨</span><h3>Hospitality & Tourism</h3></div>
+            <p>HRM, BSHM, BSTM, culinary, hotel ops.</p>
+            <ul class="lang-links">
+              <li><a href="https://tourism.gov.ph/" target="_blank" rel="noopener">DOT Philippines Resources</a></li>
+              <li><a href="https://www.tesda.gov.ph/" target="_blank" rel="noopener">TESDA Free TVET Programs</a></li>
+              <li><a href="https://www.ehl.edu/en/research/ehl-insights" target="_blank" rel="noopener">EHL Insights (hospitality)</a></li>
+              <li><a href="https://www.escoffieronline.com/blog/" target="_blank" rel="noopener">Escoffier Culinary Blog</a></li>
+            </ul>
+          </div>
+
+          <div class="lang-card">
+            <div class="lang-header"><span class="lang-icon">🧠</span><h3>Psychology</h3></div>
+            <p>General psych, abnormal psych, clinical, BSPsy and beyond.</p>
+            <ul class="lang-links">
+              <li><a href="https://www.simplypsychology.org/" target="_blank" rel="noopener">SimplyPsychology</a></li>
+              <li><a href="https://www.coursera.org/browse/social-sciences/psychology" target="_blank" rel="noopener">Coursera Psych (audit free)</a></li>
+              <li><a href="https://www.apa.org/topics" target="_blank" rel="noopener">APA Topics</a></li>
+              <li><a href="https://www.youtube.com/@PsychologyVideos" target="_blank" rel="noopener">CrashCourse Psych (YouTube)</a></li>
+            </ul>
+          </div>
+
+          <div class="lang-card">
+            <div class="lang-header"><span class="lang-icon">🎨</span><h3>Communication & Arts</h3></div>
+            <p>BSCom, AB English, Multimedia Arts, Filipino lit.</p>
+            <ul class="lang-links">
+              <li><a href="https://owl.purdue.edu/" target="_blank" rel="noopener">Purdue OWL (writing)</a></li>
+              <li><a href="https://www.coursera.org/browse/arts-and-humanities" target="_blank" rel="noopener">Coursera Humanities</a></li>
+              <li><a href="https://www.canva.com/learn/design/" target="_blank" rel="noopener">Canva Design School (free)</a></li>
+              <li><a href="https://www.skillshare.com/en/browse/design" target="_blank" rel="noopener">Skillshare Design (trial)</a></li>
+            </ul>
+          </div>
+
+          <div class="lang-card">
+            <div class="lang-header"><span class="lang-icon">🌾</span><h3>Agriculture & Forestry</h3></div>
+            <p>BSA, BS Forestry, Animal Science, Agronomy.</p>
+            <ul class="lang-links">
+              <li><a href="https://www.da.gov.ph/" target="_blank" rel="noopener">Department of Agriculture</a></li>
+              <li><a href="https://www.pcaarrd.dost.gov.ph/" target="_blank" rel="noopener">PCAARRD</a></li>
+              <li><a href="https://atimanual.da.gov.ph/" target="_blank" rel="noopener">ATI Manuals (free farming guides)</a></li>
+              <li><a href="https://www.fao.org/elearning/" target="_blank" rel="noopener">FAO eLearning Academy (free)</a></li>
+            </ul>
+          </div>
+
+          <div class="lang-card">
+            <div class="lang-header"><span class="lang-icon">🏗️</span><h3>Architecture</h3></div>
+            <p>Design history, drafting, BIM, sustainability.</p>
+            <ul class="lang-links">
+              <li><a href="https://www.archdaily.com/" target="_blank" rel="noopener">ArchDaily (free articles + projects)</a></li>
+              <li><a href="https://www.youtube.com/@30X40Design" target="_blank" rel="noopener">30X40 Design Workshop (YouTube)</a></li>
+              <li><a href="https://www.coursera.org/browse/arts-and-humanities/history/history" target="_blank" rel="noopener">Coursera Architecture</a></li>
+              <li><a href="https://www.sketchup.com/learn" target="_blank" rel="noopener">SketchUp Learn</a></li>
+            </ul>
+          </div>
+
+          <div class="lang-card">
+            <div class="lang-header"><span class="lang-icon">📐</span><h3>General Math, Sci, English</h3></div>
+            <p>Foundations for any course. From basic to advanced.</p>
+            <ul class="lang-links">
+              <li><a href="https://www.khanacademy.org/" target="_blank" rel="noopener">⭐ Khan Academy (everything)</a></li>
+              <li><a href="https://ocw.mit.edu/" target="_blank" rel="noopener">⭐ MIT OpenCourseWare</a></li>
+              <li><a href="https://www.duolingo.com/" target="_blank" rel="noopener">Duolingo (English/languages)</a></li>
+              <li><a href="https://www.bbc.com/learningenglish" target="_blank" rel="noopener">BBC Learning English</a></li>
+              <li><a href="https://www.crashcourse.com/" target="_blank" rel="noopener">CrashCourse (everything)</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- AI SKILLS / DEV TOOLS -->
+    <section id="ai-skills" class="section">
+      <div class="container">
+        <div class="section-head">
+          <h2 class="section-title">🛠️ AI Coding Skills & Tools</h2>
+          <p class="section-subtitle">Plugins, skills, and assistants that supercharge your dev workflow. Most are free.</p>
+        </div>
+
+        <div class="api-grid">
+          <a class="api-card" href="https://github.com/nextlevelbuilder/ui-ux-pro-max-skill" target="_blank" rel="noopener"><div class="api-card-name">UI UX Pro Max Skill ⭐</div><div class="api-card-desc">AI skill for design intelligence — 67 styles, 161 palettes, 57 font pairs. For Claude, Cursor, Windsurf, Copilot.</div><div class="api-card-tag">79k stars</div></a>
+          <a class="api-card" href="https://github.com/features/copilot" target="_blank" rel="noopener"><div class="api-card-name">GitHub Copilot</div><div class="api-card-desc">FREE for students (with GitHub Student Pack). AI pair programmer.</div><div class="api-card-tag">⭐ Free for students</div></a>
+          <a class="api-card" href="https://claude.ai/code" target="_blank" rel="noopener"><div class="api-card-name">Claude Code</div><div class="api-card-desc">Anthropic's CLI coding assistant. Free tier, plugins/skills system.</div><div class="api-card-tag">CLI</div></a>
+          <a class="api-card" href="https://www.cursor.com/" target="_blank" rel="noopener"><div class="api-card-name">Cursor</div><div class="api-card-desc">VS Code fork with AI built-in. Free tier with limits.</div><div class="api-card-tag">AI Editor</div></a>
+          <a class="api-card" href="https://codeium.com/" target="_blank" rel="noopener"><div class="api-card-name">Codeium</div><div class="api-card-desc">Free AI autocomplete + chat for VS Code, JetBrains, etc.</div><div class="api-card-tag">⭐ Forever free</div></a>
+          <a class="api-card" href="https://windsurf.com/" target="_blank" rel="noopener"><div class="api-card-name">Windsurf</div><div class="api-card-desc">Codeium's AI editor. Free tier with strong agent features.</div><div class="api-card-tag">AI Editor</div></a>
+          <a class="api-card" href="https://www.tabnine.com/" target="_blank" rel="noopener"><div class="api-card-name">Tabnine</div><div class="api-card-desc">AI code completion. Free tier for personal use.</div><div class="api-card-tag">Autocomplete</div></a>
+          <a class="api-card" href="https://aider.chat/" target="_blank" rel="noopener"><div class="api-card-name">Aider</div><div class="api-card-desc">Open-source AI pair programming in your terminal. Free.</div><div class="api-card-tag">Open source</div></a>
+          <a class="api-card" href="https://continue.dev/" target="_blank" rel="noopener"><div class="api-card-name">Continue.dev</div><div class="api-card-desc">Open-source AI extension for VS Code/JetBrains. Bring your own LLM.</div><div class="api-card-tag">Open source</div></a>
+          <a class="api-card" href="https://www.warp.dev/" target="_blank" rel="noopener"><div class="api-card-name">Warp</div><div class="api-card-desc">AI-powered terminal. Free tier. Mac, Linux, Windows.</div><div class="api-card-tag">Terminal</div></a>
+          <a class="api-card" href="https://v0.dev/" target="_blank" rel="noopener"><div class="api-card-name">v0 by Vercel</div><div class="api-card-desc">Prompt → React/Tailwind code. Free tier. Great for UI prototyping.</div><div class="api-card-tag">UI generator</div></a>
+          <a class="api-card" href="https://bolt.new/" target="_blank" rel="noopener"><div class="api-card-name">Bolt.new</div><div class="api-card-desc">Prompt → full app in browser. Like Base44 but free tier.</div><div class="api-card-tag">App builder</div></a>
         </div>
       </div>
     </section>
