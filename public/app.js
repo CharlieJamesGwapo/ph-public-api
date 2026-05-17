@@ -1243,6 +1243,151 @@ Interpretation:,4.21-5.00 = Strongly Agree,,,,
   });
 })();
 
+// ===================== Word Mastery tabs =====================
+(function setupWord() {
+  const tabs = $$('.word-tab');
+  const panels = $$('.word-panel');
+  if (!tabs.length) return;
+  tabs.forEach(t => t.addEventListener('click', () => {
+    tabs.forEach(x => x.classList.remove('active'));
+    panels.forEach(x => x.classList.remove('active'));
+    t.classList.add('active');
+    $(`.word-panel[data-wpanel="${t.dataset.wtab}"]`)?.classList.add('active');
+  }));
+
+  const WORD_SHORTCUTS = [
+    { group: '📋 Essential', items: [
+      ['Copy', ['Ctrl', 'C']], ['Paste', ['Ctrl', 'V']], ['Cut', ['Ctrl', 'X']],
+      ['Undo', ['Ctrl', 'Z']], ['Redo', ['Ctrl', 'Y']], ['Save', ['Ctrl', 'S']],
+      ['Save As', ['F12']], ['Print', ['Ctrl', 'P']], ['Select All', ['Ctrl', 'A']],
+    ]},
+    { group: '📝 Formatting', items: [
+      ['Bold', ['Ctrl', 'B']], ['Italic', ['Ctrl', 'I']], ['Underline', ['Ctrl', 'U']],
+      ['Increase font', ['Ctrl', 'Shift', '>']], ['Decrease font', ['Ctrl', 'Shift', '<']],
+      ['Subscript', ['Ctrl', '=']], ['Superscript', ['Ctrl', 'Shift', '=']],
+      ['Clear formatting', ['Ctrl', 'Space']],
+      ['Change case', ['Shift', 'F3']],
+    ]},
+    { group: '↔️ Alignment', items: [
+      ['Left align', ['Ctrl', 'L']], ['Center', ['Ctrl', 'E']],
+      ['Right align', ['Ctrl', 'R']], ['Justify', ['Ctrl', 'J']],
+      ['Increase indent', ['Ctrl', 'M']], ['Decrease indent', ['Ctrl', 'Shift', 'M']],
+      ['Single space', ['Ctrl', '1']], ['Double space', ['Ctrl', '2']],
+      ['1.5 space', ['Ctrl', '5']],
+    ]},
+    { group: '🎨 Styles', items: [
+      ['Heading 1', ['Ctrl', 'Alt', '1']],
+      ['Heading 2', ['Ctrl', 'Alt', '2']],
+      ['Heading 3', ['Ctrl', 'Alt', '3']],
+      ['Normal style', ['Ctrl', 'Shift', 'N']],
+      ['Apply List Bullet', ['Ctrl', 'Shift', 'L']],
+    ]},
+    { group: '🧭 Navigation', items: [
+      ['Go to page', ['Ctrl', 'G']], ['Find', ['Ctrl', 'F']], ['Replace', ['Ctrl', 'H']],
+      ['Page Up/Down', ['Page Up/Down']],
+      ['Top of document', ['Ctrl', 'Home']], ['End of document', ['Ctrl', 'End']],
+      ['Start of line', ['Home']], ['End of line', ['End']],
+    ]},
+    { group: '📄 Page & Insert', items: [
+      ['Page Break', ['Ctrl', 'Enter']],
+      ['Column Break', ['Ctrl', 'Shift', 'Enter']],
+      ['Footnote', ['Ctrl', 'Alt', 'F']],
+      ['Endnote', ['Ctrl', 'Alt', 'D']],
+      ['Hyperlink', ['Ctrl', 'K']],
+      ['Comment', ['Ctrl', 'Alt', 'M']],
+    ]},
+    { group: '✂️ Selection', items: [
+      ['Select word', ['Ctrl', 'Shift', '←/→']],
+      ['Select line', ['Shift', 'End']],
+      ['Select paragraph', ['Ctrl', 'Shift', '↓']],
+      ['Select to top', ['Ctrl', 'Shift', 'Home']],
+    ]},
+  ];
+
+  function renderWordShortcuts() {
+    const c = $('#word-shortcuts');
+    if (!c) return;
+    c.innerHTML = WORD_SHORTCUTS.map(g => `
+      <div class="shortcut-group">
+        <h4>${g.group}</h4>
+        ${g.items.map(([l, k]) => `<div class="shortcut-row"><span>${l}</span><div class="shortcut-keys">${k.map(x => `<kbd>${x}</kbd>`).join('<span style="color:var(--fg-muted);font-size:11px;">+</span>')}</div></div>`).join('')}
+      </div>
+    `).join('');
+  }
+  renderWordShortcuts();
+})();
+
+// ===================== PowerPoint Mastery tabs =====================
+(function setupPpt() {
+  const tabs = $$('.ppt-tab');
+  const panels = $$('.ppt-panel');
+  if (!tabs.length) return;
+  tabs.forEach(t => t.addEventListener('click', () => {
+    tabs.forEach(x => x.classList.remove('active'));
+    panels.forEach(x => x.classList.remove('active'));
+    t.classList.add('active');
+    $(`.ppt-panel[data-ppanel="${t.dataset.ptab}"]`)?.classList.add('active');
+  }));
+
+  const PPT_SHORTCUTS = [
+    { group: '📋 Essential', items: [
+      ['Copy', ['Ctrl', 'C']], ['Paste', ['Ctrl', 'V']], ['Undo', ['Ctrl', 'Z']],
+      ['Save', ['Ctrl', 'S']], ['Print', ['Ctrl', 'P']],
+    ]},
+    { group: '🎬 Slideshow', items: [
+      ['Start from beginning', ['F5']],
+      ['Start from current slide', ['Shift', 'F5']],
+      ['End slideshow', ['Esc']],
+      ['Next slide', ['→ / Space / N']],
+      ['Previous slide', ['← / P']],
+      ['Go to slide #', ['Type # then Enter']],
+      ['Black screen', ['B']], ['White screen', ['W']],
+      ['Pointer/Pen', ['Ctrl', 'P']],
+      ['Erase pen marks', ['E']],
+    ]},
+    { group: '🆕 Insert', items: [
+      ['New slide', ['Ctrl', 'M']],
+      ['Duplicate slide', ['Ctrl', 'D']],
+      ['Insert hyperlink', ['Ctrl', 'K']],
+      ['Group objects', ['Ctrl', 'G']],
+      ['Ungroup', ['Ctrl', 'Shift', 'G']],
+    ]},
+    { group: '📝 Text', items: [
+      ['Bold', ['Ctrl', 'B']], ['Italic', ['Ctrl', 'I']], ['Underline', ['Ctrl', 'U']],
+      ['Center', ['Ctrl', 'E']], ['Left align', ['Ctrl', 'L']], ['Right align', ['Ctrl', 'R']],
+      ['Promote bullet (less indent)', ['Shift', 'Tab']],
+      ['Demote bullet (more indent)', ['Tab']],
+    ]},
+    { group: '🎨 Object', items: [
+      ['Move object', ['Arrow keys']],
+      ['Nudge by 1px', ['Ctrl', 'Arrow']],
+      ['Rotate 15°', ['Alt', '←/→']],
+      ['Bring to front', ['Ctrl', 'Shift', ']']],
+      ['Send to back', ['Ctrl', 'Shift', '[']],
+      ['Distribute evenly', ['Alt', 'H', 'G', 'A']],
+    ]},
+    { group: '🧭 Navigation', items: [
+      ['Outline view', ['Alt', 'V', 'O']],
+      ['Slide Sorter', ['Alt', 'V', 'D']],
+      ['Normal view', ['Alt', 'V', 'N']],
+      ['Notes view', ['Alt', 'V', 'P']],
+      ['Zoom in/out', ['Ctrl', '+/-']],
+    ]},
+  ];
+
+  function renderPptShortcuts() {
+    const c = $('#ppt-shortcuts');
+    if (!c) return;
+    c.innerHTML = PPT_SHORTCUTS.map(g => `
+      <div class="shortcut-group">
+        <h4>${g.group}</h4>
+        ${g.items.map(([l, k]) => `<div class="shortcut-row"><span>${l}</span><div class="shortcut-keys">${k.map(x => `<kbd>${x}</kbd>`).join('<span style="color:var(--fg-muted);font-size:11px;">+</span>')}</div></div>`).join('')}
+      </div>
+    `).join('');
+  }
+  renderPptShortcuts();
+})();
+
 // ===================== Universal Search =====================
 (function setupSearch() {
   const trigger = $('#search-trigger');
