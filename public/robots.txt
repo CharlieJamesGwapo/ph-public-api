@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+Disallow: /api/
+Disallow: /_vercel/
+
+Sitemap: https://ph-public-api.vercel.app/sitemap.xml
