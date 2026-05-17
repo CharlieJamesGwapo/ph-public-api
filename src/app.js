@@ -9,6 +9,9 @@ const weatherRouter = require('./routes/weather');
 const scholarshipsRouter = require('./routes/scholarships');
 const triviaRouter = require('./routes/trivia');
 const freeOfficeRouter = require('./routes/free-office');
+const jeepneyRouter = require('./routes/jeepney');
+const barangaysRouter = require('./routes/barangays');
+const imageRouter = require('./routes/image');
 
 const app = express();
 app.use(cors());
@@ -17,16 +20,20 @@ app.use(express.json());
 app.get('/api', (_req, res) => {
   res.json({
     name: 'Philippines Public Data API',
-    version: '0.4.0',
-    tagline: 'Free, open-source data + AI tutor for Filipino students',
+    version: '0.5.0',
+    tagline: 'Free APIs + AI tutor + study tools for Filipino students',
     endpoints: [
       '/regions', '/holidays', '/cities', '/schools',
       '/scholarships', '/currency', '/currency/convert',
       '/weather/cities', '/weather/:city',
       '/trivia', '/trivia/random',
       '/free-office', '/free-office/:slug',
-      '/ai (POST)',
+      '/jeepney', '/jeepney/:code',
+      '/barangays',
+      '/image?prompt=...',
+      '/ai (POST {question, history, mode})',
     ],
+    ai_modes: ['general', 'coding', 'research', 'writing', 'math'],
     docs: 'https://github.com/CharlieJamesGwapo/ph-public-api',
   });
 });
@@ -40,6 +47,9 @@ app.use('/currency', currencyRouter);
 app.use('/weather', weatherRouter);
 app.use('/trivia', triviaRouter);
 app.use('/free-office', freeOfficeRouter);
+app.use('/jeepney', jeepneyRouter);
+app.use('/barangays', barangaysRouter);
+app.use('/image', imageRouter);
 
 app.use((req, res) => {
   res.status(404).json({ error: 'Not found', path: req.path });
