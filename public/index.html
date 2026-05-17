@@ -849,6 +849,133 @@ document.body.style.background = '#FCD116';
       </div>
     </section>
 
+    <!-- AI TOOLBOX -->
+    <section id="ai-toolbox" class="section">
+      <div class="container">
+        <div class="section-head">
+          <h2 class="section-title">🧰 AI Toolbox — Quick Tools</h2>
+          <p class="section-subtitle">6 dedicated AI tools for daily student tasks. Paste, click, done.</p>
+        </div>
+
+        <div class="ai-tools-grid">
+
+          <!-- TRANSLATOR -->
+          <div class="ai-tool-card">
+            <div class="ai-tool-head">
+              <span class="ai-tool-icon">🌐</span>
+              <h3>Translator</h3>
+            </div>
+            <p>Tagalog ↔ English ↔ Cebuano. Preserves tone.</p>
+            <div class="translator-controls">
+              <select id="trans-from" class="ai-tool-select">
+                <option value="auto">Auto-detect</option>
+                <option value="English">English</option>
+                <option value="Tagalog">Tagalog</option>
+                <option value="Cebuano">Cebuano</option>
+                <option value="Taglish">Taglish</option>
+              </select>
+              <span style="font-size:18px;">→</span>
+              <select id="trans-to" class="ai-tool-select">
+                <option value="English">English</option>
+                <option value="Tagalog" selected>Tagalog</option>
+                <option value="Cebuano">Cebuano</option>
+                <option value="formal English">Formal English</option>
+                <option value="formal Tagalog">Formal Tagalog</option>
+              </select>
+            </div>
+            <textarea id="trans-input" placeholder="Type or paste text to translate..." rows="4" class="ai-tool-input"></textarea>
+            <button class="btn btn-primary ai-tool-btn" id="trans-go">Translate ✨</button>
+            <div id="trans-output" class="ai-tool-output" hidden></div>
+            <button class="btn btn-secondary ai-tool-copy" id="trans-copy" hidden>📋 Copy</button>
+          </div>
+
+          <!-- SUMMARIZER -->
+          <div class="ai-tool-card">
+            <div class="ai-tool-head">
+              <span class="ai-tool-icon">📝</span>
+              <h3>Text Summarizer</h3>
+            </div>
+            <p>Paste any long article/text → get a clear summary in 30 seconds.</p>
+            <div class="translator-controls">
+              <select id="summ-style" class="ai-tool-select" style="flex:1;">
+                <option value="bullets">5 bullet points</option>
+                <option value="paragraph">1 paragraph (3-4 sentences)</option>
+                <option value="tweet">Tweet-length (280 chars)</option>
+                <option value="tldr">TL;DR (1 sentence)</option>
+                <option value="academic">Academic abstract (150 words)</option>
+              </select>
+            </div>
+            <textarea id="summ-input" placeholder="Paste an article, chapter, or any long text here..." rows="5" class="ai-tool-input"></textarea>
+            <button class="btn btn-primary ai-tool-btn" id="summ-go">Summarize ✨</button>
+            <div id="summ-output" class="ai-tool-output" hidden></div>
+            <button class="btn btn-secondary ai-tool-copy" id="summ-copy" hidden>📋 Copy</button>
+          </div>
+
+          <!-- FLASHCARD GENERATOR -->
+          <div class="ai-tool-card">
+            <div class="ai-tool-head">
+              <span class="ai-tool-icon">🎴</span>
+              <h3>Flashcard Generator</h3>
+            </div>
+            <p>Paste your notes → AI makes Q&A flashcards for review.</p>
+            <textarea id="flash-input" placeholder="Paste lecture notes, chapter content, or topic outline..." rows="5" class="ai-tool-input"></textarea>
+            <div class="translator-controls">
+              <select id="flash-count" class="ai-tool-select" style="flex:1;">
+                <option value="5">5 flashcards</option>
+                <option value="10" selected>10 flashcards</option>
+                <option value="15">15 flashcards</option>
+                <option value="20">20 flashcards</option>
+              </select>
+            </div>
+            <button class="btn btn-primary ai-tool-btn" id="flash-go">Generate Flashcards ✨</button>
+            <div id="flash-output" class="ai-tool-output" hidden></div>
+            <button class="btn btn-secondary ai-tool-copy" id="flash-copy" hidden>📋 Copy as Anki / Quizlet format</button>
+          </div>
+
+          <!-- MATH SOLVER -->
+          <div class="ai-tool-card">
+            <div class="ai-tool-head">
+              <span class="ai-tool-icon">🧮</span>
+              <h3>Math Solver</h3>
+            </div>
+            <p>Type any equation or word problem → step-by-step solution.</p>
+            <textarea id="math-input" placeholder="Examples:&#10;• Solve: 2x² + 5x - 3 = 0&#10;• A car travels 60 km/h for 3 hours. Distance?&#10;• Find the derivative of f(x) = x³ + 2x" rows="4" class="ai-tool-input"></textarea>
+            <button class="btn btn-primary ai-tool-btn" id="math-go">Solve Step-by-Step ✨</button>
+            <div id="math-output" class="ai-tool-output" hidden></div>
+            <button class="btn btn-secondary ai-tool-copy" id="math-copy" hidden>📋 Copy</button>
+          </div>
+
+          <!-- ESSAY GRADER -->
+          <div class="ai-tool-card">
+            <div class="ai-tool-head">
+              <span class="ai-tool-icon">✍️</span>
+              <h3>Essay Grader</h3>
+            </div>
+            <p>Paste your essay → get grade + specific feedback + suggestions.</p>
+            <input type="text" id="essay-topic" placeholder="Essay topic/question (optional but helps)" class="ai-tool-input" style="margin-bottom:8px;" />
+            <textarea id="essay-input" placeholder="Paste your essay here..." rows="6" class="ai-tool-input"></textarea>
+            <button class="btn btn-primary ai-tool-btn" id="essay-go">Grade & Give Feedback ✨</button>
+            <div id="essay-output" class="ai-tool-output" hidden></div>
+            <button class="btn btn-secondary ai-tool-copy" id="essay-copy" hidden>📋 Copy feedback</button>
+          </div>
+
+          <!-- CODE EXPLAINER -->
+          <div class="ai-tool-card">
+            <div class="ai-tool-head">
+              <span class="ai-tool-icon">💻</span>
+              <h3>Code Explainer</h3>
+            </div>
+            <p>Paste code you don't understand → AI explains line by line.</p>
+            <textarea id="code-input" placeholder="Paste code in any language (Python, JS, Java, C++, PHP, etc.)..." rows="5" class="ai-tool-input" style="font-family:var(--font-mono);font-size:12px;"></textarea>
+            <button class="btn btn-primary ai-tool-btn" id="code-go">Explain Code ✨</button>
+            <div id="code-output" class="ai-tool-output" hidden></div>
+            <button class="btn btn-secondary ai-tool-copy" id="code-copy" hidden>📋 Copy</button>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
     <!-- STUDY TOOLS -->
     <section id="tools" class="section section-muted">
       <div class="container">

@@ -39,6 +39,225 @@ async function callAI({ question, mode = 'general', history = [] }) {
   return r.json();
 }
 
+// ===================== AI Toolbox (6 tools) =====================
+(function setupAIToolbox() {
+  function escape(s) { return s.replace(/[&<>]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[c])); }
+
+  async function runTool(opts) {
+    const { input, output, button, copyBtn, prompt, mode = 'general' } = opts;
+    const value = input.value.trim();
+    if (!value) { toast('Add some text first'); return; }
+
+    output.hidden = false;
+    output.className = 'ai-tool-output loading';
+    output.textContent = '';
+    if (copyBtn) copyBtn.hidden = true;
+    button.disabled = true;
+    const originalText = button.textContent;
+    button.textContent = 'Working... ⏳';
+
+    try {
+      const r = await fetch(API_BASE + '/ai', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ question: prompt, mode }),
+      });
+      const j = await r.json();
+      output.className = 'ai-tool-output';
+      if (j.ok && j.text) {
+        output.innerHTML = escape(j.text).replace(/\n/g, '<br>');
+        if (copyBtn) copyBtn.hidden = false;
+        if (window.__triggerStarNudge) window.__triggerStarNudge();
+      } else {
+        output.innerHTML = `<span style="color:var(--danger);">${j.error || 'AI busy. Try again.'}</span>`;
+      }
+    } catch (e) {
+      output.className = 'ai-tool-output';
+      output.innerHTML = `<span style="color:var(--danger);">Network error. Try again.</span>`;
+    }
+    button.disabled = false;
+    button.textContent = originalText;
+  }
+
+  function bindCopy(btn, source) {
+    if (!btn || !source) return;
+    btn.addEventListener('click', async () => {
+      try {
+        await navigator.clipboard.writeText(source.innerText);
+        toast('Copied to clipboard');
+      } catch { toast('Copy failed'); }
+    });
+  }
+
+  // 1. Translator
+  if ($('#trans-go')) {
+    $('#trans-go').addEventListener('click', () => {
+      const from = $('#trans-from').value;
+      const to = $('#trans-to').value;
+      const text = $('#trans-input').value.trim();
+      if (!text) { toast('Type text to translate'); return; }
+      const prompt = `Translate the following text ${from === 'auto' ? '' : 'from ' + from + ' '}to ${to}. Preserve tone and meaning. Output ONLY the translation, no preamble.\n\n${text}`;
+      runTool({
+        input: $('#trans-input'),
+        output: $('#trans-output'),
+        button: $('#trans-go'),
+        copyBtn: $('#trans-copy'),
+        prompt, mode: 'writing',
+      });
+    });
+    bindCopy($('#trans-copy'), $('#trans-output'));
+  }
+
+  // 2. Summarizer
+  if ($('#summ-go')) {
+    $('#summ-go').addEventListener('click', () => {
+      const style = $('#summ-style').value;
+      const text = $('#summ-input').value.trim();
+      if (!text) { toast('Paste text to summarize'); return; }
+      const styleHints = {
+        bullets: 'as 5 clear bullet points',
+        paragraph: 'as 1 short paragraph (3-4 sentences)',
+        tweet: 'in 280 characters or less, like a tweet',
+        tldr: 'as a single TL;DR sentence',
+        academic: 'as a 150-word academic-style abstract',
+      };
+      const prompt = `Summarize the following text ${styleHints[style] || styleHints.bullets}. Output ONLY the summary, no preamble.\n\nTEXT:\n${text}`;
+      runTool({
+        input: $('#summ-input'),
+        output: $('#summ-output'),
+        button: $('#summ-go'),
+        copyBtn: $('#summ-copy'),
+        prompt, mode: 'writing',
+      });
+    });
+    bindCopy($('#summ-copy'), $('#summ-output'));
+  }
+
+  // 3. Flashcard Generator
+  if ($('#flash-go')) {
+    $('#flash-go').addEventListener('click', () => {
+      const count = $('#flash-count').value;
+      const text = $('#flash-input').value.trim();
+      if (!text) { toast('Paste notes to flashcard'); return; }
+      const prompt = `Create ${count} flashcards from these notes for a Filipino student. Each flashcard is one Q&A pair.
+
+OUTPUT FORMAT (one per line, tab between Q and A, exactly like Anki/Quizlet import format):
+Question 1?\tAnswer 1
+Question 2?\tAnswer 2
+...
+
+Rules:
+- Cover the most important concepts
+- Mix recall, application, and definition questions
+- Keep answers concise (1-2 sentences max)
+- Use clear English (or Taglish if the notes are in Taglish)
+
+NOTES:
+${text}`;
+      runTool({
+        input: $('#flash-input'),
+        output: $('#flash-output'),
+        button: $('#flash-go'),
+        copyBtn: $('#flash-copy'),
+        prompt, mode: 'research',
+      });
+    });
+    bindCopy($('#flash-copy'), $('#flash-output'));
+  }
+
+  // 4. Math Solver
+  if ($('#math-go')) {
+    $('#math-go').addEventListener('click', () => {
+      const text = $('#math-input').value.trim();
+      if (!text) { toast('Type a math problem'); return; }
+      const prompt = `Solve this math problem step by step. Show the formula used and explain each step in clear Taglish.
+
+PROBLEM: ${text}
+
+Format:
+**Given:** [what's known]
+**Find:** [what's asked]
+**Solution:**
+Step 1: ...
+Step 2: ...
+...
+**Final Answer:** [highlighted]`;
+      runTool({
+        input: $('#math-input'),
+        output: $('#math-output'),
+        button: $('#math-go'),
+        copyBtn: $('#math-copy'),
+        prompt, mode: 'math',
+      });
+    });
+    bindCopy($('#math-copy'), $('#math-output'));
+  }
+
+  // 5. Essay Grader
+  if ($('#essay-go')) {
+    $('#essay-go').addEventListener('click', () => {
+      const topic = $('#essay-topic').value.trim();
+      const essay = $('#essay-input').value.trim();
+      if (!essay) { toast('Paste your essay'); return; }
+      const prompt = `Grade this Filipino college student's essay and give specific actionable feedback.
+
+${topic ? 'TOPIC/QUESTION: ' + topic + '\n\n' : ''}ESSAY:
+${essay}
+
+Provide:
+**Grade:** [out of 100, or rubric tier: Excellent/Good/Satisfactory/Needs Work]
+**Strengths (2-3 specific points):**
+**Weaknesses (3-4 specific points):**
+**Specific revision suggestions:**
+**Grammar/spelling issues found:**
+**Final tip for improvement:**
+
+Be honest but encouraging. Filipino academic English standards.`;
+      runTool({
+        input: $('#essay-input'),
+        output: $('#essay-output'),
+        button: $('#essay-go'),
+        copyBtn: $('#essay-copy'),
+        prompt, mode: 'writing',
+      });
+    });
+    bindCopy($('#essay-copy'), $('#essay-output'));
+  }
+
+  // 6. Code Explainer
+  if ($('#code-go')) {
+    $('#code-go').addEventListener('click', () => {
+      const code = $('#code-input').value.trim();
+      if (!code) { toast('Paste code to explain'); return; }
+      const prompt = `Explain this code to a Filipino CS student. Be thorough but clear.
+
+CODE:
+\`\`\`
+${code}
+\`\`\`
+
+Format:
+**What it does (1 sentence):**
+**Language:** [detected]
+**Line-by-line explanation:**
+- Line X: [explanation]
+- Line Y: [explanation]
+**Key concepts used:**
+**How to improve it (optional):**
+
+Use simple English, mix Taglish when helpful.`;
+      runTool({
+        input: $('#code-input'),
+        output: $('#code-output'),
+        button: $('#code-go'),
+        copyBtn: $('#code-copy'),
+        prompt, mode: 'coding',
+      });
+    });
+    bindCopy($('#code-copy'), $('#code-output'));
+  }
+})();
+
 // ===================== Inline Kuya AI hero demo =====================
 (function setupHeroAI() {
   const form = $('#hero-ai-form');
