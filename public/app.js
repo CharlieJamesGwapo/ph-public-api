@@ -39,6 +39,55 @@ async function callAI({ question, mode = 'general', history = [] }) {
   return r.json();
 }
 
+// ===================== Inline Kuya AI hero demo =====================
+(function setupHeroAI() {
+  const form = $('#hero-ai-form');
+  const input = $('#hero-ai-input');
+  const send = $('#hero-ai-send');
+  const out = $('#hero-ai-output');
+  if (!form || !input || !send || !out) return;
+
+  async function ask(question) {
+    out.hidden = false;
+    out.className = 'hero-ai-output loading';
+    out.textContent = '';
+    send.disabled = true;
+    const original = send.textContent;
+    send.textContent = '...';
+    const t0 = performance.now();
+    try {
+      const r = await fetch(API_BASE + '/ai', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ question, mode: 'general' }),
+      });
+      const j = await r.json();
+      out.className = 'hero-ai-output';
+      if (j.ok && j.text) {
+        const ms = Math.round(performance.now() - t0);
+        out.innerHTML = `${j.text.replace(/[&<>]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[c])).replace(/\n/g, '<br>')}<span class="provider-tag">✨ via ${j.provider || 'AI'} · ${ms}ms · <a href="#ai" style="color:var(--ph-blue);text-decoration:underline;">Continue in full chat →</a></span>`;
+      } else {
+        out.innerHTML = `<span style="color:var(--danger);">${j.error || 'AI is busy right now. Try again in 30 seconds.'}</span>`;
+      }
+    } catch (e) {
+      out.className = 'hero-ai-output';
+      out.innerHTML = `<span style="color:var(--danger);">Network error. Try again.</span>`;
+    }
+    send.disabled = false;
+    send.textContent = original;
+  }
+
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const q = input.value.trim();
+    if (q) ask(q);
+  });
+  $$('.hero-chip').forEach(c => c.addEventListener('click', () => {
+    input.value = c.dataset.q;
+    ask(c.dataset.q);
+  }));
+})();
+
 // ===================== Language picker (i18n) =====================
 const I18N = {
   en: {

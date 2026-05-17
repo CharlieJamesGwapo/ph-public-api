@@ -169,6 +169,29 @@
           <a href="#start" class="btn btn-secondary" data-i18n="hero.cta3">Quick Start →</a>
         </div>
 
+        <!-- INLINE KUYA AI DEMO -->
+        <div class="hero-ai-demo">
+          <div class="hero-ai-head">
+            <span class="hero-ai-avatar">K</span>
+            <div>
+              <strong>Try Kuya AI right here</strong>
+              <span class="hero-ai-sub">Type a question. No signup. Free.</span>
+            </div>
+            <span class="hero-ai-pill">✨ Live</span>
+          </div>
+          <form id="hero-ai-form" class="hero-ai-form">
+            <input id="hero-ai-input" type="text" placeholder="e.g. 5 capstone ideas for tourism in Misamis Oriental" autocomplete="off" maxlength="300" />
+            <button type="submit" id="hero-ai-send" class="btn btn-primary">Ask →</button>
+          </form>
+          <div class="hero-ai-chips">
+            <button class="hero-chip" data-q="Explain Big O notation in simple Taglish with examples">Explain Big O</button>
+            <button class="hero-chip" data-q="Bigyan mo ako ng 5 capstone ideas for tourism">5 capstone ideas</button>
+            <button class="hero-chip" data-q="Translate to formal English: ano pong status ng application ko">Translate Tagalog</button>
+            <button class="hero-chip" data-q="Help me write a 1-paragraph thesis intro about online enrollment">Thesis intro</button>
+          </div>
+          <div id="hero-ai-output" class="hero-ai-output" hidden></div>
+        </div>
+
         <div class="hero-stats" id="hero-stats">
           <div class="stat"><div class="stat-num" data-stat="apis">13+</div><div class="stat-label" data-i18n="stats.apis">Free APIs</div></div>
           <div class="stat"><div class="stat-num" data-stat="tools">7+</div><div class="stat-label" data-i18n="stats.tools">Free tools</div></div>

@@ -1509,6 +1509,139 @@ section { overflow-x: clip; }
   text-shadow: 0 1px 2px rgba(0,0,0,0.2);
 }
 
+/* === Inline Kuya AI hero demo === */
+.hero-ai-demo {
+  margin-top: var(--s5);
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: var(--s4);
+  max-width: 720px;
+  box-shadow: var(--shadow-md);
+  position: relative;
+  overflow: hidden;
+}
+.hero-ai-demo::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0; height: 3px;
+  background: linear-gradient(90deg, var(--ph-blue), var(--ph-red), var(--ph-yellow));
+}
+.hero-ai-head {
+  display: flex; align-items: center; gap: var(--s3);
+  margin-bottom: var(--s3);
+}
+.hero-ai-avatar {
+  width: 40px; height: 40px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--ph-blue), var(--ph-red));
+  color: white;
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 800; font-size: 16px;
+  flex-shrink: 0;
+}
+.hero-ai-head strong {
+  display: block;
+  font-size: 15px;
+  color: var(--fg);
+}
+.hero-ai-sub {
+  display: block;
+  font-size: 12px;
+  color: var(--fg-muted);
+  margin-top: 2px;
+}
+.hero-ai-pill {
+  margin-left: auto;
+  font-size: 11px;
+  padding: 4px 10px;
+  background: color-mix(in srgb, #22C55E 12%, transparent);
+  color: #16A34A;
+  border-radius: var(--radius-full);
+  font-weight: 600;
+  flex-shrink: 0;
+}
+[data-theme="dark"] .hero-ai-pill { color: #4ADE80; }
+
+.hero-ai-form {
+  display: flex; gap: var(--s2);
+  margin-bottom: var(--s3);
+}
+#hero-ai-input {
+  flex: 1;
+  padding: 12px var(--s4);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-sm);
+  background: var(--bg);
+  color: var(--fg);
+  font-size: 14px;
+  min-height: 44px;
+  outline: none;
+  transition: border-color 150ms ease, box-shadow 150ms ease;
+}
+#hero-ai-input:focus {
+  border-color: var(--ph-blue);
+  box-shadow: var(--shadow-press);
+}
+#hero-ai-send { min-width: 80px; flex-shrink: 0; }
+
+.hero-ai-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: var(--s3);
+}
+.hero-chip {
+  font-size: 12px;
+  padding: 6px 12px;
+  background: var(--bg-subtle);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-full);
+  color: var(--fg-muted);
+  font-weight: 500;
+  transition: border-color 150ms ease, color 150ms ease, transform 150ms ease;
+  min-height: 30px;
+}
+.hero-chip:hover { border-color: var(--ph-blue); color: var(--fg); }
+.hero-chip:active { transform: scale(0.96); }
+
+.hero-ai-output {
+  background: var(--bg-subtle);
+  border-left: 3px solid var(--ph-blue);
+  padding: var(--s3) var(--s4);
+  border-radius: var(--radius-sm);
+  font-size: 14px;
+  line-height: 1.6;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  max-height: 280px;
+  overflow-y: auto;
+  color: var(--fg);
+}
+.hero-ai-output.loading::before {
+  content: 'Kuya AI is thinking';
+  color: var(--fg-muted);
+}
+.hero-ai-output.loading::after {
+  content: '...';
+  animation: dots 1.4s ease-in-out infinite;
+  letter-spacing: 3px;
+  color: var(--fg-muted);
+}
+.hero-ai-output .provider-tag {
+  display: block;
+  font-size: 11px;
+  color: var(--fg-subtle);
+  margin-top: var(--s2);
+  padding-top: var(--s2);
+  border-top: 1px dashed var(--border);
+}
+
+@media (max-width: 640px) {
+  .hero-ai-form { flex-direction: column; }
+  #hero-ai-send { width: 100%; }
+  .hero-ai-demo { padding: var(--s3); }
+}
+
 /* === Skills Roadmap (4-quadrant overview) === */
 .skills-roadmap {
   background: linear-gradient(180deg, #fff 0%, #f0fdf4 100%);
