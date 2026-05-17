@@ -110,12 +110,24 @@ async function callPollinations(question, history, mode) {
   const r = await fetch('https://text.pollinations.ai/', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ messages, model: 'openai-fast', private: true }),
+    body: JSON.stringify({ messages, model: 'openai', private: true }),
   });
   if (!r.ok) throw new Error(`Pollinations ${r.status}`);
   const text = (await r.text()).trim();
   if (!text || text.length < 2) throw new Error('Pollinations empty');
-  return { provider: 'pollinations-openai-fast', text };
+  return { provider: 'pollinations-openai', text };
+}
+
+async function callPollinationsGet(question, history, mode) {
+  // Embed system prompt in the user message for the GET endpoint
+  const sys = pickPrompt(mode);
+  const prompt = `${sys}\n\nUser: ${question}`;
+  const url = `https://text.pollinations.ai/${encodeURIComponent(prompt)}?model=openai`;
+  const r = await fetch(url);
+  if (!r.ok) throw new Error(`PollinationsGet ${r.status}`);
+  const text = (await r.text()).trim();
+  if (!text || text.length < 2) throw new Error('PollinationsGet empty');
+  return { provider: 'pollinations-get', text };
 }
 
 async function callHackClub(question, history, mode) {
@@ -154,8 +166,8 @@ module.exports = async (req, res) => {
     // RACE: launch all available providers in parallel, return the first to respond.
     const providers = [];
     if (process.env.GOOGLE_API_KEY) providers.push(['gemini', () => withTimeout(callGemini(question, history, mode), 20000, 'gemini')]);
-    providers.push(['pollinations', () => withTimeout(callPollinations(question, history, mode), 20000, 'pollinations')]);
-    providers.push(['hackclub', () => withTimeout(callHackClub(question, history, mode), 20000, 'hackclub')]);
+    providers.push(['pollinations-post', () => withTimeout(callPollinations(question, history, mode), 25000, 'pollinations-post')]);
+    providers.push(['pollinations-get', () => withTimeout(callPollinationsGet(question, history, mode), 25000, 'pollinations-get')]);
 
     const errors = [];
     const wrappedRace = await Promise.any(
