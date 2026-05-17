@@ -1,5 +1,6 @@
 {
   "rewrites": [
+    { "source": "/ai", "destination": "/api/ai.js" },
     { "source": "/regions", "destination": "/api/index.js" },
     { "source": "/regions/:path*", "destination": "/api/index.js" },
     { "source": "/holidays", "destination": "/api/index.js" },
@@ -8,6 +9,12 @@
     { "source": "/cities/:path*", "destination": "/api/index.js" },
     { "source": "/schools", "destination": "/api/index.js" },
     { "source": "/schools/:path*", "destination": "/api/index.js" },
+    { "source": "/scholarships", "destination": "/api/index.js" },
+    { "source": "/scholarships/:path*", "destination": "/api/index.js" },
+    { "source": "/currency", "destination": "/api/index.js" },
+    { "source": "/currency/:path*", "destination": "/api/index.js" },
+    { "source": "/weather", "destination": "/api/index.js" },
+    { "source": "/weather/:path*", "destination": "/api/index.js" },
     { "source": "/api", "destination": "/api/index.js" },
     { "source": "/api/:path*", "destination": "/api/index.js" }
   ],
