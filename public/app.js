@@ -950,6 +950,299 @@ ${d.email ? `<section class="contact"><h2>Contact</h2><p>📧 <a href="mailto:${
     .catch(() => { grid.innerHTML = '<p style="color: var(--fg-muted); text-align: center;">Failed to load.</p>'; });
 })();
 
+// ===================== Excel Mastery =====================
+(function setupExcel() {
+  const tabs = $$('.excel-tab');
+  const panels = $$('.excel-panel');
+  if (!tabs.length) return;
+
+  tabs.forEach(t => t.addEventListener('click', () => {
+    tabs.forEach(x => x.classList.remove('active'));
+    panels.forEach(x => x.classList.remove('active'));
+    t.classList.add('active');
+    $(`.excel-panel[data-expanel="${t.dataset.extab}"]`)?.classList.add('active');
+  }));
+
+  // === FORMULAS DATA ===
+  const FORMULAS = [
+    { name: 'SUM', cat: 'math', desc: 'Add up a range of numbers', syntax: 'SUM(range)', ex: '=SUM(A1:A10) → adds A1 through A10' },
+    { name: 'AVERAGE', cat: 'math', desc: 'Get the arithmetic mean', syntax: 'AVERAGE(range)', ex: '=AVERAGE(B2:B100) → mean of grades' },
+    { name: 'COUNT', cat: 'math', desc: 'Count cells with numbers only', syntax: 'COUNT(range)', ex: '=COUNT(A1:A50) → counts numeric cells' },
+    { name: 'COUNTA', cat: 'math', desc: 'Count non-empty cells (any type)', syntax: 'COUNTA(range)', ex: '=COUNTA(A1:A50) → counts non-blank' },
+    { name: 'COUNTIF', cat: 'stat', desc: 'Count cells meeting a condition', syntax: 'COUNTIF(range, criteria)', ex: '=COUNTIF(C2:C100,">75") → count grades over 75' },
+    { name: 'SUMIF', cat: 'stat', desc: 'Sum cells meeting a condition', syntax: 'SUMIF(range, criteria, [sum_range])', ex: '=SUMIF(B:B,"Food",C:C) → total Food expenses' },
+    { name: 'SUMIFS', cat: 'stat', desc: 'Sum with MULTIPLE conditions', syntax: 'SUMIFS(sum_range, criteria_range1, criteria1, ...)', ex: '=SUMIFS(C:C,B:B,"Food",A:A,">=2026-01-01")' },
+    { name: 'COUNTIFS', cat: 'stat', desc: 'Count with multiple conditions', syntax: 'COUNTIFS(range1, crit1, range2, crit2, ...)', ex: '=COUNTIFS(A:A,"Male",B:B,">21")' },
+    { name: 'AVERAGEIF', cat: 'stat', desc: 'Average cells meeting condition', syntax: 'AVERAGEIF(range, criteria, [avg_range])', ex: '=AVERAGEIF(B2:B100,"Female",C2:C100)' },
+    { name: 'IF', cat: 'logical', desc: 'Conditional logic — return one value if true, another if false', syntax: 'IF(condition, value_if_true, value_if_false)', ex: '=IF(B2>=75,"PASS","FAIL")' },
+    { name: 'IFS', cat: 'logical', desc: 'Multiple conditions (replaces nested IF)', syntax: 'IFS(cond1, val1, cond2, val2, ...)', ex: '=IFS(B2>=90,"A",B2>=80,"B",B2>=75,"C",TRUE,"F")' },
+    { name: 'AND', cat: 'logical', desc: 'Returns TRUE if ALL conditions true', syntax: 'AND(cond1, cond2, ...)', ex: '=IF(AND(B2>=75,C2>=75),"PASS","FAIL")' },
+    { name: 'OR', cat: 'logical', desc: 'Returns TRUE if ANY condition true', syntax: 'OR(cond1, cond2, ...)', ex: '=IF(OR(B2="Manager",B2="VP"),"Admin","User")' },
+    { name: 'IFERROR', cat: 'logical', desc: 'Catch errors and show fallback value', syntax: 'IFERROR(formula, value_if_error)', ex: '=IFERROR(A1/B1, 0) → returns 0 instead of #DIV/0!' },
+    { name: 'VLOOKUP', cat: 'lookup', desc: '⭐ Find a value in the leftmost column, return value from another column', syntax: 'VLOOKUP(value, table, col_num, [exact])', ex: '=VLOOKUP("Maria",A:C,3,FALSE) → find Maria, return col 3' },
+    { name: 'HLOOKUP', cat: 'lookup', desc: 'Horizontal version of VLOOKUP', syntax: 'HLOOKUP(value, table, row_num, [exact])', ex: '=HLOOKUP(2026, A1:E5, 3, FALSE)' },
+    { name: 'XLOOKUP', cat: 'lookup', desc: '⭐ Modern replacement for VLOOKUP. Looks in any direction.', syntax: 'XLOOKUP(lookup, lookup_arr, return_arr, [if_not_found])', ex: '=XLOOKUP("Maria",A:A,C:C,"Not found")' },
+    { name: 'INDEX', cat: 'lookup', desc: 'Return value at given row+col position', syntax: 'INDEX(array, row_num, [col_num])', ex: '=INDEX(A1:C10, 5, 2) → cell at row 5, col 2' },
+    { name: 'MATCH', cat: 'lookup', desc: 'Find position of value in a list', syntax: 'MATCH(value, lookup_array, [match_type])', ex: '=MATCH("Maria",A:A,0) → row number where Maria is' },
+    { name: 'INDEX+MATCH', cat: 'lookup', desc: 'Power combo — more flexible than VLOOKUP', syntax: 'INDEX(return_col, MATCH(lookup_value, lookup_col, 0))', ex: '=INDEX(C:C, MATCH("Maria", A:A, 0))' },
+    { name: 'CONCAT / CONCATENATE', cat: 'text', desc: 'Join text values together', syntax: 'CONCAT(text1, text2, ...)', ex: '=CONCAT(A2," ",B2) → "Maria Santos"' },
+    { name: 'TEXTJOIN', cat: 'text', desc: 'Join with separator, skip empty cells', syntax: 'TEXTJOIN(separator, ignore_empty, text1, ...)', ex: '=TEXTJOIN(", ",TRUE,A2:A10)' },
+    { name: 'LEFT / RIGHT / MID', cat: 'text', desc: 'Extract characters from text', syntax: 'LEFT(text, num) · RIGHT(text, num) · MID(text, start, num)', ex: '=LEFT(A1, 3) · =MID(A1, 2, 5)' },
+    { name: 'LEN', cat: 'text', desc: 'Get length of text', syntax: 'LEN(text)', ex: '=LEN(A1) → character count' },
+    { name: 'TRIM', cat: 'text', desc: 'Remove extra spaces', syntax: 'TRIM(text)', ex: '=TRIM(A1) → cleans " Maria   Santos "' },
+    { name: 'UPPER / LOWER / PROPER', cat: 'text', desc: 'Change text case', syntax: 'UPPER(text) · LOWER(text) · PROPER(text)', ex: '=PROPER("maria santos") → "Maria Santos"' },
+    { name: 'SUBSTITUTE', cat: 'text', desc: 'Find and replace text', syntax: 'SUBSTITUTE(text, old, new, [instance])', ex: '=SUBSTITUTE(A1, "Inc.", "Incorporated")' },
+    { name: 'TODAY / NOW', cat: 'date', desc: 'Current date / date+time', syntax: 'TODAY() · NOW()', ex: '=TODAY() → 2026-05-17' },
+    { name: 'YEAR / MONTH / DAY', cat: 'date', desc: 'Extract date parts', syntax: 'YEAR(date) · MONTH(date) · DAY(date)', ex: '=YEAR(A1) → 2026' },
+    { name: 'DATEDIF', cat: 'date', desc: 'Calculate difference between 2 dates', syntax: 'DATEDIF(start, end, "Y"|"M"|"D")', ex: '=DATEDIF(A1, TODAY(), "Y") → age in years' },
+    { name: 'WEEKDAY', cat: 'date', desc: 'Day of week (1=Sun..7=Sat by default)', syntax: 'WEEKDAY(date, [type])', ex: '=WEEKDAY(A1, 2) → 1=Mon..7=Sun' },
+    { name: 'EOMONTH', cat: 'date', desc: 'Last day of month X months away', syntax: 'EOMONTH(start, months)', ex: '=EOMONTH(TODAY(), 0) → last day of this month' },
+    { name: 'ROUND / ROUNDUP / ROUNDDOWN', cat: 'math', desc: 'Round numbers', syntax: 'ROUND(num, digits)', ex: '=ROUND(3.14159, 2) → 3.14' },
+    { name: 'MIN / MAX', cat: 'math', desc: 'Smallest / largest value in range', syntax: 'MIN(range) · MAX(range)', ex: '=MAX(B2:B100) → highest grade' },
+    { name: 'RANK', cat: 'stat', desc: 'Rank a value among others', syntax: 'RANK(num, range, [ascending])', ex: '=RANK(B2, B$2:B$100, 0) → rank by grade desc' },
+    { name: 'SUMPRODUCT', cat: 'math', desc: 'Multiply arrays, sum results — powerful', syntax: 'SUMPRODUCT(array1, array2, ...)', ex: '=SUMPRODUCT(B2:B6,C2:C6) → weighted total' },
+    { name: 'UNIQUE', cat: 'lookup', desc: 'Get unique values from a list (newer Excel)', syntax: 'UNIQUE(range)', ex: '=UNIQUE(A2:A100) → distinct names only' },
+    { name: 'FILTER', cat: 'lookup', desc: 'Filter data dynamically (newer Excel)', syntax: 'FILTER(array, condition, [if_empty])', ex: '=FILTER(A2:C100, B2:B100>75)' },
+    { name: 'SORT', cat: 'lookup', desc: 'Sort dynamically (newer Excel)', syntax: 'SORT(array, [col], [order])', ex: '=SORT(A2:C100, 3, -1) → sort by col 3 desc' },
+  ];
+
+  function renderFormulas(filter = '') {
+    const container = $('#excel-formulas');
+    if (!container) return;
+    const q = filter.toLowerCase();
+    const filtered = FORMULAS.filter(f =>
+      !q || f.name.toLowerCase().includes(q) || f.desc.toLowerCase().includes(q) || f.cat.includes(q)
+    );
+    if (!filtered.length) {
+      container.innerHTML = `<p style="text-align:center;color:var(--fg-muted);padding:var(--s5);">No formulas match "${filter}". Try: SUM, IF, LOOKUP, TEXT, DATE</p>`;
+      return;
+    }
+    container.innerHTML = filtered.map(f => `
+      <div class="formula-card">
+        <div class="formula-name">${f.name}</div>
+        <span class="formula-cat cat-${f.cat}">${f.cat}</span>
+        <div class="formula-desc">${f.desc}</div>
+        <div class="formula-syntax">${f.syntax}</div>
+        <div class="formula-example">${f.ex}</div>
+      </div>
+    `).join('');
+  }
+  renderFormulas();
+  $('#excel-formula-search')?.addEventListener('input', (e) => renderFormulas(e.target.value));
+
+  // === SHORTCUTS DATA ===
+  const SHORTCUTS = {
+    win: [
+      { group: '📋 Essential', items: [
+        ['Copy', ['Ctrl', 'C']], ['Paste', ['Ctrl', 'V']], ['Cut', ['Ctrl', 'X']],
+        ['Undo', ['Ctrl', 'Z']], ['Redo', ['Ctrl', 'Y']], ['Save', ['Ctrl', 'S']],
+        ['Find', ['Ctrl', 'F']], ['Replace', ['Ctrl', 'H']], ['Print', ['Ctrl', 'P']],
+        ['Select All', ['Ctrl', 'A']],
+      ]},
+      { group: '✏️ Editing', items: [
+        ['Edit cell (in place)', ['F2']], ['New line in cell', ['Alt', 'Enter']],
+        ['Fill down', ['Ctrl', 'D']], ['Fill right', ['Ctrl', 'R']],
+        ['AutoSum', ['Alt', '=']], ['Insert today\'s date', ['Ctrl', ';']],
+        ['Insert current time', ['Ctrl', 'Shift', ':']],
+      ]},
+      { group: '🧭 Navigation', items: [
+        ['Go to cell', ['Ctrl', 'G']], ['Last filled cell (down)', ['Ctrl', '↓']],
+        ['Last filled cell (right)', ['Ctrl', '→']], ['Beginning of row', ['Home']],
+        ['Cell A1', ['Ctrl', 'Home']], ['Last used cell', ['Ctrl', 'End']],
+        ['Next sheet', ['Ctrl', 'PgDn']], ['Previous sheet', ['Ctrl', 'PgUp']],
+      ]},
+      { group: '🎯 Selection', items: [
+        ['Extend selection', ['Shift', '+ arrows']],
+        ['Select column', ['Ctrl', 'Space']], ['Select row', ['Shift', 'Space']],
+        ['Select to last filled', ['Ctrl', 'Shift', '↓']], ['Select all data', ['Ctrl', 'A']],
+      ]},
+      { group: '💲 Formatting', items: [
+        ['Bold', ['Ctrl', 'B']], ['Italic', ['Ctrl', 'I']], ['Underline', ['Ctrl', 'U']],
+        ['Format as currency', ['Ctrl', 'Shift', '$']], ['Format as %', ['Ctrl', 'Shift', '%']],
+        ['Format as date', ['Ctrl', 'Shift', '#']], ['Format as number', ['Ctrl', 'Shift', '!']],
+        ['Open Format Cells', ['Ctrl', '1']],
+      ]},
+      { group: '🧮 Formulas', items: [
+        ['Toggle absolute ref ($)', ['F4']], ['Show formulas vs values', ['Ctrl', '`']],
+        ['Insert function', ['Shift', 'F3']], ['Evaluate part of formula', ['F9']],
+      ]},
+      { group: '➕ Rows & Columns', items: [
+        ['Insert row/col', ['Ctrl', 'Shift', '+']], ['Delete row/col', ['Ctrl', '-']],
+        ['Hide column', ['Ctrl', '0']], ['Hide row', ['Ctrl', '9']],
+        ['Filter on/off', ['Ctrl', 'Shift', 'L']],
+      ]},
+    ],
+    mac: [
+      { group: '📋 Essential', items: [
+        ['Copy', ['⌘', 'C']], ['Paste', ['⌘', 'V']], ['Cut', ['⌘', 'X']],
+        ['Undo', ['⌘', 'Z']], ['Redo', ['⌘', 'Y']], ['Save', ['⌘', 'S']],
+        ['Find', ['⌘', 'F']], ['Replace', ['⌃', 'H']], ['Print', ['⌘', 'P']],
+        ['Select All', ['⌘', 'A']],
+      ]},
+      { group: '✏️ Editing', items: [
+        ['Edit cell (in place)', ['⌃', 'U']], ['New line in cell', ['⌃', '⌥', 'Return']],
+        ['Fill down', ['⌃', 'D']], ['Fill right', ['⌃', 'R']],
+        ['AutoSum', ['⌘', 'Shift', 'T']], ['Insert today', ['⌃', ';']],
+      ]},
+      { group: '🧭 Navigation', items: [
+        ['Go to cell', ['⌃', 'G']], ['Last filled cell (down)', ['⌘', '↓']],
+        ['Cell A1', ['⌃', 'Home']], ['Last used cell', ['⌃', 'End']],
+        ['Next sheet', ['⌥', '→']], ['Previous sheet', ['⌥', '←']],
+      ]},
+      { group: '🎯 Selection', items: [
+        ['Extend selection', ['Shift', '+ arrows']],
+        ['Select column', ['⌃', 'Space']], ['Select row', ['Shift', 'Space']],
+        ['Select to last filled', ['⌘', 'Shift', '↓']],
+      ]},
+      { group: '💲 Formatting', items: [
+        ['Bold', ['⌘', 'B']], ['Italic', ['⌘', 'I']], ['Underline', ['⌘', 'U']],
+        ['Currency', ['⌃', 'Shift', '$']], ['Percent', ['⌃', 'Shift', '%']],
+        ['Format Cells', ['⌘', '1']],
+      ]},
+      { group: '🧮 Formulas', items: [
+        ['Absolute ref ($)', ['⌘', 'T']], ['Show formulas vs values', ['⌃', '`']],
+        ['Insert function', ['Shift', 'F3']], ['Evaluate formula part', ['F9']],
+      ]},
+    ],
+  };
+
+  function renderShortcuts(os = 'win') {
+    const container = $('#excel-shortcuts');
+    if (!container) return;
+    container.innerHTML = SHORTCUTS[os].map(group => `
+      <div class="shortcut-group">
+        <h4>${group.group}</h4>
+        ${group.items.map(([label, keys]) => `
+          <div class="shortcut-row">
+            <span>${label}</span>
+            <div class="shortcut-keys">${keys.map(k => `<kbd>${k}</kbd>`).join('<span style="color:var(--fg-muted);font-size:11px;">+</span>')}</div>
+          </div>
+        `).join('')}
+      </div>
+    `).join('');
+  }
+  renderShortcuts('win');
+  $$('.excel-sub-tab').forEach(t => t.addEventListener('click', () => {
+    $$('.excel-sub-tab').forEach(x => x.classList.remove('active'));
+    t.classList.add('active');
+    renderShortcuts(t.dataset.os);
+  }));
+
+  // === DOWNLOAD TEMPLATES (CSV files Excel opens directly) ===
+  function downloadCSV(name, content) {
+    const blob = new Blob(['﻿' + content], { type: 'text/csv;charset=utf-8' });
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = name;
+    a.click();
+    URL.revokeObjectURL(a.href);
+    toast(`Downloaded ${name}. Open in Excel.`);
+  }
+
+  $('#excel-template-gpa')?.addEventListener('click', (e) => {
+    e.preventDefault();
+    downloadCSV('gpa-tracker.csv',
+`Subject,Units,Grade,Weighted Points
+Calculus 1,3,1.50,=B2*C2
+Programming 1,4,1.25,=B3*C3
+Physics 1,4,1.75,=B4*C4
+Filipino 1,3,2.00,=B5*C5
+PE 1,2,1.00,=B6*C6
+,,,
+Total Units:,=SUM(B2:B6),,
+Total Weighted:,,,=SUM(D2:D6)
+GPA:,,,=D9/B8
+,,,
+Note:,GPA = SUMPRODUCT(Units * Grade) / SUM(Units),,
+,Lower is better in PH grading (1.00 = highest 99-100; 5.00 = failed),,
+`);
+  });
+
+  $('#excel-template-budget')?.addEventListener('click', (e) => {
+    e.preventDefault();
+    downloadCSV('budget-tracker.csv',
+`Date,Category,Description,Amount (PHP)
+2026-05-01,Food,Lunch at canteen,85
+2026-05-01,Transport,Jeepney fare,13
+2026-05-02,School,Photocopy,45
+2026-05-02,Food,Snacks,55
+2026-05-03,Internet,Load,100
+2026-05-03,Food,Dinner,120
+,,,
+,,,
+SUMMARY,,,
+Total Spent:,,,=SUM(D2:D7)
+Food Total:,,,=SUMIF(B:B,"Food",D:D)
+Transport Total:,,,=SUMIF(B:B,"Transport",D:D)
+School Total:,,,=SUMIF(B:B,"School",D:D)
+Internet Total:,,,=SUMIF(B:B,"Internet",D:D)
+,,,
+Avg per Day:,,,=AVERAGE(D2:D7)
+`);
+  });
+
+  $('#excel-template-survey')?.addEventListener('click', (e) => {
+    e.preventDefault();
+    downloadCSV('survey-likert-template.csv',
+`Respondent #,Q1: System is easy to use,Q2: System is fast,Q3: Design is good,Q4: I will recommend,Q5: Solved my problem
+1,5,4,5,5,4
+2,4,5,4,4,5
+3,5,5,5,5,5
+4,3,4,3,4,4
+5,4,4,4,5,4
+6,5,5,4,5,5
+7,4,3,4,4,3
+8,5,4,5,4,5
+9,4,5,4,5,4
+10,5,5,5,5,5
+,,,,,
+Mean,=AVERAGE(B2:B11),=AVERAGE(C2:C11),=AVERAGE(D2:D11),=AVERAGE(E2:E11),=AVERAGE(F2:F11)
+,,,,,
+Interpretation:,4.21-5.00 = Strongly Agree,,,,
+,3.41-4.20 = Agree,,,,
+,2.61-3.40 = Neutral,,,,
+,1.81-2.60 = Disagree,,,,
+,1.00-1.80 = Strongly Disagree,,,,
+`);
+  });
+
+  // === CHEATSHEET DOWNLOAD ===
+  $('#excel-cheatsheet-dl')?.addEventListener('click', () => {
+    const top30 = FORMULAS.slice(0, 30).map(f => `<tr><td><strong>${f.name}</strong></td><td>${f.desc}</td><td><code>${f.ex}</code></td></tr>`).join('');
+    const winShortcuts = SHORTCUTS.win.flatMap(g => g.items).map(([l, k]) => `<tr><td>${l}</td><td><strong>${k.join(' + ')}</strong></td></tr>`).join('');
+    const html = `<!DOCTYPE html><html><head><meta charset="utf-8"><title>Excel Cheatsheet - PH StudentKit</title>
+<style>
+  @page { margin: 12mm; }
+  body { font-family: -apple-system, sans-serif; font-size: 10pt; line-height: 1.4; max-width: 900px; margin: 0 auto; padding: 20px; color: #0F172A; }
+  h1 { color: #185C37; font-size: 24pt; margin-bottom: 4pt; }
+  h2 { color: #185C37; font-size: 13pt; margin-top: 14pt; border-bottom: 2pt solid #185C37; padding-bottom: 2pt; }
+  .sub { color: #475569; font-size: 10pt; margin-bottom: 14pt; }
+  table { width: 100%; border-collapse: collapse; font-size: 9pt; }
+  th { background: #185C37; color: white; text-align: left; padding: 4pt 8pt; }
+  td { padding: 3pt 8pt; border-bottom: 1px solid #e2e8f0; vertical-align: top; }
+  code { font-family: 'Menlo', monospace; font-size: 8.5pt; background: #f1f5f9; padding: 1pt 3pt; border-radius: 2pt; }
+  .footer { margin-top: 20pt; padding-top: 8pt; border-top: 1px solid #cbd5e1; font-size: 8pt; color: #64748b; text-align: center; }
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 12pt; }
+  @media print { body { padding: 0; } }
+</style></head><body>
+  <h1>📊 Excel Cheatsheet</h1>
+  <div class="sub">PH StudentKit · Top 30 Formulas + Top Shortcuts · by Charlie James Abejo</div>
+  <h2>🧮 Top 30 Formulas</h2>
+  <table><tr><th>Formula</th><th>What it does</th><th>Example</th></tr>${top30}</table>
+  <h2>⌨️ Windows Shortcuts (top 40)</h2>
+  <div class="two-col">
+    <table><tr><th>Action</th><th>Keys</th></tr>${winShortcuts.slice(0, winShortcuts.length / 2)}</table>
+    <table><tr><th>Action</th><th>Keys</th></tr>${winShortcuts.slice(winShortcuts.length / 2)}</table>
+  </div>
+  <div class="footer">Generated by PH StudentKit · https://ph-public-api.vercel.app · capstonee2@gmail.com · MIT License · Print this to PDF</div>
+  <script>setTimeout(()=>window.print(),500);<\/script>
+</body></html>`;
+    const w = window.open('', '_blank');
+    w.document.write(html);
+    w.document.close();
+  });
+})();
+
 // ===================== Universal Search =====================
 (function setupSearch() {
   const trigger = $('#search-trigger');
