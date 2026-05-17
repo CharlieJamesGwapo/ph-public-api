@@ -98,19 +98,26 @@ module.exports = async (req, res) => {
     providers.push(['pollinations-get', () => withTimeout(callPollinationsGet(question, history, mode), 22000, 'pollinations-get')]);
     providers.push(['pollinations-post', () => withTimeout(callPollinationsPost(question, history, mode), 22000, 'pollinations-post')]);
 
-    const result = await Promise.any(
-      providers.map(([name, fn]) =>
-        fn().catch((e) => {
-          errors.push(`${name}: ${e.message}`);
-          throw e;
-        })
-      )
-    ).catch(() => null);
+    async function tryAll() {
+      return Promise.any(
+        providers.map(([name, fn]) =>
+          fn().catch((e) => { errors.push(`${name}: ${e.message}`); throw e; })
+        )
+      ).catch(() => null);
+    }
+
+    // First attempt
+    let result = await tryAll();
+    // One retry after 2s if first attempt failed (Pollinations sometimes rate-limits briefly)
+    if (!result) {
+      await new Promise(r => setTimeout(r, 2000));
+      result = await tryAll();
+    }
 
     if (result) return res.status(200).json({ ok: true, mode, ...result, ms: Date.now() - t0 });
     return res.status(503).json({
       ok: false,
-      error: 'AI providers are slow right now. Try again in 10 seconds.',
+      error: 'AI is busy right now. Try again in 10 seconds — sometimes the free providers rate-limit briefly.',
       tried: errors,
       ms: Date.now() - t0,
     });
