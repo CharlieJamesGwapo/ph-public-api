@@ -20,3 +20,4 @@
 - 2026-05-21 15:45 — data snapshot: 39 schools, 26 cities
 - 2026-05-21 20:00 — data snapshot: 40 schools, 29 cities
 - 2026-05-22 13:01 — data snapshot: 48 schools, 32 cities
+- 2026-05-22 18:00 — data snapshot: 52 schools, 33 cities
