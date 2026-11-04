@@ -11,7 +11,7 @@
   "author": "Charlie James Abejo",
   "license": "MIT",
   "dependencies": {
-    "express": "^4.19.2",
+    "express": "^4.22.3",
     "cors": "^2.8.5"
   }
 }
